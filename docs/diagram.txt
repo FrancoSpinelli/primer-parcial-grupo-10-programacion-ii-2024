@@ -1,0 +1,90 @@
+@startuml
+!theme reddress-darkorange
+
+class CasaMatriz {
+  -Auto[] autos
+  -Persona[] personas
+'-Oficina[] oficinas
+
+  +void verListadoPersonas()
+  +void cargarAuto()
+  +void cargarPersona()
+}
+
+
+class Persona{
+  -Int id
+  -String nombre
+  -Date fechaNacimiento
+  -Int documento
+  -String teléfono
+}
+
+class Cliente{
+  -Auto[] favoritos
+  
+  +void agregarFavoritos(Auto auto)
+  +void sacarFavoritos(Auto auto)
+}
+
+
+class Vendedor{
+  +void entregarAuto()
+}
+
+class Admin{
+  +void crearAutos()
+  +void eliminarAutos()
+  +void eliminarUsuario()
+  +void crearVendedor()
+}
+
+class Auto{
+  -Consultas[] reservas
+  -String patente
+  -String modelo
+  -String color
+  -String marca
+  -Bool disponibilidad
+  -Float precio-dia
+  
+  +Bool validarDisponibilidad(Date fechaI, Date fechaF)
+  +Float calcularPrecioTotal(Int cantDias)
+  +Auto[] verListadoAutos(Autos[] autos)
+  +void entregarAuto()
+}
+
+class Consulta {
+  -Cliente cliente
+  -Vendedor vendedor
+  -Oficina oficina
+  -Date inicioReserva
+  -Date finReserva
+  -Int cantidadDias
+  -Float precioFinal
+  -Bool cancelado
+  -Bool reservado
+  
+  +void mostrarConsultas(Persona p)
+  +void crearConsulta(Cliente c, Auto a, Date fechaI, Date fechaF)
+  +void rechazarConsulta(Consulta consulta)
+  +void aceptarConsulta(Consulta consulta)
+}
+
+class Oficina {
+  -Consultas[] consultas
+  -String dirección
+  -String teléfono
+}
+
+
+Persona -- Vendedor
+Persona -- Cliente
+Persona -- Admin
+Cliente -- Consulta
+Oficina -- Consulta
+Oficina -- Auto
+Vendedor -- Oficina
+Consulta -- Auto
+
+@enduml
