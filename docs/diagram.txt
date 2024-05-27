@@ -1,11 +1,16 @@
 @startuml
 !theme reddress-darkorange
 
+class Main{
+  +void main
+}
+
 class CasaMatriz {
   -Auto[] autos
   -Persona[] personas
-'-Oficina[] oficinas
+  -Oficina[] oficinas
 
+  +CasaMatriz(Oficina[] oficinas, Persona[] personas, Auto[] autos)
   +void verListadoPersonas()
   +void cargarAuto()
   +void cargarPersona()
@@ -18,6 +23,9 @@ class Persona{
   -Date fechaNacimiento
   -Int documento
   -String teléfono
+  -String email
+
+  +Persona(int id, String nombre, Date fechaNacimiento, int documento, String teléfono, String email)
 }
 
 class Cliente{
@@ -47,11 +55,19 @@ class Auto{
   -String marca
   -Bool disponibilidad
   -Float precio-dia
-  
+  -Float cantidadGasolina
+  -String oficinaActual
+
+  +Auto()  
   +Bool validarDisponibilidad(Date fechaI, Date fechaF)
   +Float calcularPrecioTotal(Int cantDias)
   +Auto[] verListadoAutos(Autos[] autos)
   +void entregarAuto()
+  -void consultarGasolina()
+  -void recargarGasolina()
+  -void consumirGasolina()
+  -void consumoGasolina()
+  -void transportarOficinaOriginal()
 }
 
 class Consulta {
@@ -86,5 +102,4 @@ Oficina -- Consulta
 Oficina -- Auto
 Vendedor -- Oficina
 Consulta -- Auto
-
 @enduml
