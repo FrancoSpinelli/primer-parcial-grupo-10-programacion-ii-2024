@@ -94,12 +94,19 @@ class Oficina {
 }
 
 
-Persona -- Vendedor
-Persona -- Cliente
-Persona -- Admin
-Cliente -- Consulta
-Oficina -- Consulta
-Oficina -- Auto
-Vendedor -- Oficina
-Consulta -- Auto
+Persona <|-- Vendedor
+Persona <|-- Cliente
+Persona <|-- Admin
+Cliente o--"*" Consulta
+Oficina o--"*" Consulta
+Oficina *-- Vendedor
+Oficina o--"*" Auto
+Consulta o--"*" Auto
+
+CasaMatriz "1"*--"*" Admin
+CasaMatriz  o--"*" Cliente
+CasaMatriz "1"*--"*" Auto
+CasaMatriz "1"*--"*" Oficina
+
+Main *-- CasaMatriz
 @enduml
