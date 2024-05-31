@@ -2,99 +2,99 @@
 !theme reddress-darkorange
 
 class Main{
-  +void main
+  +main : void
 }
 
 class CasaMatriz {
 
-  +CasaMatriz(Oficina[] o, Persona[] p, Auto[] a)
+  +CasaMatriz(Oficina, Persona, Auto)
   
-  +void verListadoPersonas()
-  +void cargarAuto()
-  +void cargarPersona()
+  +verListadoPersonas(): void
+  +cargarAuto(): void
+  +cargarPersona(): void
 }
 
 
 class Persona{
-  -Int id
-  -String nombre
-  -Date fechaNacimiento
-  -Int documento
-  -String teléfono
-  -String email
+  -id: int
+  -nombre: String
+  -fechaNacimiento: Date
+  -documento: int
+  -teléfono: String
+  -email: String
 
-  +Persona(int id, String n, Date fn, Int dni, String tel, String e)
+  +Persona(int, String, Date, int, String, String)
 }
 
 class Cliente{
-  -Auto[] favoritos
+  -favoritos: Auto
   
-  +void agregarFavoritos(Auto auto)
-  +void sacarFavoritos(Auto auto)
+  +agregarFavoritos(Auto): void
+  +sacarFavoritos(Auto): void
 }
 
 
 class Vendedor{
-  +void entregarAuto()
+  +entregarAuto(): void
 }
 
 class Admin{
-  +void crearAutos()
-  +void eliminarAutos()
-  +void eliminarUsuario()
-  +void crearVendedor()
+  +crearAutos(): void
+  +eliminarAutos(): void
+  +eliminarUsuario(): void
+  +crearVendedor(): void
 }
 
 class Auto{
-  -Consultas[] reservas
-  -String patente
-  -String modelo
-  -String color
-  -String marca
-  -Bool disponibilidad
-  -Float precio-dia
-  -Float cantidadGasolina
-  -String oficinaActual
+  -reservas: Consultas
+  -patente: String
+  -modelo: String
+  -color: String
+  -marca: String
+  -disponibilidad: Bool
+  -precio-dia: Float
+  -cantidadGasolina: Float
+  -oficinaActual: String
 
   +Auto()  
-  +Bool validarDisponibilidad(Date fechaI, Date fechaF)
-  +Float calcularPrecioTotal(Int cantDias)
-  +Auto[] verListadoAutos(Autos[] autos)
-  +void entregarAuto()
-  -void consultarGasolina()
-  -void recargarGasolina()
-  -void consumirGasolina()
-  -void consumoGasolina()
-  -void transportarOficinaOriginal()
-  -abstraact void 
+  +validarDisponibilidad(Date, Date): Bool
+  +calcularPrecioTotal(int): Float
+  +verListadoAutos(Auto): Auto
+  +entregarAuto(): void
+  -consultarGasolina(): void
+  -recargarGasolina(): void
+  -consumirGasolina(): void
+  -consumoGasolina(): void
+  -transportarOficinaOriginal(): void
+  -abstract: void 
 }
 
 class Consulta {
-  -Cliente cliente
-  -Vendedor vendedor
-  -Oficina oficina
-  -Date inicioReserva
-  -Date finReserva
-  -Int cantidadDias
-  -Float precioFinal
-  -Bool cancelado
-  -Bool reservado
+  -cliente: Cliente
+  -vendedor: Vendedor
+  -oficina: Oficina
+  -inicioReserva: Date
+  -finReserva: Date
+  -cantidadDias: int
+  -precioFinal: float
+  -cancelado: Bool
+  -reservado: Bool
   
-  +void mostrarConsultas(Persona p)
-  +void crearConsulta(Cliente c, Auto a, Date fechaI, Date fechaF)
-  +void rechazarConsulta(Consulta consulta)
-  +void aceptarConsulta(Consulta consulta)
+  +mostrarConsultas(Persona): void
+  +crearConsulta(Cliente, Auto, Date, Date): void
+  +rechazarConsulta(Consulta): void
+  +aceptarConsulta(Consulta): void
   
 }
 
 class Oficina {
-  -String dirección
-  -String teléfono
+  -dirección: String
+  -teléfono: String
 }
 
 -interface Menu {
-  +void verMenu()
-  +void seleccionar()
+  +verMenu(): void
+  +seleccionar(): void
 }
 
 
@@ -109,14 +109,10 @@ Persona <|-- Admin
 Persona <|-- Vendedor
 Persona <|-- Cliente
 
-
 Persona --> Menu
 Admin --|> Menu
 Vendedor --|> Menu
 Cliente --|> Menu
-
-
-
 
 Oficina o--"*" Consulta: Consulta[]
 Oficina *-- Vendedor
