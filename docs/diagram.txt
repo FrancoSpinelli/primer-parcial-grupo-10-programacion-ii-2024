@@ -12,6 +12,7 @@ class CasaMatriz {
   +verListadoPersonas(): void
   +cargarAuto(): void
   +cargarPersona(): void
+  +login(): Persona
 }
 
 
@@ -22,6 +23,7 @@ class Persona{
   -documento: int
   -teléfono: String
   -email: String
+  -contrasenia: String
 
   +Persona(int, String, Date, int, String, String)
 }
@@ -66,7 +68,6 @@ class Auto{
   -consumirGasolina(): void
   -consumoGasolina(): void
   -transportarOficinaOriginal(): void
-  -abstract: void 
 }
 
 class Consulta {
@@ -100,10 +101,10 @@ class Oficina {
 
 Main -- CasaMatriz
 
-CasaMatriz "1"*--"*"Admin: Admin[]
-CasaMatriz "1"*--"*" Auto: Auto[]
-CasaMatriz "1"*--"*" Oficina: Oficina[]
-CasaMatriz  o--"*" Cliente: Cliente[]
+CasaMatriz "1"*--"*"Admin: Admins
+CasaMatriz "1"*--"*" Auto: Autos
+CasaMatriz "1"*--"*" Oficina: Oficinas
+CasaMatriz  o--"*" Cliente: Clientes
 
 Persona <|-- Admin
 Persona <|-- Vendedor
@@ -114,13 +115,11 @@ Admin --|> Menu
 Vendedor --|> Menu
 Cliente --|> Menu
 
-Oficina o--"*" Consulta: Consulta[]
+Oficina o--"*" Consulta: Consultas
 Oficina *-- Vendedor
-Oficina o--"*" Auto: Auto[]
+Oficina o--"*" Auto: Autos
 
-Cliente o--"*" Consulta: Consulta[]
+Cliente o--"*" Consulta: Consultas
 
-Consulta o--"*" Auto: Auto[]
-
-
+Consulta o--"*" Auto: Autos
 @enduml
