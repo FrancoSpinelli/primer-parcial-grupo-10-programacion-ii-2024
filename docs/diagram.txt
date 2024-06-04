@@ -2,19 +2,70 @@
 !theme reddress-darkorange
 
 class Main{
-  +main : void
+  +Main(): void
 }
 
 class CasaMatriz {
 
-  +CasaMatriz(Oficina, Persona, Auto)
-  
+  +CasaMatriz(Admin, Auto, Oficina)
   +verListadoPersonas(): void
   +cargarAuto(): void
   +cargarPersona(): void
+  +cargarOficina(): void
   +login(): Persona
+  +logout(): void
 }
 
+
+
+class Oficina {
+  -sucursalId: int
+  -dirección: String
+  -teléfono: String
+  
+  +Oficina(Vendedor, String, String)
+}
+
+class Admin{
+  +Admin(Persona)
+  +listadoDeAutos()
+  +listadoDeOficinas()
+  +listadoDeAutos()
+  +crearAutos(): void
+  +crearVendedor(): void
+  +crearCliente(): void
+  +crearOficina(): void
+  +eliminarAutos(): void
+  +eliminarPersona(): void
+  +eliminarOfcina(): void
+  +cancelarReserva(): void
+  +asignarAutoAOficina() void
+}
+
+
+class Cliente{
+  -favoritos: Auto
+  
+  +Cliente(Persona)
+  
+  +agregarFavoritos(Auto): void
+  +sacarFavoritos(Auto): void
+  +crearConsulta(): void
+  +reservar(): void
+  +retirarAutos(Reserva)
+  +devolverAuto(Reserva, Oficina)
+}
+
+
+class Vendedor{
+  +Vendedor(Persona)
+  
+  +verConsultasPendientes()
+  +aceptarConsulta()
+  +rechazarConsulta()
+  +reservar()
+  +entregarAuto(): void
+}
 
 class Persona{
   -id: int
@@ -28,98 +79,96 @@ class Persona{
   +Persona(int, String, Date, int, String, String)
 }
 
-class Cliente{
-  -favoritos: Auto
-  
-  +agregarFavoritos(Auto): void
-  +sacarFavoritos(Auto): void
-}
 
-
-class Vendedor{
-  +entregarAuto(): void
-}
-
-class Admin{
-  +crearAutos(): void
-  +eliminarAutos(): void
-  +eliminarUsuario(): void
-  +crearVendedor(): void
-}
-
-class Auto{
-  -reservas: Consultas
-  -patente: String
-  -modelo: String
-  -color: String
-  -marca: String
-  -disponibilidad: Bool
-  -precio-dia: Float
-  -cantidadGasolina: Float
-  -oficinaActual: String
-
-  +Auto()  
-  +validarDisponibilidad(Date, Date): Bool
-  +calcularPrecioTotal(int): Float
-  +verListadoAutos(Auto): Auto
-  +entregarAuto(): void
-  -consultarGasolina(): void
-  -recargarGasolina(): void
-  -consumirGasolina(): void
-  -consumoGasolina(): void
-  -transportarOficinaOriginal(): void
-}
 
 class Consulta {
-  -cliente: Cliente
-  -vendedor: Vendedor
-  -oficina: Oficina
+  -estado: bool
   -inicioReserva: Date
   -finReserva: Date
   -cantidadDias: int
   -precioFinal: float
-  -cancelado: Bool
-  -reservado: Bool
+  
+
+  +Consula(Auto, Cliente, Date, Date)  
   
   +mostrarConsultas(Persona): void
-  +crearConsulta(Cliente, Auto, Date, Date): void
+  +crearReserva(Consulta): void
   +rechazarConsulta(Consulta): void
   +aceptarConsulta(Consulta): void
-  
 }
 
-class Oficina {
-  -dirección: String
-  -teléfono: String
+class Reserva {
+  -estado: String
+  -pagado: bool
+  
+  Reserva(Consulta)
+  
+  +recibirPago()
+  +finalizarReserva()
+  +cancelarReserva()
 }
+
+class Auto{
+  -reserva: Consulta
+  -patente: String
+  -modelo: String
+  -color: String
+  -marca: String
+  -disponibilidad: bool
+  -precio-dia: float
+  -cantidadGasolina: float
+  -oficinaActual: String
+
+  +Auto(String, String, String, String, float, float, String)  
+  
+  +validarDisponibilidad(Date, Date): bool
+  +calcularPrecioTotal(int): float
+  +verListadoAutos(Auto): Auto
+  +entregarAuto(): void
+  
+  -consultarGasolina(): void
+  -recargarGasolina(): void
+  -consumirGasolina(): void
+  -consumoGasolina(): void
+  -transportarAOficinaOriginal(): void
+}
+
+
 
 -interface Menu {
   +verMenu(): void
   +seleccionar(): void
 }
 
+Main ..> Oficina
+Main ..> Admin
+Main ..> Auto
 
 Main -- CasaMatriz
 
-CasaMatriz "1"*--"*"Admin: Admins
-CasaMatriz "1"*--"*" Auto: Autos
-CasaMatriz "1"*--"*" Oficina: Oficinas
-CasaMatriz  o--"*" Cliente: Clientes
+CasaMatriz "1"*-->"*"Admin: Admins
+CasaMatriz "1"*-->"*" Auto: Autos
+CasaMatriz "1"*-->"*" Oficina: Oficinas
+CasaMatriz  -->"*" Cliente: Clientes
 
 Persona <|-- Admin
 Persona <|-- Vendedor
 Persona <|-- Cliente
 
-Persona --> Menu
-Admin --|> Menu
-Vendedor --|> Menu
-Cliente --|> Menu
 
-Oficina o--"*" Consulta: Consultas
-Oficina *-- Vendedor
-Oficina o--"*" Auto: Autos
+Persona ..|> Menu
 
-Cliente o--"*" Consulta: Consultas
+Menu ..> MenuAdmin
+Menu ..> MenuVendedor
+Menu ..> MenuCliente
 
-Consulta o--"*" Auto: Autos
+Oficina -->"*" Consulta: Consultas
+Oficina o--> Vendedor
+Oficina o-->"*" Auto: Autos
+
+Cliente --->"*" Consulta: Consultas
+
+Consulta -->"*" Auto: Autos
+
+Reserva --|> Consulta
 @enduml
