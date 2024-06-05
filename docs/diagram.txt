@@ -51,7 +51,6 @@ class Cliente{
   +agregarFavoritos(Auto): void
   +sacarFavoritos(Auto): void
   +crearConsulta(): void
-  +reservar(): void
   +retirarAutos(Reserva)
   +devolverAuto(Reserva, Oficina)
 }
@@ -81,32 +80,22 @@ class Persona{
 
 
 
-class Consulta {
-  -estado: bool
+class Reserva {
+  -estado: String
   -inicioReserva: Date
   -finReserva: Date
   -cantidadDias: int
   -precioFinal: float
   
 
-  +Consula(Auto, Cliente, Date, Date)  
+  +Reserva(Auto, Cliente, Date, Date)  
   
   +mostrarConsultas(Persona): void
-  +crearReserva(Consulta): void
-  +rechazarConsulta(Consulta): void
-  +aceptarConsulta(Consulta): void
+  +crearReserva(Reserva): void
+  +rechazarConsulta(Reserva): void
+  +aceptarConsulta(Reserva): void
 }
 
-class Reserva {
-  -estado: String
-  -pagado: bool
-  
-  Reserva(Consulta)
-  
-  +recibirPago()
-  +finalizarReserva()
-  +cancelarReserva()
-}
 
 class Auto{
   -reserva: Consulta
@@ -133,9 +122,11 @@ class Auto{
   -transportarAOficinaOriginal(): void
 }
 
+interface Listador {
+    -listar()
+}
 
-
--interface Menu {
+interface Menu {
   +verMenu(): void
   +seleccionar(): void
 }
@@ -146,29 +137,36 @@ Main ..> Auto
 
 Main -- CasaMatriz
 
-CasaMatriz "1"*-->"*"Admin: Admins
-CasaMatriz "1"*-->"*" Auto: Autos
-CasaMatriz "1"*-->"*" Oficina: Oficinas
-CasaMatriz  -->"*" Cliente: Clientes
+CasaMatriz "1"*-->"*"Admin: admins
+CasaMatriz "1"*-->"*" Auto: autos
+CasaMatriz "1"*-->"*" Oficina: oficinas
+CasaMatriz  -->"*" Cliente: clientes
 
 Persona <|-- Admin
 Persona <|-- Vendedor
 Persona <|-- Cliente
 
 
-Persona ..|> Menu
 
-Menu ..> MenuAdmin
-Menu ..> MenuVendedor
-Menu ..> MenuCliente
+Persona --> Menu
 
-Oficina -->"*" Consulta: Consultas
+MenuAdmin  ..> Menu
+MenuVendedor ..> Menu
+MenuCliente ..> Menu
+
+Persona --> Listador
+
+ListarAuto .left.> Listador
+ListarClientes .right.> Listador
+ListarOficina .down.> Listador
+ListarConsulta ..> Listador
+
+Oficina -->"*" Reserva: reservas
 Oficina o--> Vendedor
-Oficina o-->"*" Auto: Autos
+Oficina o-->"*" Auto: autos
 
-Cliente --->"*" Consulta: Consultas
+Cliente --->"*" Reserva: reservas
 
-Consulta -->"*" Auto: Autos
+Reserva -->"*" Auto: autos
 
-Reserva --|> Consulta
 @enduml
