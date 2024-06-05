@@ -6,7 +6,6 @@ class Main{
 }
 
 class CasaMatriz {
-
   +CasaMatriz(Admin, Auto, Oficina)
   
   +login(): Persona
@@ -36,7 +35,6 @@ class Persona{
 
 
 class Admin{
-
   +Admin(Persona)
   
   +listar(): void
@@ -60,7 +58,6 @@ class Cliente{
 
 
 class Vendedor{
-
   +Vendedor(Persona)
   
   +listarReservasPendientes():void
@@ -88,7 +85,7 @@ class Fecha {
   +Fecha(Date, Date)
   
   +estaEnRango(Date): bool
-  +calcularDias: int
+  +calcularDias(): int
 }
 
 class Auto{

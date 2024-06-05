@@ -1,0 +1,70 @@
+@startuml
+!theme toy
+
+left to right direction
+
+actor "Client" as cl
+actor "Vendedor" as ve
+actor "Admin" as ad
+
+
+rectangle RentACar {
+  usecase "Login" as Login
+  usecase "Logout" as Logout
+  usecase "Agregar a favorito" as AFavoritos
+  usecase "Eliminar de favorito" as EFavoritos
+  usecase "Retirar auto" as RetAuto
+  usecase "Devolver auto" as DevAuto
+  usecase "Listar autos" as ListarAutos
+  usecase "Crear reserva" as Reservar
+  usecase "ListarReservas" as ListarReservas
+  usecase "Aceptar reserva" as AcepReservar
+  usecase "Rechazar reserva" as RecReservar
+  usecase "Entregar Auto" as EntregarAuto
+  usecase "Crear auto" as CrearAuto
+  usecase "Eliminar auto" as EliminarAuto
+  usecase "Listar clientes" as ListarClientes
+  usecase "Crear cliente" as CrearCliente
+  usecase "Eliminar cliente" as EliminarCliente
+  usecase "Listar oficinas" as ListarOficina
+  usecase "Crear oficina" as CrearOficina
+  usecase "Eliminar oficina" as EliminarOficina
+  usecase "Asignar auto a oficina" as AsignarAutoAOfi
+  usecase "Eliminar Reserva" as EliminarReserva
+}
+
+
+cl --> Login
+cl --> Logout
+cl --> ListarAutos
+cl --> Reservar
+cl --> AFavoritos
+cl --> EFavoritos
+cl --> RetAuto
+cl --> DevAuto
+cl --> Reservar
+cl --> ListarReservas
+
+ve --> Login
+ve --> Logout
+ve --> Reservar
+ve --> ListarReservas
+ve --> AcepReservar
+ve --> RecReservar
+ve --> EntregarAuto
+
+ad --> Login
+ad --> Logout
+ad --> CrearAuto
+ad --> EliminarAuto
+ad --> ListarClientes
+ad --> CrearCliente
+ad --> EliminarCliente
+ad --> ListarOficina
+ad --> CrearOficina
+ad --> EliminarOficina
+ad --> AsignarAutoAOfi
+ad --> EliminarReserva
+
+
+@enduml
