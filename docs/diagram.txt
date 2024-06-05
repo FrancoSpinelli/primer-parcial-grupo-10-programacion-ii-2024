@@ -8,14 +8,10 @@ class Main{
 class CasaMatriz {
 
   +CasaMatriz(Admin, Auto, Oficina)
-  +verListadoPersonas(): void
-  +cargarAuto(): void
-  +cargarPersona(): void
-  +cargarOficina(): void
+  
   +login(): Persona
   +logout(): void
 }
-
 
 
 class Oficina {
@@ -24,46 +20,6 @@ class Oficina {
   -teléfono: String
   
   +Oficina(Vendedor, String, String)
-}
-
-class Admin{
-  +Admin(Persona)
-  +listadoDeAutos()
-  +listadoDeOficinas()
-  +listadoDeAutos()
-  +crearAutos(): void
-  +crearVendedor(): void
-  +crearCliente(): void
-  +crearOficina(): void
-  +eliminarAutos(): void
-  +eliminarPersona(): void
-  +eliminarOfcina(): void
-  +cancelarReserva(): void
-  +asignarAutoAOficina() void
-}
-
-
-class Cliente{
-  -favoritos: Auto
-  
-  +Cliente(Persona)
-  
-  +agregarFavoritos(Auto): void
-  +sacarFavoritos(Auto): void
-  +crearConsulta(): void
-  +retirarAutos(Reserva)
-  +devolverAuto(Reserva, Oficina)
-}
-
-
-class Vendedor{
-  +Vendedor(Persona)
-  
-  +verConsultasPendientes()
-  +aceptarConsulta()
-  +rechazarConsulta()
-  +reservar()
-  +entregarAuto(): void
 }
 
 class Persona{
@@ -79,57 +35,139 @@ class Persona{
 }
 
 
+class Admin{
 
-class Reserva {
-  -estado: String
-  -inicioReserva: Date
-  -finReserva: Date
-  -cantidadDias: int
-  -precioFinal: float
+  +Admin(Persona)
   
-
-  +Reserva(Auto, Cliente, Date, Date)  
-  
-  +mostrarConsultas(Persona): void
-  +crearReserva(Reserva): void
-  +rechazarConsulta(Reserva): void
-  +aceptarConsulta(Reserva): void
+  +listar(): void
+  +crear(): void
+  +eliminar(): void
+  +asignarAutoAOficina() void
 }
 
 
+class Cliente{
+  -favoritos: Auto
+  
+  +Cliente(Persona)
+  
+  +agregarFavoritos(Auto): void
+  +sacarFavoritos(Auto): void
+  +crear(): void
+  +retirarAutos(Reserva): void
+  +devolverAuto(Reserva, Oficina): void
+}
+
+
+class Vendedor{
+
+  +Vendedor(Persona)
+  
+  +listarReservasPendientes():void
+  +aceptarReserva(Reserva): void
+  +rechazarReserva(Reserva): void
+  +entregarAuto(Reserva): void
+}
+
+
+
+class Reserva {
+  -precioFinal: float
+
+  +Reserva(Auto, Cliente, Date, Date)  
+  
+  +crearReserva(): void
+  +rechazarReserva(): void
+  +aceptarReserva(): void
+}
+
+class Fecha {
+  -inicio: Date
+  -fin: Date
+  
+  +Fecha(Date, Date)
+  
+  +estaEnRango(Date): bool
+  +calcularDias: int
+}
+
 class Auto{
-  -reserva: Consulta
   -patente: String
+  -marca: Marca
   -modelo: String
-  -color: String
-  -marca: String
+  -color: Colores
   -disponibilidad: bool
-  -precio-dia: float
-  -cantidadGasolina: float
+  -precioPorDia: float
   -oficinaActual: String
 
   +Auto(String, String, String, String, float, float, String)  
   
   +validarDisponibilidad(Date, Date): bool
   +calcularPrecioTotal(int): float
-  +verListadoAutos(Auto): Auto
+  +verListadoAutos(): void
   +entregarAuto(): void
   
-  -consultarGasolina(): void
-  -recargarGasolina(): void
-  -consumirGasolina(): void
-  -consumoGasolina(): void
   -transportarAOficinaOriginal(): void
 }
 
+class Gasolina {
+  -capacidadMaxima: float
+  -cantidad: float
+  
+  +Gasolina(float, float)
+
+  +consultarGasolina(): void
+  +recargarGasolina(): void
+  +consumirGasolina(): void
+}
+
+
+'INTERFACES
+
 interface Listador {
-    -listar()
+  +listar(): void
+}
+
+interface Creador {
+  +crear(): void
+}
+interface Eliminador {
+  +eliminar(): void
 }
 
 interface Menu {
   +verMenu(): void
   +seleccionar(): void
 }
+
+'ENUMS
+
+enum EstadoReserva {
+  CREADO
+  RESERVADO
+  PENDIENTE
+  ENTREGADO
+  DEVUELTO
+  FINALIZADO
+}
+
+enum Marca {
+  FORD
+  FIAT
+  CHVROLET
+  BMW
+  FERRARI
+}
+
+enum Color {
+  BLANCO
+  ROJO
+  NEGRO
+  AZUL
+  GRIS
+}
+
+'RELACIONES
 
 Main ..> Oficina
 Main ..> Admin
@@ -147,19 +185,31 @@ Persona <|-- Vendedor
 Persona <|-- Cliente
 
 
+Persona --|> Menu
+Persona --|> Listador
+Persona --|> Creador
+Persona --|> Eliminador
 
-Persona --> Menu
 
 MenuAdmin  ..> Menu
 MenuVendedor ..> Menu
 MenuCliente ..> Menu
 
-Persona --> Listador
 
-ListarAuto .left.> Listador
-ListarClientes .right.> Listador
-ListarOficina .down.> Listador
-ListarConsulta ..> Listador
+ListadorAutos ..> Listador
+ListadorClientes ..> Listador
+ListadorOficinas ..> Listador
+ListadorReservas ..> Listador
+
+CreadorAutos ..> Creador
+CreadorClientes ..> Creador
+CreadorOficinas ..> Creador
+CreadorReservas ..> Creador
+
+EliminadorAutos ..> Eliminador
+EliminadorClientes ..> Eliminador
+EliminadorOficinas ..> Eliminador
+EliminadorReservas ..> Eliminador
 
 Oficina -->"*" Reserva: reservas
 Oficina o--> Vendedor
@@ -168,5 +218,11 @@ Oficina o-->"*" Auto: autos
 Cliente --->"*" Reserva: reservas
 
 Reserva -->"*" Auto: autos
+Reserva -->"1" EstadoReserva
+Reserva *-->"1" Fecha: fecha
+
+Auto -->"1" Gasolina: gasolina
+Auto -->"1" Marca: marca
+Auto -->"1" Color: color
 
 @enduml
