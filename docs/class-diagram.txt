@@ -166,60 +166,56 @@ enum Color {
 
 'RELACIONES
 
-Main ..> Oficina
-Main ..> Admin
-Main ..> Auto
+Main .down..> Oficina
+Main ..right..> Admin
+Main .down..> Auto
 
-Main -- CasaMatriz
+Main -down-- CasaMatriz
 
-CasaMatriz "1"*-->"*"Admin: admins
-CasaMatriz "1"*-->"*" Auto: autos
-CasaMatriz "1"*-->"*" Oficina: oficinas
-CasaMatriz  -->"*" Cliente: clientes
+CasaMatriz "1"*-up->"*"Admin: admins
+CasaMatriz "1"*-down->"*" Auto: autos
+CasaMatriz "1"*-up->"*" Oficina: oficinas
+CasaMatriz -up->"*" Cliente: clientes
 
-Persona <|-- Admin
-Persona <|-- Vendedor
-Persona <|-- Cliente
+Persona <|---left- Admin
+Persona <|---down- Cliente
+Persona <|---down---- Vendedor
 
+Persona -up---|> Listador
+Persona -up---|> Creador
+Persona -up---|> Eliminador
+Persona -right-|> Menu
 
-Persona --|> Menu
-Persona --|> Listador
-Persona --|> Creador
-Persona --|> Eliminador
+MenuAdmin  .down.> Menu
+MenuVendedor .right.> Menu
+MenuCliente .left.> Menu
 
+ListadorAutos .down.> Listador
+ListadorClientes .right.> Listador
+ListadorOficinas .down.> Listador
+ListadorReservas .left.> Listador
 
-MenuAdmin  ..> Menu
-MenuVendedor ..> Menu
-MenuCliente ..> Menu
+CreadorAutos .down.> Creador
+CreadorClientes .right.> Creador
+CreadorOficinas .down.> Creador
+CreadorReservas .left.> Creador
 
+EliminadorAutos .down.> Eliminador
+EliminadorClientes .right.> Eliminador
+EliminadorOficinas .down.> Eliminador
+EliminadorReservas .left.> Eliminador
 
-ListadorAutos ..> Listador
-ListadorClientes ..> Listador
-ListadorOficinas ..> Listador
-ListadorReservas ..> Listador
-
-CreadorAutos ..> Creador
-CreadorClientes ..> Creador
-CreadorOficinas ..> Creador
-CreadorReservas ..> Creador
-
-EliminadorAutos ..> Eliminador
-EliminadorClientes ..> Eliminador
-EliminadorOficinas ..> Eliminador
-EliminadorReservas ..> Eliminador
-
-Oficina -->"*" Reserva: reservas
-Oficina o--> Vendedor
+Oficina --->"*" Reserva: reservas
+Oficina o-right--> Vendedor
 Oficina o-->"*" Auto: autos
 
-Cliente --->"*" Reserva: reservas
+Cliente ---->"*" Reserva: reservas
 
 Reserva -->"*" Auto: autos
 Reserva -->"1" EstadoReserva
 Reserva *-->"1" Fecha: fecha
 
-Auto -->"1" Gasolina: gasolina
-Auto -->"1" Marca: marca
-Auto -->"1" Color: color
-
+Auto -down-->"1" Gasolina: gasolina
+Auto -down-->"1" Marca: marca
+Auto -down-->"1" Color: color
 @enduml
