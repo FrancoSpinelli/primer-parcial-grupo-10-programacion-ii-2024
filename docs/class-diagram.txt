@@ -90,9 +90,7 @@ class Fecha {
 
 class Auto{
   -patente: String
-  -marca: Marca
   -modelo: String
-  -color: Colores
   -disponibilidad: bool
   -precioPorDia: float
   -oficinaActual: String
