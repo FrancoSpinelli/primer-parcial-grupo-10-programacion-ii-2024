@@ -6,7 +6,7 @@ class Main{
 }
 
 class CasaMatriz {
-  +CasaMatriz(Admin, Auto, Oficina)
+  +CasaMatriz(Persona, Auto, Oficina)
   
   +login(): Persona
   +logout(): void
@@ -19,6 +19,8 @@ class Oficina {
   -teléfono: String
   
   +Oficina(Vendedor, String, String)
+
+  +asignarVendedor(Vendedor): void
 }
 
 class Persona{
