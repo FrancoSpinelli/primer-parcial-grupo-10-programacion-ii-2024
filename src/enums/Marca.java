@@ -3,7 +3,8 @@ package enums;
 public enum Marca {
     FORD,
     FIAT,
-    CHVROLET,
+    CHEVROLET,
     BMW,
     FERRARI,
+    TOYOTA,
 }

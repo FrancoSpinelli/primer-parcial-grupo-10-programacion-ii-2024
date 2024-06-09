@@ -10,7 +10,10 @@ public class Reserva {
     private EstadoReserva estado;
 
     public Reserva(Auto auto, Cliente cliente, Date fechaInicio, Date fechaFin) {
-
+        this.autos = new ArrayList<Auto>();
+        this.autos.add(auto);
+        this.fechas = new Fecha(fechaInicio, fechaFin);
+        this.estado = EstadoReserva.PENDIENTE;
     }
 
     public void crearReserva() {

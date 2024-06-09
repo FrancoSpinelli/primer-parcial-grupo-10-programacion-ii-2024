@@ -21,6 +21,7 @@ class Oficina {
   +Oficina(Vendedor, String, String)
 
   +asignarVendedor(Vendedor): void
+  +agregarAuto(Auto): void
 }
 
 class Persona{
@@ -104,18 +105,21 @@ class Auto{
   +verListadoAutos(): void
   +entregarAuto(): void
   
+  -validadorTanqueLleno(): void
   -transportarAOficinaOriginal(): void
 }
 
 class Gasolina {
   -capacidadMaxima: float
   -cantidad: float
+  -consumoDiario: float
   
-  +Gasolina(float, float)
+  +Gasolina(float)
 
+  +tieneTanqueLleno(): bool
   +consultarGasolina(): void
   +recargarGasolina(): void
-  +consumirGasolina(): void
+  +consumirGasolina(int): void
 }
 
 
@@ -181,29 +185,29 @@ Persona <|---left- Admin
 Persona <|---down- Cliente
 Persona <|---down---- Vendedor
 
-Persona -up---|> Listador
-Persona -up---|> Creador
-Persona -up---|> Eliminador
-Persona -right-|> Menu
+Persona *-up---> Listador
+Persona *-up---> Creador
+Persona *-up---> Eliminador
+Persona *-right-> Menu
 
-MenuAdmin  .down.> Menu
-MenuVendedor .right.> Menu
-MenuCliente .left.> Menu
+MenuAdmin  .down.|> Menu
+MenuVendedor .right.|> Menu
+MenuCliente .left.|> Menu
 
-ListadorAutos .down.> Listador
-ListadorClientes .right.> Listador
-ListadorOficinas .down.> Listador
-ListadorReservas .left.> Listador
+ListadorAutos .down.|> Listador
+ListadorClientes .right.|> Listador
+ListadorOficinas .down.|> Listador
+ListadorReservas .left.|> Listador
 
-CreadorAutos .down.> Creador
-CreadorClientes .right.> Creador
-CreadorOficinas .down.> Creador
-CreadorReservas .left.> Creador
+CreadorAutos .down.|> Creador
+CreadorClientes .right.|> Creador
+CreadorOficinas .down.|> Creador
+CreadorReservas .left.|> Creador
 
-EliminadorAutos .down.> Eliminador
-EliminadorClientes .right.> Eliminador
-EliminadorOficinas .down.> Eliminador
-EliminadorReservas .left.> Eliminador
+EliminadorAutos .down.|> Eliminador
+EliminadorClientes .right.|> Eliminador
+EliminadorOficinas .down.|> Eliminador
+EliminadorReservas .left.|> Eliminador
 
 Oficina --->"*" Reserva: reservas
 Oficina o-right--> Vendedor
@@ -215,7 +219,7 @@ Reserva -->"*" Auto: autos
 Reserva -->"1" EstadoReserva
 Reserva *-->"1" Fecha: fecha
 
-Auto -down-->"1" Gasolina: gasolina
+Auto *-down-->"1" Gasolina: gasolina
 Auto -down-->"1" Marca: marca
 Auto -down-->"1" Color: color
 @enduml

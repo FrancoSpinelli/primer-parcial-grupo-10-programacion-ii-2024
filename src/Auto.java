@@ -14,12 +14,14 @@ public class Auto {
     private Color color;
     private Marca marca;
 
-    public Auto(String patente, String modelo, String oficinaActual, float precioPorDia) {
+    
+
+    public Auto(String patente, String modelo, float precioPorDia, Color color, Marca marca, Gasolina gasolina) {
         this.patente = patente;
         this.modelo = modelo;
-        this.oficinaActual = oficinaActual;
         this.precioPorDia = precioPorDia;
-        this.disponibilidad = true;
+        this.color = color;
+        this.marca = marca;
     }
 
     public boolean validarDisponibilidad(Date fechaInicio, Date fechaFin) {
@@ -39,6 +41,10 @@ public class Auto {
     public void entregarAuto() {
 
     }
+
+    private void validadorTanqueLleno() {
+        
+    }   
 
     private void transportarAOficinaOriginal() {
 
