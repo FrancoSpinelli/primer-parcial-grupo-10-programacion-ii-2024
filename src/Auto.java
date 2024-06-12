@@ -14,7 +14,10 @@ public class Auto {
     private Color color;
     private Marca marca;
 
-    
+    @Override
+    public String toString() {
+        return "Auto " + patente + " (" + marca + " " + modelo + ")";
+    }
 
     public Auto(String patente, String modelo, float precioPorDia, Color color, Marca marca, Gasolina gasolina) {
         this.patente = patente;

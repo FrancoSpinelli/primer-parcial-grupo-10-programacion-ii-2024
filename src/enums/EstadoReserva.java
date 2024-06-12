@@ -1,9 +1,9 @@
 package enums;
 
 public enum EstadoReserva {
-    CREADO,
-    RESERVADO,
     PENDIENTE,
+    RECHAZADO,
+    RESERVADO,
     ENTREGADO,
     DEVUELTO,
     FINALIZADO,
