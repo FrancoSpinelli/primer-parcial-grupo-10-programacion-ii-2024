@@ -2,13 +2,18 @@ import java.util.Date;
 
 public class Vendedor extends Persona {
 
-    public Vendedor(int dni, String nombre, Date fechaNacimiento, int documento, String telefono, String email,
+    @Override
+    public String toString() {
+        return super.getNombre() + " (" + super.getEmail() + ")";
+    }
+
+    public Vendedor(int dni, String nombre, Date fechaNacimiento, String telefono, String email,
             String contrasenia) {
-        super(dni, nombre, fechaNacimiento, documento, telefono, email, contrasenia);
+        super(dni, nombre, fechaNacimiento, telefono, email, contrasenia);
     }
 
     public void listarReservasPendientes() {
-
+        EntradaSalida.mostrarString("Listado de reservas pendientes:");
     }
 
     public void aceptarReserva(Reserva r) {

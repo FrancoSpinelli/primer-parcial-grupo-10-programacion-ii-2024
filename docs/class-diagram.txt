@@ -14,7 +14,7 @@ class CasaMatriz {
 
 
 class Oficina {
-  -sucursalId: int
+  -id: int
   -dirección: String
   -teléfono: String
   
@@ -25,10 +25,9 @@ class Oficina {
 }
 
 class Persona{
-  -id: int
+  -dni: int
   -nombre: String
   -fechaNacimiento: Date
-  -documento: int
   -teléfono: String
   -email: String
   -contrasenia: String
@@ -44,6 +43,7 @@ class Admin{
   +crear(): void
   +eliminar(): void
   +asignarAutoAOficina() void
+  +asignarVendedorAOficina(): void
 }
 
 
@@ -72,13 +72,20 @@ class Vendedor{
 
 
 class Reserva {
+  -id: int
   -precioFinal: float
+  -estadoPago: bool
 
   +Reserva(Auto, Cliente, Date, Date)  
   
   +crearReserva(): void
   +rechazarReserva(): void
-  +aceptarReserva(): void
+  +entregarAutos(): void
+  +devolverAutos(): void
+  +finalizarReserva(): void
+  +pagarReserva(): void
+
+  -calcularPrecioFinal(): void
 }
 
 class Fecha {
