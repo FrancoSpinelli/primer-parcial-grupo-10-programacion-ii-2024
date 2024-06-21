@@ -1,11 +1,12 @@
 package Auto;
+
 import java.util.Date;
 
 import enums.Color;
 import enums.Marca;
 
 public class Auto {
-
+    private int id;
     private String patente;
     private String modelo;
     private boolean disponibilidad;
@@ -17,10 +18,13 @@ public class Auto {
 
     @Override
     public String toString() {
-        return "Auto " + patente + " (" + marca + " " + modelo + ")";
+        return id + " - " + marca + " " + modelo + " " + color + " [" + patente + "]" + " - $" + ((int)precioPorDia)
+                + " por día";
     }
 
-    public Auto(String patente, String modelo, float precioPorDia, Color color, Marca marca, Gasolina gasolina) {
+    public Auto(int id, String patente, String modelo, float precioPorDia, Color color, Marca marca,
+            Gasolina gasolina) {
+        this.id = id;
         this.patente = patente;
         this.modelo = modelo;
         this.precioPorDia = precioPorDia;
@@ -38,6 +42,14 @@ public class Auto {
         return 0;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public float getPrecioPorDia() {
+        return precioPorDia;
+    }
+
     public void verListadoAutos() {
 
     }
@@ -47,8 +59,8 @@ public class Auto {
     }
 
     private void validadorTanqueLleno() {
-        
-    }   
+
+    }
 
     private void transportarAOficinaOriginal() {
 

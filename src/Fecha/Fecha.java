@@ -1,23 +1,41 @@
 package Fecha;
-import java.util.Date;
+
+import java.time.LocalDate;
 
 public class Fecha {
 
-    private Date inicio;
-    private Date fin;
+    private LocalDate inicio;
+    private LocalDate fin;
+    private int cantDias;
 
-    public Fecha(Date inicio, Date fin) {
-        this.inicio = inicio;
-        this.fin = fin;
+    @Override
+    public String toString() {
+        return "Desde " + inicio + " hasta " + fin + " (" + cantDias + " días)";
     }
 
-    public boolean estaEnRango(Date fecha) {
+    public Fecha(LocalDate inicio, int cantDias) {
+        this.inicio = inicio;
+        this.cantDias = cantDias;
+        this.fin = calcularFin();
+    }
 
+    public boolean estaEnRango(LocalDate fecha) {
         return true;
     }
 
-    public int calcularDias() {
+    public LocalDate calcularFin() {
+        return this.inicio.plusDays(this.cantDias);
+    }
 
-        return 0;
+    public LocalDate getInicio() {
+        return inicio;
+    }
+
+    public LocalDate getFin() {
+        return fin;
+    }
+
+    public int getCantDias() {
+        return cantDias;
     }
 }
