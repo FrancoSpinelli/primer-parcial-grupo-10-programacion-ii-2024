@@ -6,6 +6,8 @@ import CasaMatriz.CasaMatriz;
 import Interfaces.CapazDeCrear.CapacidadDeCrearCliente;
 import Interfaces.CapazDeListar.CapacidadDeListarAutos;
 import Interfaces.CapazDeListar.CapacidadDeListarClientes;
+import Interfaces.CapazDeListar.CapacidadDeListarOficinas;
+import Interfaces.CapazDeListar.CapacidadDeListarPersonas;
 import Oficina.Oficina;
 import Personas.Admin;
 import Personas.Cliente;
@@ -26,9 +28,9 @@ public class Main {
 
         CasaMatriz casaMatriz;
 
-        Admin admin1 = new Admin(1234, "admin", LocalDate.now(), "1234", "vendedor1@vendedor.com", "1234");
-        Vendedor vendedor1 = new Vendedor(1234, "vendedor1", LocalDate.now(), "1234", "vendedor1@vendedor.com", "1234");
-        Cliente cliente1 = new Cliente(1234, "cliente1", LocalDate.now(), "1234", "cliente1@cliente.com", "1234");
+        Admin admin1 = new Admin(1, 1234, "admin", LocalDate.now(), "1234", "a", "1234");
+        Vendedor vendedor1 = new Vendedor(2, 1234, "vendedor1", LocalDate.now(), "1234", "vendedor1@vendedor.com", "1234");
+        Cliente cliente1 = new Cliente(3, 1234, "cliente1", LocalDate.now(), "1234", "cliente1@cliente.com", "1234");
 
         Auto auto1 = new Auto("ABC123", "Corolla", 10000, Color.AZUL, Marca.CHEVROLET, new Gasolina(10000));
         Auto auto2 = new Auto("DEF456", "Civic", 20000, Color.ROJO, Marca.FORD, new Gasolina(20000));
@@ -48,19 +50,16 @@ public class Main {
         oficinas.add(oficina1);
         oficinas.add(oficina2);
 
-        //System.out.println("\nClientes:");
-        //casaMatriz.mostrarListadoPersonas(new ListarClientesStrategy());
-
         casaMatriz = new CasaMatriz(personas, autos, oficinas);
+
+        casaMatriz.login();
     
         //admin1.setCreadorStrategy(new CreadorCliente());
         //admin1.crear();
 
-        casaMatriz.setListadorClientes(new CapacidadDeListarClientes());
-        casaMatriz.mostrarListadoPersonas(new CapacidadDeListarClientes());
-
-        casaMatriz.setListadorAutos(new CapacidadDeListarAutos());
-        casaMatriz.mostrarListadoAutos(new CapacidadDeListarAutos());
-
+        //casaMatriz.mostrarListadoPersonas(new CapacidadDeListarPersonas());
+        //casaMatriz.mostrarListadoOficina(new CapacidadDeListarOficinas());
+        //casaMatriz.mostrarListadoAutos(new CapacidadDeListarAutos());
+        //casaMatriz.mostrarListadoPersonas(new CapacidadDeListarPersonas());
     }
 }
