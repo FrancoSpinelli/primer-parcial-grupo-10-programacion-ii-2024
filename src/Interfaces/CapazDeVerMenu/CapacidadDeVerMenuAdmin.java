@@ -1,11 +1,11 @@
 package Interfaces.CapazDeVerMenu;
-import java.util.Scanner;
 import EntradaSalida.EntradaSalida;
+import Interfaces.CapazDeCrear.CapacidadDeCrearAdmin;
 import Interfaces.CapazDeCrear.CapacidadDeCrearCliente;
 import Interfaces.CapazDeCrear.CapacidadDeCrearVendedor;
 import Personas.Admin;
 
-public class CapacidadDeVerMenuAdmin implements CapacidadDeVerMenuStrategy {
+public class CapacidadDeVerMenuAdmin implements CapacidadDeVerMenu {
     
     private Admin admin;
 
@@ -15,20 +15,20 @@ public class CapacidadDeVerMenuAdmin implements CapacidadDeVerMenuStrategy {
     
     @Override
     public void verMenu(){
-        EntradaSalida.leerString("Menú de Admin: ");
-        EntradaSalida.leerString("1. Alta Vendedor: ");
-        EntradaSalida.leerString("2. Baja Vendedor: ");
-        EntradaSalida.leerString("3. Mostrar Vendedores: ");
-        EntradaSalida.leerString("4. Alta Cliente: ");
-        EntradaSalida.leerString("5. Baja Cliente: ");
-        EntradaSalida.leerString("6. Mostrar Clientes: ");
-        EntradaSalida.leerString("7. Salir");
+        EntradaSalida.mostrarString("Menú de Admin");
+        EntradaSalida.mostrarString("1. Alta Vendedor");
+        EntradaSalida.mostrarString("2. Baja Vendedor");
+        EntradaSalida.mostrarString("3. Alta Cliente");
+        EntradaSalida.mostrarString("4. Baja Cliente");
+        EntradaSalida.mostrarString("5. Alta Admin");
+        EntradaSalida.mostrarString("6. Baja Admin");
+        EntradaSalida.mostrarString("7. Mostrar Usuarios");
+        EntradaSalida.mostrarString("0. Salir");
     }
 
     @Override
-    public void seleccionar(){
-        Scanner scanner = new Scanner(System.in);
-        int seleccion = scanner.nextInt(); //esto está mal, hay que pedir un string
+    public int seleccionar(){
+        int seleccion = EntradaSalida.leerEnteroConLimites("Ingrese su elección: ", 0, 7);
         
         switch(seleccion){
             case 1:
@@ -36,20 +36,34 @@ public class CapacidadDeVerMenuAdmin implements CapacidadDeVerMenuStrategy {
             admin.crear();
             break;
             case 2:
+            EntradaSalida.mostrarString("Baja Vendedor");
+            EntradaSalida.mostrarString("NO IMPLEMENTADO");
             break;
             case 3:
-            break;
-            case 4:
             admin.setCreadorStrategy(new CapacidadDeCrearCliente());
             admin.crear();
             break;
+            case 4:
+            EntradaSalida.mostrarString("Baja Cliente");
+            EntradaSalida.mostrarString("NO IMPLEMENTADO");
+            break;
             case 5:
+            admin.setCreadorStrategy(new CapacidadDeCrearAdmin());
+            admin.crear();
             break;
             case 6:
+            EntradaSalida.mostrarString("Baja Admin");
+            EntradaSalida.mostrarString("NO IMPLEMENTADO");
             break;
             case 7:
+            EntradaSalida.mostrarString("Mostrar todo");
+            EntradaSalida.mostrarString("NO IMPLEMENTADO");
+            break;
+            case 8:
+            EntradaSalida.mostrarString("Salir");
             break;
         }
+        return seleccion;
     }
 }
 

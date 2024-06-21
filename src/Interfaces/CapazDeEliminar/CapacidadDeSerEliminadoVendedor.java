@@ -5,7 +5,7 @@ import EntradaSalida.EntradaSalida;
 import Interfaces.CapazDeListar.CapacidadDeListarClientes;
 import Personas.Persona;
 
-public class CapacidadDeEliminarCliente implements CapazDeEliminar{
+public class CapacidadDeSerEliminadoCliente implements CapacidadDeEliminarStrategy{
     
     CasaMatriz casaMatriz;
 

@@ -4,22 +4,26 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import Auto.Auto;
+import CasaMatriz.CasaMatriz;
 import EntradaSalida.EntradaSalida;
-import Fecha.Fecha;
+import Interfaces.CapazDeEliminar.CapacidadDeSerEliminado;
+import Interfaces.CapazDeEliminar.CapazDeEliminar;
+import Interfaces.CapazDeListar.CapacidadDeListarPersonas;
 import Interfaces.CapazDeVerMenu.CapacidadDeVerMenuCliente;
 import Oficina.Oficina;
 import Reserva.Reserva;
 import enums.EstadoReserva;
 
-public class Cliente extends Persona {
+public class Cliente extends Persona implements CapacidadDeSerEliminado{
     private ArrayList<Auto> favoritos = new ArrayList<Auto>();
     private ArrayList<Reserva> reservas = new ArrayList<Reserva>();
 
-    public Cliente(int dni, String nombre, LocalDate fechaNacimiento, String telefono, String email,
+    public Cliente(int id, int dni, String nombre, LocalDate fechaNacimiento, String telefono, String email,
             String contrasenia) {
-        super(dni, nombre, fechaNacimiento, telefono, email, contrasenia);
-        this.setMenuStrategy(new CapacidadDeVerMenuCliente());
+        super(id, dni, nombre, fechaNacimiento, telefono, email, contrasenia);
+        this.setMenuStrategy(new CapacidadDeVerMenuCliente(this));
         this.favoritos = new ArrayList<Auto>();
+        
     }
 
     public void agregarFavoritos(Auto a) {
@@ -141,4 +145,15 @@ public class Cliente extends Persona {
         }
         return false;
     }
+
+    @Override
+    public void eliminar(){
+        EntradaSalida.mostrarString("No puede eliminar");
+    }
+
+    @Override
+    public boolean capacidadDeSerEliminado(){
+        return true;
+    }
+
 }

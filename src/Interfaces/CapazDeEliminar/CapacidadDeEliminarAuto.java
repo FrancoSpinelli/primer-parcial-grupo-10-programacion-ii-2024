@@ -10,7 +10,7 @@ public class CapacidadDeEliminarCliente implements CapazDeEliminar{
     CasaMatriz casaMatriz;
 
     @Override
-    public void eliminar(){
+    public void eliminar() implements capazDeSerEliminado{
         int dni;
         Persona personaEliminar;
 
@@ -20,5 +20,9 @@ public class CapacidadDeEliminarCliente implements CapazDeEliminar{
         personaEliminar = CasaMatriz.buscarPersona(dni);
         //VALIDAR
         CasaMatriz.eliminarPersona(personaEliminar);
+    }
+
+    public boolean capazDeSerEliminado(){
+        return true;
     }
 }

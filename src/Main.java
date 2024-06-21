@@ -3,6 +3,14 @@ import java.util.ArrayList;
 import Auto.Auto;
 import Auto.Gasolina;
 import CasaMatriz.CasaMatriz;
+<<<<<<< HEAD
+import Interfaces.CapazDeCrear.CapacidadDeCrearCliente;
+import Interfaces.CapazDeListar.CapacidadDeListarAutos;
+import Interfaces.CapazDeListar.CapacidadDeListarClientes;
+import Interfaces.CapazDeListar.CapacidadDeListarOficinas;
+import Interfaces.CapazDeListar.CapacidadDeListarPersonas;
+=======
+>>>>>>> develop
 import Oficina.Oficina;
 import Personas.Admin;
 import Personas.Cliente;
@@ -58,6 +66,20 @@ public class Main {
      * casaMatriz.mostrarListadoPersonas(new ListadorClientes())
      */;
 
+<<<<<<< HEAD
+        casaMatriz = new CasaMatriz(personas, autos, oficinas);
+
+        casaMatriz.login();
+    
+        //admin1.setCreadorStrategy(new CreadorCliente());
+        //admin1.crear();
+
+        //casaMatriz.mostrarListadoPersonas(new CapacidadDeListarPersonas());
+        //casaMatriz.mostrarListadoOficina(new CapacidadDeListarOficinas());
+        //casaMatriz.mostrarListadoAutos(new CapacidadDeListarAutos());
+        //casaMatriz.mostrarListadoPersonas(new CapacidadDeListarPersonas());
+    }
+=======
     cliente1.crear(oficinas);
     cliente1.verReservas();
 
@@ -81,4 +103,5 @@ public class Main {
     cliente1.pagarReserva(cliente1.getReserva(1, cliente1));
 
   }
+>>>>>>> develop
 }
