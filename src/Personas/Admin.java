@@ -38,5 +38,6 @@ public class Admin extends Persona {
 
     public void asignarVendedorAOficina(Vendedor vendedor, Oficina oficina) {
         oficina.asignarVendedor(vendedor);
+        vendedor.asignarOficina(oficina);
     }
 }

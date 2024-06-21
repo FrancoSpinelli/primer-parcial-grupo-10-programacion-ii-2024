@@ -1,4 +1,5 @@
 package CasaMatriz;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,27 +20,36 @@ public class CasaMatriz {
 
     private ListadorStrategy<?> listadorStrategy;
 
-    //CONSTRUCTOR
+    // CONSTRUCTOR
     public CasaMatriz(ArrayList<Persona> personas, ArrayList<Auto> autos, ArrayList<Oficina> oficinas) {
         EntradaSalida.mostrarString("Bienvenido a la Casa Matriz");
         this.personas = personas;
         this.autos = autos;
         this.oficinas = oficinas;
 
-        Admin admin = (Admin) this.personas.get(0); 
+        Admin admin = (Admin) this.personas.get(0);
         Vendedor vendedor1 = (Vendedor) this.personas.get(1);
-        Oficina oficina = oficinas.get(0);
+        Vendedor vendedor2 = (Vendedor) this.personas.get(3);
+        Oficina oficina1 = oficinas.get(0);
+        Oficina oficina2 = oficinas.get(1);
 
-        admin.asignarVendedorAOficina(vendedor1,oficina);
+        admin.asignarVendedorAOficina(vendedor1, oficina1);
+        admin.asignarVendedorAOficina(vendedor2, oficina2);
         for (Auto auto : autos) {
-            admin.asignarAutoAOficina(auto,oficina);
+            if (autos.indexOf(auto) % 2 == 0) {
+                admin.asignarAutoAOficina(auto, oficina1);
+            } else {
+                admin.asignarAutoAOficina(auto, oficina2);
+            }
         }
 
-        oficina.verListadoAutos();
-        oficina.verListadoReservas();
+        /*
+         * oficina1.verListadoAutos();
+         * oficina1.verListadoReservas();
+         */
     }
 
-    public void setListadorStrategy(ListadorStrategy<?> listadorStrategy){
+    public void setListadorStrategy(ListadorStrategy<?> listadorStrategy) {
         this.listadorStrategy = listadorStrategy;
     }
 
@@ -51,26 +61,27 @@ public class CasaMatriz {
 
     }
 
-    //AGREGAR
-    public static void agregarPersona(Persona persona){
+    // AGREGAR
+    public static void agregarPersona(Persona persona) {
         personas.add(persona);
     }
 
-    //ENCONTRAR
-    public static Persona buscarPersona(int dni){
+    // ENCONTRAR
+    public static Persona buscarPersona(int dni) {
         Persona personaEncontrada = null;
-        for(Persona persona : personas){
-            if(Persona.coincideDni(persona, dni)) personaEncontrada = persona;
+        for (Persona persona : personas) {
+            if (Persona.coincideDni(persona, dni))
+                personaEncontrada = persona;
         }
         return personaEncontrada;
     }
 
-    //BAJA
-    public static void eliminarPersona(Persona persona){
+    // BAJA
+    public static void eliminarPersona(Persona persona) {
         personas.remove(persona);
     }
 
-    //LISTAR
+    // LISTAR
     public <T> List<T> listarPersonas(ListadorStrategy<T> strategy) {
         return strategy.listar(personas);
     }
@@ -93,14 +104,14 @@ public class CasaMatriz {
     public void mostrarListadoAutos(ListadorStrategy<Auto> strategy) {
         List<Auto> autosListados = listarAutos(strategy);
         for (Auto auto : autosListados) {
-            //auto.toString();
+            // auto.toString();
         }
     }
 
     public void mostrarListadoOficina(ListadorStrategy<Oficina> strategy) {
         List<Oficina> oficinasListadas = listarOficinas(strategy);
         for (Oficina oficina : oficinasListadas) {
-            //oficina.toString();
+            // oficina.toString();
         }
     }
 }
