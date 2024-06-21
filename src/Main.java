@@ -3,8 +3,9 @@ import java.util.ArrayList;
 import Auto.Auto;
 import Auto.Gasolina;
 import CasaMatriz.CasaMatriz;
-import Interfaces.CreadorCliente;
-import Interfaces.ListadorClientes;
+import Interfaces.CapazDeCrear.CapacidadDeCrearCliente;
+import Interfaces.CapazDeListar.CapacidadDeListarAutos;
+import Interfaces.CapazDeListar.CapacidadDeListarClientes;
 import Oficina.Oficina;
 import Personas.Admin;
 import Personas.Cliente;
@@ -49,16 +50,17 @@ public class Main {
 
         //System.out.println("\nClientes:");
         //casaMatriz.mostrarListadoPersonas(new ListarClientesStrategy());
-        
 
         casaMatriz = new CasaMatriz(personas, autos, oficinas);
-
     
-        admin1.setCreadorStrategy(new CreadorCliente());
-        admin1.crear();
+        //admin1.setCreadorStrategy(new CreadorCliente());
+        //admin1.crear();
 
-        casaMatriz.setListadorStrategy(new ListadorClientes());
-        casaMatriz.mostrarListadoPersonas(new ListadorClientes());
+        casaMatriz.setListadorClientes(new CapacidadDeListarClientes());
+        casaMatriz.mostrarListadoPersonas(new CapacidadDeListarClientes());
+
+        casaMatriz.setListadorAutos(new CapacidadDeListarAutos());
+        casaMatriz.mostrarListadoAutos(new CapacidadDeListarAutos());
 
     }
 }

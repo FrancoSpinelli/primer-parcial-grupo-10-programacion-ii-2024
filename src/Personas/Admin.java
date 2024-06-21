@@ -1,30 +1,29 @@
 package Personas;
 import java.time.LocalDate;
-import java.util.List;
 
 import Auto.Auto;
 import CasaMatriz.CasaMatriz;
 import EntradaSalida.EntradaSalida;
-import Interfaces.CreadorStrategy;
-import Interfaces.MenuAdmin;
-import Interfaces.ListadorStrategy;
+import Interfaces.CapazDeCrear.CapacidadDeCrearStrategy;
+import Interfaces.CapazDeListar.CapacidadDeListarStrategy;
+import Interfaces.CapazDeVerMenu.CapacidadDeVerMenuAdmin;
 import Oficina.Oficina;
 
 public class Admin extends Persona {
 
-    private ListadorStrategy<?> listadorStrategy;
-    private CreadorStrategy creadorStrategy;
+    private CapacidadDeListarStrategy<?> listadorStrategy;
+    private CapacidadDeCrearStrategy creadorStrategy;
 
     public Admin(int dni, String nombre, LocalDate fechaNacimiento, String telefono, String email, String contrasenia) {
         super(dni, nombre, fechaNacimiento, telefono, email, contrasenia);
-        this.setMenuStrategy(new MenuAdmin(this));
+        this.setMenuStrategy(new CapacidadDeVerMenuAdmin(this));
     }
 
-    public void setCreadorStrategy(CreadorStrategy creadorStrategy){
+    public void setCreadorStrategy(CapacidadDeCrearStrategy creadorStrategy){
         this.creadorStrategy = creadorStrategy;
     }
 
-    public void setListadorStrategy(ListadorStrategy<?> listadorStrategy){
+    public void setListadorStrategy(CapacidadDeListarStrategy<?> listadorStrategy){
         this.listadorStrategy = listadorStrategy;
     }
 

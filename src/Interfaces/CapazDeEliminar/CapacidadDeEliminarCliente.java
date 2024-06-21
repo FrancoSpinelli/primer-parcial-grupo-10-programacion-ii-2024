@@ -1,18 +1,21 @@
-package Interfaces;
+package Interfaces.CapazDeEliminar;
 
 import CasaMatriz.CasaMatriz;
 import EntradaSalida.EntradaSalida;
+import Interfaces.CapazDeListar.CapacidadDeListarClientes;
 import Personas.Persona;
 
-public class EliminadorCliente implements EliminadorStrategy{
+public class CapacidadDeEliminarCliente implements CapacidadDeEliminarStrategy{
     
+    CasaMatriz casaMatriz;
+
     @Override
     public void eliminar(){
         int dni;
         Persona personaEliminar;
 
         EntradaSalida.mostrarString("ELIMINAR");
-        CasaMatriz.mostrarListadoPersonas(new ListadorClientes());
+        casaMatriz.mostrarListadoPersonas(new CapacidadDeListarClientes());
         dni = EntradaSalida.leerEntero("Ingrese el DNI a eliminar");
         personaEliminar = CasaMatriz.buscarPersona(dni);
         //VALIDAR

@@ -1,34 +1,43 @@
 package CasaMatriz;
 import java.util.ArrayList;
-import java.util.List;
 
 import Auto.Auto;
 import EntradaSalida.EntradaSalida;
-import Interfaces.ListadorAutos;
-import Interfaces.ListadorClientes;
-import Interfaces.ListadorStrategy;
+import Interfaces.CapazDeListar.CapacidadDeListarAutos;
+import Interfaces.CapazDeListar.CapacidadDeListarClientes;
+import Interfaces.CapazDeListar.CapacidadDeListarOficinas;
+import Interfaces.CapazDeListar.CapacidadDeListarStrategy;
+import Interfaces.CapazDeListar.CapacidadDeListarVendedores;
+import Interfaces.CapazDeListar.CapacidadDeListarAdmins;
 import Oficina.Oficina;
 import Personas.Admin;
 import Personas.Persona;
 import Personas.Vendedor;
+import Personas.Cliente;
 
 public class CasaMatriz {
-    public static ArrayList<Persona> personas;
+    private static ArrayList<Persona> personas;
     private static ArrayList<Auto> autos;
     private static ArrayList<Oficina> oficinas;
 
-    private ListadorStrategy<?> listadorStrategy;
+    private CapacidadDeListarStrategy<?> listadorStrategy;
 
     //CONSTRUCTOR
     public CasaMatriz(ArrayList<Persona> personas, ArrayList<Auto> autos, ArrayList<Oficina> oficinas) {
         EntradaSalida.mostrarString("Bienvenido a la Casa Matriz");
-        this.personas = personas;
-        this.autos = autos;
-        this.oficinas = oficinas;
+        CasaMatriz.personas = personas;
+        CasaMatriz.autos = autos;
+        CasaMatriz.oficinas = oficinas;
 
-        Admin admin = (Admin) this.personas.get(0); 
-        Vendedor vendedor1 = (Vendedor) this.personas.get(1);
+        Admin admin = (Admin) CasaMatriz.personas.get(0); 
+        Vendedor vendedor1 = (Vendedor) CasaMatriz.personas.get(1);
         Oficina oficina = oficinas.get(0);
+
+        this.setListadorClientes(new CapacidadDeListarClientes());
+        this.setListadorVendedores(new CapacidadDeListarVendedores());
+        this.setListadorAdmins(new CapacidadDeListarAdmins());
+        this.setListadorAutos(new CapacidadDeListarAutos());
+        this.setListadorOficinas(new CapacidadDeListarOficinas());
 
         admin.asignarVendedorAOficina(vendedor1,oficina);
         for (Auto auto : autos) {
@@ -39,7 +48,19 @@ public class CasaMatriz {
         oficina.verListadoReservas();
     }
 
-    public void setListadorStrategy(ListadorStrategy<?> listadorStrategy){
+    public void setListadorClientes(CapacidadDeListarStrategy<Cliente> listadorStrategy){
+        this.listadorStrategy = listadorStrategy;
+    }
+    public void setListadorVendedores(CapacidadDeListarStrategy<Vendedor> listadorStrategy){
+        this.listadorStrategy = listadorStrategy;
+    }
+    public void setListadorAdmins(CapacidadDeListarStrategy<Admin> listadorStrategy){
+        this.listadorStrategy = listadorStrategy;
+    }
+    public void setListadorAutos(CapacidadDeListarStrategy<Auto> listadorStrategy){
+        this.listadorStrategy = listadorStrategy;
+    }
+    public void setListadorOficinas(CapacidadDeListarStrategy<Oficina> listadorStrategy){
         this.listadorStrategy = listadorStrategy;
     }
 
@@ -71,36 +92,36 @@ public class CasaMatriz {
     }
 
     //LISTAR
-    public <T> List<T> listarPersonas(ListadorStrategy<T> strategy) {
+    public <T> ArrayList<T> listarPersonas(CapacidadDeListarStrategy<T> strategy) {
         return strategy.listar(personas);
     }
 
-    public <T> List<T> listarAutos(ListadorStrategy<T> strategy) {
+    public <T> ArrayList<T> listarAutos(CapacidadDeListarStrategy<T> strategy) {
         return strategy.listar(autos);
     }
 
-    public <T> List<T> listarOficinas(ListadorStrategy<T> strategy) {
+    public <T> ArrayList<T> listarOficinas(CapacidadDeListarStrategy<T> strategy) {
         return strategy.listar(oficinas);
     }
 
-    public void mostrarListadoPersonas(ListadorStrategy<? extends Persona> strategy) {
-        List<? extends Persona> personasListadas = listarPersonas(strategy);
+    public void mostrarListadoPersonas(CapacidadDeListarStrategy<? extends Persona> strategy) {
+        ArrayList<? extends Persona> personasListadas = listarPersonas(strategy);
         for (Persona persona : personasListadas) {
             System.out.println(persona.toString());
         }
     }
 
-    public void mostrarListadoAutos(ListadorStrategy<Auto> strategy) {
-        List<Auto> autosListados = listarAutos(strategy);
+    public void mostrarListadoAutos(CapacidadDeListarStrategy<Auto> strategy) {
+        ArrayList<Auto> autosListados = listarAutos(strategy);
         for (Auto auto : autosListados) {
-            //auto.toString();
+            System.out.println(auto.toString());
         }
     }
 
-    public void mostrarListadoOficina(ListadorStrategy<Oficina> strategy) {
-        List<Oficina> oficinasListadas = listarOficinas(strategy);
+    public void mostrarListadoOficina(CapacidadDeListarStrategy<Oficina> strategy) {
+        ArrayList<Oficina> oficinasListadas = listarOficinas(strategy);
         for (Oficina oficina : oficinasListadas) {
-            //oficina.toString();
+            System.out.println(oficina.toString());
         }
     }
 }

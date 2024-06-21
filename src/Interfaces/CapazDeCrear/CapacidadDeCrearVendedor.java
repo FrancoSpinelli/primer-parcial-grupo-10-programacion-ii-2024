@@ -1,12 +1,12 @@
-package Interfaces;
+package Interfaces.CapazDeCrear;
 
 import java.time.LocalDate;
 import CasaMatriz.CasaMatriz;
 import EntradaSalida.EntradaSalida;
-import Personas.Cliente;
+import Personas.Vendedor;
 import Personas.Persona;
 
-public class CreadorCliente implements CreadorStrategy{
+public class CapacidadDeCrearVendedor implements CapacidadDeCrearStrategy{
     
     @Override
     public void crear(){
@@ -22,7 +22,7 @@ public class CreadorCliente implements CreadorStrategy{
         contrasenia = Integer.toString(dni);
     
         Persona persona;
-        persona = new Cliente(dni, nombre, fechaNacimiento, telefono, email, contrasenia);
+        persona = new Vendedor(dni, nombre, fechaNacimiento, telefono, email, contrasenia);
         CasaMatriz.agregarPersona(persona);
     }
 }

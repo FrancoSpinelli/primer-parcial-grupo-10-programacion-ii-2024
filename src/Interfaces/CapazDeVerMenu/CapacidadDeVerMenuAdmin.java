@@ -1,13 +1,15 @@
-package Interfaces;
+package Interfaces.CapazDeVerMenu;
 import java.util.Scanner;
 import EntradaSalida.EntradaSalida;
+import Interfaces.CapazDeCrear.CapacidadDeCrearCliente;
+import Interfaces.CapazDeCrear.CapacidadDeCrearVendedor;
 import Personas.Admin;
 
-public class MenuAdmin implements MenuStrategy {
+public class CapacidadDeVerMenuAdmin implements CapacidadDeVerMenuStrategy {
     
     private Admin admin;
 
-    public MenuAdmin(Admin admin) {
+    public CapacidadDeVerMenuAdmin(Admin admin) {
         this.admin = admin;
     }
     
@@ -30,7 +32,7 @@ public class MenuAdmin implements MenuStrategy {
         
         switch(seleccion){
             case 1:
-            admin.setCreadorStrategy(new CreadorVendedor());
+            admin.setCreadorStrategy(new CapacidadDeCrearVendedor());
             admin.crear();
             break;
             case 2:
@@ -38,7 +40,7 @@ public class MenuAdmin implements MenuStrategy {
             case 3:
             break;
             case 4:
-            admin.setCreadorStrategy(new CreadorCliente());
+            admin.setCreadorStrategy(new CapacidadDeCrearCliente());
             admin.crear();
             break;
             case 5:
