@@ -1,3 +1,4 @@
+package Auto;
 
 public class Gasolina {
     private float capacidadMaxima;

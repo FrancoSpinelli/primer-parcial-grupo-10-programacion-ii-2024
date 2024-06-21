@@ -1,4 +1,9 @@
-import java.util.Date;
+package Personas;
+import java.time.LocalDate;
+
+import EntradaSalida.EntradaSalida;
+import Interfaces.MenuVendedor;
+import Reserva.Reserva;
 
 public class Vendedor extends Persona {
 
@@ -7,9 +12,10 @@ public class Vendedor extends Persona {
         return super.getNombre() + " (" + super.getEmail() + ")";
     }
 
-    public Vendedor(int dni, String nombre, Date fechaNacimiento, String telefono, String email,
+    public Vendedor(int dni, String nombre, LocalDate fechaNacimiento, String telefono, String email,
             String contrasenia) {
         super(dni, nombre, fechaNacimiento, telefono, email, contrasenia);
+        this.setMenuStrategy(new MenuVendedor());
     }
 
     public void listarReservasPendientes() {

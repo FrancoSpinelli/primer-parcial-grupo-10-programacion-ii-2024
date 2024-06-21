@@ -1,5 +1,12 @@
+package Oficina;
 import java.util.ArrayList;
 import java.util.Date;
+
+import Auto.Auto;
+import EntradaSalida.EntradaSalida;
+import Personas.Cliente;
+import Personas.Vendedor;
+import Reserva.Reserva;
 
 public class Oficina {
     private int id;

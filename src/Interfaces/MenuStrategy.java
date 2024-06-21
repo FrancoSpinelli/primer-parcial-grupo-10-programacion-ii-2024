@@ -1,6 +1,6 @@
 package Interfaces;
 
-public interface Menu {
+public interface MenuStrategy {
     public void verMenu();
     public void seleccionar();
 }
