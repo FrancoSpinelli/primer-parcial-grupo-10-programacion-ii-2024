@@ -1,11 +1,16 @@
 package Personas;
+
 import java.time.LocalDate;
 
 import EntradaSalida.EntradaSalida;
+import Oficina.Oficina;
 import Interfaces.CapazDeVerMenu.CapacidadDeVerMenuVendedor;
 import Reserva.Reserva;
+import enums.EstadoReserva;
 
 public class Vendedor extends Persona {
+
+    private Oficina oficina;
 
     @Override
     public String toString() {
@@ -19,11 +24,21 @@ public class Vendedor extends Persona {
     }
 
     public void listarReservasPendientes() {
-        EntradaSalida.mostrarString("Listado de reservas pendientes:");
+        oficina.verListadoReservasPendientes();
     }
 
     public void aceptarReserva(Reserva r) {
+        if (r == null) {
+            EntradaSalida.mostrarString("No se puede aceptar una reserva sin autos");
+            return;
+        }
 
+        if (r.getEstado() != EstadoReserva.PENDIENTE) {
+            EntradaSalida.mostrarString("No se puede aceptar una reserva que no esté pendiente");
+            return;
+        }
+
+        r.aceptarReserva();
     }
 
     public void rechazarReserva(Reserva r) {
@@ -32,5 +47,14 @@ public class Vendedor extends Persona {
 
     public void entregarAuto(Reserva r) {
 
+    }
+
+    public void asignarOficina(Oficina oficina) {
+        this.oficina = oficina;
+        EntradaSalida.mostrarString("Se asignó la oficina " + oficina.toString() + " al vendedor " + this.toString());
+    }
+
+    public Oficina getOficina() {
+        return this.oficina;
     }
 }

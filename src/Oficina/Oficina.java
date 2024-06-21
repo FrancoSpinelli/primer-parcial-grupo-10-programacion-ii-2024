@@ -1,4 +1,5 @@
 package Oficina;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -7,6 +8,7 @@ import EntradaSalida.EntradaSalida;
 import Personas.Cliente;
 import Personas.Vendedor;
 import Reserva.Reserva;
+import enums.EstadoReserva;
 
 public class Oficina {
     private int id;
@@ -18,7 +20,7 @@ public class Oficina {
 
     @Override
     public String toString() {
-        return "Oficina #" + id + " (" + dirección + ")";
+        return "#" + id + " (" + dirección + ")";
     }
 
     public Oficina(int id, String dirección, String teléfono) {
@@ -45,7 +47,8 @@ public class Oficina {
 
         this.autos.add(auto);
         EntradaSalida.mostrarString(this.toString());
-        EntradaSalida.mostrarString("Se agregó el " + auto.toString() + ", a la " + this.toString(), true, true);
+        EntradaSalida.mostrarString("Se agregó el auto " + auto.toString() + ", a la oficina " + this.toString(), true,
+                true);
     }
 
     public void verListadoAutos() {
@@ -72,11 +75,54 @@ public class Oficina {
         }
     }
 
-    public void crearReserva(Cliente cliente) {
+    public void verListadoReservasPendientes() {
+        verListadoReservasPorEstado(EstadoReserva.PENDIENTE);
+    }
 
-        Reserva reserva = new Reserva(generadorId(), this.autos, cliente, this, new Date(), new Date());
-        this.reservas.add(reserva);
-        EntradaSalida.mostrarString("Se creó la reserva " + reserva.toString());
+    public void aceptarReserva(Reserva r) {
+        r.aceptarReserva();
+    }
+
+    private void verListadoReservasPorEstado(EstadoReserva estado) {
+        if (this.reservas.isEmpty()) {
+            EntradaSalida.mostrarString("No hay reservas " + estado + " en la " + this.toString(), false, true);
+            return;
+        }
+
+        EntradaSalida.mostrarString("Listado de reservas en la " + this.toString(), true, true);
+        for (Reserva reserva : this.reservas) {
+            if (reserva.getEstado() == estado) {
+                EntradaSalida.mostrarString(reserva.toString(), false, true);
+            }
+        }
+    }
+
+    public ArrayList<Auto> getAutos() {
+        return this.autos;
+    }
+
+    public Auto getAuto(int id) {
+        for (Auto auto : autos) {
+            if (auto.getId() == id) {
+                return auto;
+            }
+        }
+        EntradaSalida.mostrarString("Auto no encontrado", false, false);
+        return null;
+    }
+
+    public ArrayList<Reserva> getReservas() {
+        return this.reservas;
+    }
+
+    public Reserva getReserva(int id) {
+        for (Reserva reserva : reservas) {
+            if (reserva.getId() == id) {
+                return reserva;
+            }
+        }
+        EntradaSalida.mostrarString("Reserva no encontrada", false, false);
+        return null;
     }
 
     private boolean tieneVendedor() {
@@ -85,6 +131,10 @@ public class Oficina {
 
     private String generadorId() {
         return "RS" + this.id + "-000" + this.reservas.size() + 10;
+    }
+
+    public void agregarReserva(Reserva r) {
+        this.reservas.add(r);
     }
 
 }
