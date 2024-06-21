@@ -1,4 +1,4 @@
-package Interfaces;
+package Interfaces.CapazDeCrear;
 
 import java.time.LocalDate;
 import CasaMatriz.CasaMatriz;
@@ -6,7 +6,7 @@ import EntradaSalida.EntradaSalida;
 import Personas.Vendedor;
 import Personas.Persona;
 
-public class CreadorVendedor implements CreadorStrategy{
+public class CapacidadDeCrearVendedor implements CapacidadDeCrearStrategy{
     
     @Override
     public void crear(){

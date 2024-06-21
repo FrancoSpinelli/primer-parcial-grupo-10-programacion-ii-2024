@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import Auto.Auto;
 import EntradaSalida.EntradaSalida;
 import Fecha.Fecha;
-import Interfaces.MenuCliente;
+import Interfaces.CapazDeVerMenu.CapacidadDeVerMenuCliente;
 import Oficina.Oficina;
 import Reserva.Reserva;
 import enums.EstadoReserva;
@@ -18,7 +18,7 @@ public class Cliente extends Persona {
     public Cliente(int dni, String nombre, LocalDate fechaNacimiento, String telefono, String email,
             String contrasenia) {
         super(dni, nombre, fechaNacimiento, telefono, email, contrasenia);
-        this.setMenuStrategy(new MenuCliente());
+        this.setMenuStrategy(new CapacidadDeVerMenuCliente());
         this.favoritos = new ArrayList<Auto>();
     }
 

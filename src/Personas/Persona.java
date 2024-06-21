@@ -1,8 +1,9 @@
 package Personas;
 import java.time.LocalDate;
 
-import Interfaces.ListadorStrategy;
-import Interfaces.MenuStrategy;
+import Interfaces.CapazDeListar.CapacidadDeListarStrategy;
+import Interfaces.CapazDeVerMenu.CapacidadDeVerMenuStrategy;
+import Interfaces.CapazDeVerMenu.MenuStrategy;
 
 public class Persona {
     private int dni;
@@ -11,8 +12,8 @@ public class Persona {
     private String telefono;
     private String email;
     private String contrasenia;
-    private MenuStrategy menuStrategy;
-    private ListadorStrategy listadorStrategy;
+    private CapacidadDeVerMenuStrategy menuStrategy;
+    private CapacidadDeListarStrategy listadorStrategy;
 
     public Persona(int dni, String nombre, LocalDate fechaNacimiento, String telefono, String email,
             String contrasenia) {
@@ -24,11 +25,11 @@ public class Persona {
         this.contrasenia = contrasenia;
     }
 
-    public void setMenuStrategy(MenuStrategy menuStrategy) {
+    public void setMenuStrategy(CapacidadDeVerMenuStrategy menuStrategy) {
         this.menuStrategy = menuStrategy;
     }
 
-    public void setListadorStrategy(ListadorStrategy<?> listadorStrategy) {
+    public void setListadorStrategy(CapacidadDeListarStrategy<?> listadorStrategy) {
         this.listadorStrategy = listadorStrategy;
     }
 

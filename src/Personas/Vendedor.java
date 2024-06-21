@@ -3,8 +3,8 @@ package Personas;
 import java.time.LocalDate;
 
 import EntradaSalida.EntradaSalida;
-import Interfaces.MenuVendedor;
 import Oficina.Oficina;
+import Interfaces.CapazDeVerMenu.CapacidadDeVerMenuVendedor;
 import Reserva.Reserva;
 import enums.EstadoReserva;
 
@@ -20,7 +20,7 @@ public class Vendedor extends Persona {
     public Vendedor(int dni, String nombre, LocalDate fechaNacimiento, String telefono, String email,
             String contrasenia) {
         super(dni, nombre, fechaNacimiento, telefono, email, contrasenia);
-        this.setMenuStrategy(new MenuVendedor());
+        this.setMenuStrategy(new CapacidadDeVerMenuVendedor());
     }
 
     public void listarReservasPendientes() {
@@ -37,7 +37,7 @@ public class Vendedor extends Persona {
             EntradaSalida.mostrarString("No se puede aceptar una reserva que no esté pendiente");
             return;
         }
-        
+
         r.aceptarReserva();
     }
 

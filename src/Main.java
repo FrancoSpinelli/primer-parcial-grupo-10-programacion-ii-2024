@@ -3,8 +3,6 @@ import java.util.ArrayList;
 import Auto.Auto;
 import Auto.Gasolina;
 import CasaMatriz.CasaMatriz;
-import Interfaces.CreadorCliente;
-import Interfaces.ListadorClientes;
 import Oficina.Oficina;
 import Personas.Admin;
 import Personas.Cliente;
