@@ -20,13 +20,10 @@ public class CasaMatriz {
     private static ArrayList<Auto> autos;
     private static ArrayList<Oficina> oficinas;
 
-<<<<<<< HEAD
-    //CONSTRUCTOR
-=======
+    // CONSTRUCTOR
     private CapacidadDeListarStrategy<?> listadorStrategy;
 
     // CONSTRUCTOR
->>>>>>> develop
     public CasaMatriz(ArrayList<Persona> personas, ArrayList<Auto> autos, ArrayList<Oficina> oficinas) {
         EntradaSalida.mostrarString("Bienvenido a la Casa Matriz");
         CasaMatriz.personas = personas;
@@ -43,7 +40,6 @@ public class CasaMatriz {
         CapacidadDeListarStrategy<Oficina> listadorStrategyOficina = new CapacidadDeListarOficinas();
         CapacidadDeListarStrategy<Auto> listadorStrategyAutos = new CapacidadDeListarAutos();
 
-        admin.asignarVendedorAOficina(vendedor1,oficina);
         admin.asignarVendedorAOficina(vendedor1, oficina1);
         admin.asignarVendedorAOficina(vendedor2, oficina2);
         for (Auto auto : autos) {
@@ -63,23 +59,24 @@ public class CasaMatriz {
     public void login() {
         boolean continuar = false;
         int seleccion = 0;
-        do{ //login credenciales
+        do {
             String usuario = EntradaSalida.leerString("Usuario: ");
             String contrasenia = EntradaSalida.leerPassword("Contraseña: ");
-            for(Persona persona : personas){ //login búsqueda base de datos
-                if(persona.coincideUsuario(persona, usuario) && persona.coincideContrasenia(persona, contrasenia)){ //login autentificación
+            for (Persona persona : personas) { // login búsqueda base de datos
+                if (persona.coincideUsuario(persona, usuario) && persona.coincideContrasenia(persona, contrasenia)) { // login
+                                                                                                                      // autentificación
                     CapacidadDeVerMenu menu = persona.getMenuStrategy();
-                    do{ //realiza operaciones del usuario
+                    do { // realiza operaciones del usuario
                         menu.verMenu();
                         seleccion = menu.seleccionar();
-                    }while(seleccion != 0);
+                    } while (seleccion != 0);
                     break;
                 } else {
                     EntradaSalida.mostrarString("Error. Usuario o contraseña errónea.");
                     break;
                 }
             }
-        }while(continuar != false || seleccion != 0);
+        } while (continuar != false || seleccion != 0);
     }
 
     public void logout() {
@@ -95,7 +92,7 @@ public class CasaMatriz {
     public static Persona buscarPersona(int dni) {
         Persona personaEncontrada = null;
         for (Persona persona : personas) {
-            if (Persona.coincideDni(persona, dni))
+            if (persona.coincideDni(persona, dni))
                 personaEncontrada = persona;
         }
         return personaEncontrada;
@@ -106,18 +103,22 @@ public class CasaMatriz {
         personas.remove(persona);
     }
 
-    //LISTAR
-    /*public <T> ArrayList<T> listarPersonas(CapacidadDeListarStrategy<T> strategy) {
-        return strategy.listar(personas);
-    }
-
-    public <T> ArrayList<T> listarAutos(CapacidadDeListarStrategy<T> strategy) {
-        return strategy.listar(autos);
-    }
-
-    public <T> ArrayList<T> listarOficinas(CapacidadDeListarStrategy<T> strategy) {
-        return strategy.listar(oficinas);
-    }*/
+    // LISTAR
+    /*
+     * public <T> ArrayList<T> listarPersonas(CapacidadDeListarStrategy<T> strategy)
+     * {
+     * return strategy.listar(personas);
+     * }
+     * 
+     * public <T> ArrayList<T> listarAutos(CapacidadDeListarStrategy<T> strategy) {
+     * return strategy.listar(autos);
+     * }
+     * 
+     * public <T> ArrayList<T> listarOficinas(CapacidadDeListarStrategy<T> strategy)
+     * {
+     * return strategy.listar(oficinas);
+     * }
+     */
 
     public void mostrarListadoPersonas(CapacidadDeListarStrategy<Persona> strategy) {
         ArrayList<Persona> personasListadas = strategy.listar(personas);

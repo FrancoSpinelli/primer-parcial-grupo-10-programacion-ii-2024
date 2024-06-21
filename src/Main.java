@@ -3,14 +3,10 @@ import java.util.ArrayList;
 import Auto.Auto;
 import Auto.Gasolina;
 import CasaMatriz.CasaMatriz;
-<<<<<<< HEAD
 import Interfaces.CapazDeCrear.CapacidadDeCrearCliente;
 import Interfaces.CapazDeListar.CapacidadDeListarAutos;
-import Interfaces.CapazDeListar.CapacidadDeListarClientes;
 import Interfaces.CapazDeListar.CapacidadDeListarOficinas;
 import Interfaces.CapazDeListar.CapacidadDeListarPersonas;
-=======
->>>>>>> develop
 import Oficina.Oficina;
 import Personas.Admin;
 import Personas.Cliente;
@@ -29,13 +25,13 @@ public class Main {
     ArrayList<Auto> autos = new ArrayList<Auto>();
     ArrayList<Oficina> oficinas = new ArrayList<Oficina>();
 
-    Admin admin1 = new Admin(1234, "admin", LocalDate.now(), "1234", "vendedor1@vendedor.com", "1234");
+    Admin admin1 = new Admin(1, 1234, "admin", LocalDate.now(), "1234", "admin@admin.com", "1234");
     personas.add(admin1);
-    Vendedor vendedor1 = new Vendedor(1234, "vendedor1", LocalDate.now(), "1234", "vendedor1@vendedor.com", "1234");
+    Vendedor vendedor1 = new Vendedor(2, 1234, "vendedor1", LocalDate.now(), "1234", "vendedor1@vendedor.com", "1234");
     personas.add(vendedor1);
-    Cliente cliente1 = new Cliente(1234, "cliente1", LocalDate.now(), "1234", "cliente1@cliente.com", "1234");
+    Cliente cliente1 = new Cliente(3, 1234, "cliente1", LocalDate.now(), "1234", "cliente1@cliente.com", "1234");
     personas.add(cliente1);
-    Vendedor vendedor2 = new Vendedor(1234, "vendedor2", LocalDate.now(), "1234", "vendedor2@vendedor.com", "1234");
+    Vendedor vendedor2 = new Vendedor(4, 1234, "vendedor2", LocalDate.now(), "1234", "vendedor2@vendedor.com", "1234");
     personas.add(vendedor2);
 
     Auto auto1 = new Auto(autos.size() + 1, "ABC123", "Corolla", 10000, Color.AZUL, Marca.CHEVROLET,
@@ -66,23 +62,12 @@ public class Main {
      * casaMatriz.mostrarListadoPersonas(new ListadorClientes())
      */;
 
-<<<<<<< HEAD
-        casaMatriz = new CasaMatriz(personas, autos, oficinas);
+    casaMatriz = new CasaMatriz(personas, autos, oficinas);
 
-        casaMatriz.login();
-    
-        //admin1.setCreadorStrategy(new CreadorCliente());
-        //admin1.crear();
+    casaMatriz.login();
 
-        //casaMatriz.mostrarListadoPersonas(new CapacidadDeListarPersonas());
-        //casaMatriz.mostrarListadoOficina(new CapacidadDeListarOficinas());
-        //casaMatriz.mostrarListadoAutos(new CapacidadDeListarAutos());
-        //casaMatriz.mostrarListadoPersonas(new CapacidadDeListarPersonas());
-    }
-=======
     cliente1.crear(oficinas);
     cliente1.verReservas();
-
 
     System.out.println("Soy vendedor 1");
     vendedor1.getOficina().verListadoReservasPendientes();
@@ -103,5 +88,4 @@ public class Main {
     cliente1.pagarReserva(cliente1.getReserva(1, cliente1));
 
   }
->>>>>>> develop
 }
