@@ -1,5 +1,17 @@
 import java.util.ArrayList;
-import java.util.Date;
+
+import Auto.Auto;
+import Auto.Gasolina;
+import CasaMatriz.CasaMatriz;
+import Interfaces.CreadorCliente;
+import Interfaces.ListadorClientes;
+import Oficina.Oficina;
+import Personas.Admin;
+import Personas.Cliente;
+import Personas.Persona;
+import Personas.Vendedor;
+
+import java.time.LocalDate;
 
 import enums.Color;
 import enums.Marca;
@@ -11,9 +23,11 @@ public class Main {
         ArrayList<Auto> autos = new ArrayList<Auto>();
         ArrayList<Oficina> oficinas = new ArrayList<Oficina>();
 
-        Admin admin1 = new Admin(1234, "admin", new Date(), "1234", "vendedor1@vendedor.com", "1234");
-        Vendedor vendedor1 = new Vendedor(1234, "vendedor1", new Date(), "1234", "vendedor1@vendedor.com", "1234");
-        Cliente cliente1 = new Cliente(1234, "cliente1", new Date(), "1234", "cliente1@cliente.com", "1234");
+        CasaMatriz casaMatriz;
+
+        Admin admin1 = new Admin(1234, "admin", LocalDate.now(), "1234", "vendedor1@vendedor.com", "1234");
+        Vendedor vendedor1 = new Vendedor(1234, "vendedor1", LocalDate.now(), "1234", "vendedor1@vendedor.com", "1234");
+        Cliente cliente1 = new Cliente(1234, "cliente1", LocalDate.now(), "1234", "cliente1@cliente.com", "1234");
 
         Auto auto1 = new Auto("ABC123", "Corolla", 10000, Color.AZUL, Marca.CHEVROLET, new Gasolina(10000));
         Auto auto2 = new Auto("DEF456", "Civic", 20000, Color.ROJO, Marca.FORD, new Gasolina(20000));
@@ -33,10 +47,18 @@ public class Main {
         oficinas.add(oficina1);
         oficinas.add(oficina2);
 
-        try {
-            new CasaMatriz(personas, autos, oficinas);
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+        //System.out.println("\nClientes:");
+        //casaMatriz.mostrarListadoPersonas(new ListarClientesStrategy());
+        
+
+        casaMatriz = new CasaMatriz(personas, autos, oficinas);
+
+    
+        admin1.setCreadorStrategy(new CreadorCliente());
+        admin1.crear();
+
+        casaMatriz.setListadorStrategy(new ListadorClientes());
+        casaMatriz.mostrarListadoPersonas(new ListadorClientes());
+
     }
 }

@@ -1,6 +1,12 @@
+package Reserva;
 import java.util.ArrayList;
 import java.util.Date;
 
+import Auto.Auto;
+import EntradaSalida.EntradaSalida;
+import Fecha.Fecha;
+import Oficina.Oficina;
+import Personas.Cliente;
 import enums.EstadoReserva;
 
 public class Reserva {

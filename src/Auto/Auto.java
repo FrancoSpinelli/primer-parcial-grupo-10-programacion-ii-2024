@@ -1,3 +1,4 @@
+package Auto;
 import java.util.Date;
 
 import enums.Color;
