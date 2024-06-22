@@ -45,8 +45,12 @@ public class Vendedor extends Persona {
 
     }
 
-    public void entregarAuto(Reserva r) {
+    public void entregarAutos(Reserva r) {
+        r.entregarAutos();
+    }
 
+    public Boolean validoParaEntregarAutos(Reserva r) {
+        return r.getEstado() == EstadoReserva.RESERVADO;
     }
 
     public void asignarOficina(Oficina oficina) {

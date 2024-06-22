@@ -1,4 +1,8 @@
 package Interfaces.CapazDeVerMenu;
+
+import java.util.ArrayList;
+
+import CasaMatriz.CasaMatriz;
 import EntradaSalida.EntradaSalida;
 import Personas.Cliente;
 
@@ -11,48 +15,46 @@ public class CapacidadDeVerMenuCliente implements CapacidadDeVerMenu {
     }
 
     @Override
-    public void verMenu(){
-        EntradaSalida.mostrarString("Menú de Cliente");
-        EntradaSalida.mostrarString("1. Agregar a favoritos");
-        EntradaSalida.mostrarString("2. Sacar de favoritos");
+    public void verMenu() {
+        EntradaSalida.mostrarString("\nMenú de Cliente\n");
+
+        EntradaSalida.mostrarString("1. Ver Autos");
+        // EntradaSalida.mostrarString("1. Agregar a favoritos");
+        // EntradaSalida.mostrarString("2. Sacar de favoritos");
+        EntradaSalida.mostrarString("2. Ver Reservas");
         EntradaSalida.mostrarString("3. Crear reserva");
         EntradaSalida.mostrarString("4. Cancelar reserva");
-        EntradaSalida.mostrarString("5. Retirar autos de la oficina");
-        EntradaSalida.mostrarString("6. devolver autos");
-        EntradaSalida.mostrarString("0. Salir");
+        EntradaSalida.mostrarString("5. Retirar autos");
+        EntradaSalida.mostrarString("6. Devolver autos");
+        EntradaSalida.mostrarString("0. Salir\n ");
     }
-    public int seleccionar(){
+
+    public int seleccionar() {
         int seleccion = EntradaSalida.leerEnteroConLimites("Ingrese su elección: ", 0, 6);
-        
-        switch(seleccion){
+
+        switch (seleccion) {
             case 1:
-            EntradaSalida.mostrarString("Agregar a favoritos");
-            EntradaSalida.mostrarString("NO IMPLEMENTADO");
-            break;
+                CasaMatriz.verListadoDeAutosPorOficina();
+                break;
             case 2:
-            EntradaSalida.mostrarString("Sacar de favoritos");
-            EntradaSalida.mostrarString("NO IMPLEMENTADO");
-            break;
+                cliente.verReservas();
+                break;
             case 3:
-            EntradaSalida.mostrarString("Crear reserva");
-            EntradaSalida.mostrarString("NO IMPLEMENTADO");
-            break;
+                cliente.crear();
+                break;
             case 4:
-            EntradaSalida.mostrarString("Cancelar reserva");
-            EntradaSalida.mostrarString("NO IMPLEMENTADO");
-            break;
+                cliente.cancelarReserva();
+                break;
             case 5:
-            EntradaSalida.mostrarString("Retirar autos de la oficina");
-            EntradaSalida.mostrarString("NO IMPLEMENTADO");
-            break;
+                cliente.retirarAutos();
+                break;
             case 6:
-            EntradaSalida.mostrarString("Devolver autos");
-            EntradaSalida.mostrarString("NO IMPLEMENTADO");
-            break;
+                cliente.devolverAutos();
+                break;
             case 7:
-            EntradaSalida.mostrarString("Salir");
-            EntradaSalida.mostrarString("NO IMPLEMENTADO");
-            break;
+                EntradaSalida.mostrarString("Salir");
+                EntradaSalida.mostrarString("NO IMPLEMENTADO");
+                break;
         }
         return seleccion;
     }

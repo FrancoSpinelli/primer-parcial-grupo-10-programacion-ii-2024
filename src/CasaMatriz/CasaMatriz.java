@@ -53,7 +53,7 @@ public class CasaMatriz {
          * oficina1.verListadoReservas();
          */
 
-         admin.configurarEstrategias(this);
+        admin.configurarEstrategias(this);
     }
 
     public void login() {
@@ -131,7 +131,7 @@ public class CasaMatriz {
     public void mostrarListadoAutos(CapacidadDeListarStrategy<Auto> strategy) {
         ArrayList<Auto> autosListados = strategy.listar(autos);
         for (Auto auto : autosListados) {
-            System.out.println(auto.toString());
+            System.out.println(auto.verAuto());
         }
     }
 
@@ -140,5 +140,44 @@ public class CasaMatriz {
         for (Oficina oficina : oficinasListadas) {
             System.out.println(oficina.toString());
         }
+    }
+
+    static public ArrayList<Oficina> getOficinas() {
+        return oficinas;
+    }
+
+    static public ArrayList<Auto> getAutos() {
+        return autos;
+    }
+
+    static public void verListadoDeAutosPorOficina() {
+        EntradaSalida.mostrarString("\nListado de autos por oficina\n");
+        for (Oficina oficina : oficinas) {
+            oficina.verListadoAutos();
+        }
+        EntradaSalida.mostrarString("");
+    }
+
+    static public Oficina seleccionarOficina() {
+        EntradaSalida.mostrarString("Seleccione una oficina: \n");
+        for (Oficina oficina : oficinas) {
+            EntradaSalida.mostrarString(oficina.toString() + "\n");
+        }
+        int seleccion = EntradaSalida.leerEnteroConLimites("Ingrese su elección: ", 1, cantidadDeOficinas());
+        return seleccionarOficina(seleccion);
+    }
+
+    private static int cantidadDeOficinas() {
+        return oficinas.size();
+    }
+
+    private static Oficina seleccionarOficina(int id) {
+        for (Oficina oficina : oficinas) {
+            if (oficina.getId() == id) {
+                return oficina;
+            }
+        }
+        EntradaSalida.mostrarString("Oficina no encontrada", false, false);
+        return null;
     }
 }

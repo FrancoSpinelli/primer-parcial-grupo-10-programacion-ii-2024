@@ -47,19 +47,19 @@ public class Oficina {
 
         this.autos.add(auto);
         EntradaSalida.mostrarString(this.toString());
-        EntradaSalida.mostrarString("Se agregó el auto " + auto.toString() + ", a la oficina " + this.toString(), true,
+        EntradaSalida.mostrarString("Se agregó el auto " + auto.verAuto() + ", a la oficina " + this.toString(), true,
                 true);
     }
 
     public void verListadoAutos() {
         if (this.autos.isEmpty()) {
-            EntradaSalida.mostrarString("No hay autos en la " + this.toString(), false, true);
+            EntradaSalida.mostrarString("No hay autos en la oficina " + this.toString(), false, true);
             return;
         }
 
-        EntradaSalida.mostrarString("Listado de autos en la " + this.toString(), true, true);
+        EntradaSalida.mostrarString("Oficina " + this.toString(), true, true);
         for (Auto auto : this.autos) {
-            EntradaSalida.mostrarString(auto.toString(), false, true);
+            EntradaSalida.mostrarString("\t" + auto.verAuto(), false, true);
         }
     }
 
@@ -135,6 +135,14 @@ public class Oficina {
 
     public void agregarReserva(Reserva r) {
         this.reservas.add(r);
+    }
+
+    public Vendedor getVendedor() {
+        return this.vendedor;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
 }

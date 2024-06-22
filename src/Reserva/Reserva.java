@@ -3,6 +3,8 @@ package Reserva;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import javax.swing.RowFilter.Entry;
+
 import Auto.Auto;
 import EntradaSalida.EntradaSalida;
 import Fecha.Fecha;
@@ -48,9 +50,9 @@ public class Reserva {
         this.estado = EstadoReserva.RECHAZADO;
     }
 
-    public void entregarAutos() {
+    public void entregarAutos(ArrayList<Auto> autos) {
         if (this.estado != EstadoReserva.RESERVADO) {
-            EntradaSalida.mostrarString("No se puede entregar un auto sin reservar");
+            EntradaSalida.mostrarString("No se puede entregar autos de esta reserva. Estado: " + this.estado);
             return;
         }
 
@@ -60,14 +62,77 @@ public class Reserva {
         }
 
         this.estado = EstadoReserva.ENTREGADO;
+
+        for (Auto auto : autos) {
+            auto.consumirGasolina(this.fechas.getCantDias());
+            EntradaSalida
+                    .mostrarString("Se entregaron los siguientes autos de la oficina " + this.oficina.toString() + ":");
+            EntradaSalida.mostrarString(auto.verAuto(), true, true);
+        }
+
     }
 
-    public void devolverAutos() {
-        this.estado = EstadoReserva.DEVUELTO;
+    public void devolverAutos(Oficina oficina) {
+
+        if (oficina == null) {
+            EntradaSalida.mostrarString("Oficina inválida");
+            return;
+        }
+
+        if (validoParaDevolver()) {
+            EntradaSalida.mostrarString("Se devolvieron los autos de la reserva #" + this.id);
+            this.estado = EstadoReserva.DEVUELTO;
+        }
+    }
+
+    private boolean validoParaDevolver() {
+
+        boolean valido = true;
+        if (this.estado != EstadoReserva.ENTREGADO) {
+            EntradaSalida.mostrarString("No se puede devolver autos de esta reserva. Estado: " + this.estado);
+            return false;
+        }
+
+        for (Auto auto : autos) {
+            auto.consultarGasolina();
+            if (!auto.tieneTanqueLleno()) {
+                valido = false;
+            }
+        }
+
+        if (!valido) {
+            EntradaSalida.mostrarString(
+                    "No se puede devolver autos de esta reserva. Todos los autos se deben devolver con el tanque lleno.");
+
+            boolean cargar = EntradaSalida.leerBoolean("Deseas cargar los tanques", "Si", "No");
+            if (cargar) {
+                for (Auto auto : autos) {
+                    auto.recargarGasolina();
+                }
+                valido = true;
+                EntradaSalida.mostrarString("Se cargaron los tanques de los autos.");
+            }
+        }
+
+        return valido;
     }
 
     public void cancelarReserva() {
+        if (!validoParaCancelar()) {
+            EntradaSalida.mostrarString("No se puede cancelar la reserva ya que su estado es: " + this.estado);
+            return;
+        }
         this.estado = EstadoReserva.CANCELADO;
+        EntradaSalida.mostrarString("Reserva #" + this.id + " cancelada.", true, true);
+    }
+
+    private Boolean validoParaCancelar() {
+        return this.estado == EstadoReserva.PENDIENTE || this.estado == EstadoReserva.PENDIENTE_DE_PAGO
+                || this.estado == EstadoReserva.RESERVADO;
+    }
+
+    public Oficina getOficina() {
+        return this.oficina;
     }
 
     public void finalizarReserva() {
@@ -102,7 +167,7 @@ public class Reserva {
         this.estado = EstadoReserva.PENDIENTE_DE_PAGO;
 
         EntradaSalida.mostrarString("Reserva #" + this.id + " aceptada. Precio final: $" + this.precioFinal
-                + "Estado de la reserva: " + this.estado);
+                + " Estado de la reserva: " + this.estado);
     }
 
     public Cliente getCliente() {
@@ -111,6 +176,10 @@ public class Reserva {
 
     public int getId() {
         return this.id;
+    }
+
+    public void retiarAutos() {
+        oficina.getVendedor().entregarAutos(this);
     }
 
 }

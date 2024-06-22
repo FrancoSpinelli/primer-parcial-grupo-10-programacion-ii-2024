@@ -49,24 +49,13 @@ public class Main {
     Oficina oficina2 = new Oficina(2, "Av. Siempre Viva 456", "987654321");
     oficinas.add(oficina2);
 
-    // System.out.println("\nClientes:");
-    // casaMatriz.mostrarListadoPersonas(new ListarClientesStrategy());
 
     CasaMatriz casaMatriz = new CasaMatriz(personas, autos, oficinas);
 
-    // admin1.setCreadorStrategy(new CreadorCliente());
-    // admin1.crear();
-
-    /*
-     * casaMatriz.setListadorStrategy(new ListadorClientes());
-     * casaMatriz.mostrarListadoPersonas(new ListadorClientes())
-     */;
-
-    casaMatriz = new CasaMatriz(personas, autos, oficinas);
 
     casaMatriz.login();
-
-    cliente1.crear(oficinas);
+/* 
+    cliente1.crear();
     cliente1.verReservas();
 
     System.out.println("Soy vendedor 1");
@@ -85,7 +74,7 @@ public class Main {
     cliente1.verReservas();
 
     cliente1.pagarReserva(cliente1.getReserva(1, cliente1));
-    cliente1.pagarReserva(cliente1.getReserva(1, cliente1));
+    cliente1.pagarReserva(cliente1.getReserva(1, cliente1)); */
 
   }
 }
