@@ -36,9 +36,7 @@ public class CasaMatriz {
         Oficina oficina1 = oficinas.get(0);
         Oficina oficina2 = oficinas.get(1);
 
-        CapacidadDeListarStrategy<Persona> listadorStrategyPersona = new CapacidadDeListarPersonas();
-        CapacidadDeListarStrategy<Oficina> listadorStrategyOficina = new CapacidadDeListarOficinas();
-        CapacidadDeListarStrategy<Auto> listadorStrategyAutos = new CapacidadDeListarAutos();
+        CapacidadDeListarStrategy<?> listadorStrategy;
 
         admin.asignarVendedorAOficina(vendedor1, oficina1);
         admin.asignarVendedorAOficina(vendedor2, oficina2);
@@ -54,33 +52,36 @@ public class CasaMatriz {
          * oficina1.verListadoAutos();
          * oficina1.verListadoReservas();
          */
+
+         admin.configurarEstrategias(this);
     }
 
     public void login() {
-        boolean continuar = false;
-        int seleccion = 0;
-        do {
+        boolean autenticado = false;
+        while (!autenticado) {
             String usuario = EntradaSalida.leerString("Usuario: ");
             String contrasenia = EntradaSalida.leerPassword("Contraseña: ");
-            for (Persona persona : personas) { // login búsqueda base de datos
-                if (persona.coincideUsuario(persona, usuario) && persona.coincideContrasenia(persona, contrasenia)) { // login
-                                                                                                                      // autentificación
+            for (Persona persona : personas) {
+                if (persona.coincideUsuario(persona, usuario) && persona.coincideContrasenia(persona, contrasenia)) {
+                    autenticado = true;
                     CapacidadDeVerMenu menu = persona.getMenuStrategy();
-                    do { // realiza operaciones del usuario
+                    int seleccion = -1;
+                    do {
                         menu.verMenu();
                         seleccion = menu.seleccionar();
                     } while (seleccion != 0);
-                    break;
-                } else {
-                    EntradaSalida.mostrarString("Error. Usuario o contraseña errónea.");
+                    this.logout();
                     break;
                 }
             }
-        } while (continuar != false || seleccion != 0);
+            if (!autenticado) {
+                EntradaSalida.mostrarString("Error. Usuario o contraseña errónea.");
+            }
+        }
     }
 
     public void logout() {
-        EntradaSalida.mostrarString("Adios");
+        EntradaSalida.mostrarString("Adiós");
     }
 
     // AGREGAR
