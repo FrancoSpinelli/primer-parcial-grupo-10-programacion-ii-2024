@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import Auto.Auto;
+import CasaMatriz.CasaMatriz;
 import EntradaSalida.EntradaSalida;
 import Fecha.Fecha;
 import Interfaces.CapazDeEliminar.CapacidadDeSerEliminado;
@@ -12,7 +13,7 @@ import Oficina.Oficina;
 import Reserva.Reserva;
 import enums.EstadoReserva;
 
-public class Cliente extends Persona implements CapacidadDeSerEliminado{
+public class Cliente extends Persona implements CapacidadDeSerEliminado {
     private ArrayList<Auto> favoritos = new ArrayList<Auto>();
     private ArrayList<Reserva> reservas = new ArrayList<Reserva>();
 
@@ -21,7 +22,7 @@ public class Cliente extends Persona implements CapacidadDeSerEliminado{
         super(id, dni, nombre, fechaNacimiento, telefono, email, contrasenia);
         this.setMenuStrategy(new CapacidadDeVerMenuCliente(this));
         this.favoritos = new ArrayList<Auto>();
-        
+
     }
 
     public void agregarFavoritos(Auto a) {
@@ -32,23 +33,15 @@ public class Cliente extends Persona implements CapacidadDeSerEliminado{
 
     }
 
-    public void crear(ArrayList<Oficina> oficinas) {
+    public void crear() {
         int autoElegido = 0;
         int idOficina = 0;
         ArrayList<Auto> autosSeleccionados = new ArrayList<Auto>();
+        ArrayList<Oficina> oficinas = CasaMatriz.getOficinas();
 
-        EntradaSalida.mostrarString("Listado de autos disponibles: \n");
-        for (Oficina oficina : oficinas) {
-            EntradaSalida.mostrarString(oficina.toString(), true, true);
-            for (Auto auto : oficina.getAutos()) {
-                EntradaSalida.mostrarString(auto.toString(), true, true);
-            }
-        }
+        CasaMatriz.verListadoDeAutosPorOficina();
 
-        idOficina = EntradaSalida.leerEnteroConLimites("Selecione una Oficina (" + 1 + " - " + oficinas.size() + "):",
-                1, oficinas.size() + 1);
-
-        Oficina oficina = oficinas.get(idOficina - 1);
+        Oficina oficina = CasaMatriz.seleccionarOficina();
         oficina.verListadoAutos();
 
         do {
@@ -61,53 +54,99 @@ public class Cliente extends Persona implements CapacidadDeSerEliminado{
                 if (autoYaReservado(autosSeleccionados, auto))
                     continue;
                 autosSeleccionados.add(auto);
-                EntradaSalida.mostrarString(auto.toString() + " agregado a la reserva.", true, true);
+                EntradaSalida.mostrarString(auto.verAuto() + " seleccionado con éxito.", true, true);
             }
         } while (autoElegido != 0);
+
+        if (autosSeleccionados.size() == 0) {
+            EntradaSalida.mostrarString("No se seleccionaron autos.", true, true);
+            return;
+        }
 
         Fecha fecha = new Fecha(EntradaSalida.leerFecha("\nIngrese la fecha de inicio del alquiler"),
                 EntradaSalida.leerEnteroConLimites("Ingrese la cantidad de días que desea alquilar el auto: ", 1, 30));
 
-        EntradaSalida.mostrarString("\nEstás por realizar la siguiente reserva: \n");
-
-        EntradaSalida.mostrarString(fecha.toString());
+        EntradaSalida.mostrarString("\nEstás por realizar la siguiente reserva: \n\n" + fecha.toString() + "",
+                true, true);
 
         for (Auto auto : autosSeleccionados) {
-            EntradaSalida.mostrarString(auto.toString(), true, true);
+            EntradaSalida.mostrarString(auto.verAuto(), true, true);
         }
 
         Boolean confirmar = EntradaSalida.leerBoolean("\n¿Desea confirmar la reserva?", "Si", "Cancelar");
         if (confirmar) {
             Reserva r = new Reserva(1, autosSeleccionados, this, oficina, fecha.getInicio(),
                     fecha.getCantDias());
-            System.out.println("Reserva creada" + r.toString());
             reservas.add(r);
             oficina.agregarReserva(r);
-            EntradaSalida.mostrarString("Reserva realizada con éxito.", true, true);
         } else {
             EntradaSalida.mostrarString("Reserva cancelada.", true, true);
         }
-
-        EntradaSalida.mostrarString("Tus reservas: ");
-
     }
 
-    public void cancelarReserva(Reserva r) {
+    public void cancelarReserva() {
+        verReservas();
+        int id = EntradaSalida.leerEntero("Ingrese el ID de la reserva que desea cancelar: ");
+        Reserva r = getReserva(id, this);
+        if (r == null) {
+            EntradaSalida.mostrarString("No se encontró la reserva.", true, true);
+            return;
+        }
         r.cancelarReserva();
     }
 
     public void verReservas() {
+
+        if (reservas.size() == 0) {
+            EntradaSalida.mostrarString("No tenés reservas.", true, true);
+            return;
+        }
+
+        EntradaSalida.mostrarString("\nListado de reservas: ");
         for (Reserva r : reservas) {
             EntradaSalida.mostrarString(r.toString(), true, true);
         }
     }
 
-    public void retirarAutos(Reserva r) {
-        
+    public void verReservasEntregado() {
+
+        if (reservas.size() == 0) {
+            EntradaSalida.mostrarString("No tenés reservas.", true, true);
+            return;
+        }
+
+        EntradaSalida.mostrarString("\nListado de reservas: ");
+        for (Reserva r : reservas) {
+            if (r.getEstado() == EstadoReserva.ENTREGADO) {
+                EntradaSalida.mostrarString(r.toString(), true, true);
+            }
+        }
     }
 
-    public void devolverAuto(Reserva r, Oficina o) {
+    public void retirarAutos() {
+        verReservas();
+        int id = EntradaSalida.leerEntero("Ingrese el ID de la reserva que desea retirar: ");
+        Reserva r = getReserva(id, this);
+        if (r == null) {
+            EntradaSalida.mostrarString("No se encontró la reserva.", true, true);
+            return;
+        }
+        r.retiarAutos();
+    }
 
+    public void devolverAutos() {
+
+        verReservasEntregado();
+        int id = EntradaSalida.leerEntero("Ingrese el ID de la reserva que desea devolver: ");
+        Reserva r = getReserva(id, this);
+        if (r == null) {
+            EntradaSalida.mostrarString("No se puede devolver una reserva que no existe.", true, true);
+            return;
+        }
+
+        Oficina oficina = CasaMatriz.seleccionarOficina();
+
+        r.devolverAutos(oficina);
     }
 
     public void pagarReserva(Reserva r) {
@@ -129,8 +168,6 @@ public class Cliente extends Persona implements CapacidadDeSerEliminado{
                 return r;
             }
         }
-
-        EntradaSalida.mostrarString("No se encontró la reserva.", true, true);
         return null;
     }
 
@@ -145,12 +182,12 @@ public class Cliente extends Persona implements CapacidadDeSerEliminado{
     }
 
     @Override
-    public void eliminar(){
+    public void eliminar() {
         EntradaSalida.mostrarString("No puede eliminar");
     }
 
     @Override
-    public boolean capacidadDeSerEliminado(){
+    public boolean capacidadDeSerEliminado() {
         return true;
     }
 

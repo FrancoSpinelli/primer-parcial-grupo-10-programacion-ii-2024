@@ -18,7 +18,7 @@ public class Auto {
 
     @Override
     public String toString() {
-        return id + " - " + marca + " " + modelo + " " + color + " [" + patente + "]" + " - $" + ((int)precioPorDia)
+        return id + " - " + marca + " " + modelo + " " + color + " [" + patente + "]" + " - $" + ((int) precioPorDia)
                 + " por día";
     }
 
@@ -46,6 +46,10 @@ public class Auto {
         return id;
     }
 
+    public String verAuto() {
+        return this.toString();
+    }
+
     public float getPrecioPorDia() {
         return precioPorDia;
     }
@@ -58,8 +62,20 @@ public class Auto {
 
     }
 
-    private void validadorTanqueLleno() {
+    public void consumirGasolina(int dias) {
+        gasolina.consumirGasolina(dias);
+    }
 
+    public void consultarGasolina() {
+        gasolina.consultarGasolina(this);
+    }
+
+    public void recargarGasolina() {
+        gasolina.recargarGasolina();
+    }
+
+    public boolean tieneTanqueLleno() {
+        return gasolina.tieneTanqueLleno();
     }
 
     private void transportarAOficinaOriginal() {
