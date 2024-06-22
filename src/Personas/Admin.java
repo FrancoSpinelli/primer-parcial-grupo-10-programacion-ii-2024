@@ -18,15 +18,15 @@ public class Admin extends Persona implements CapacidadDeSerEliminado{
 
     public Admin(int id, int dni, String nombre, LocalDate fechaNacimiento, String telefono, String email, String contrasenia) {
         super(id, dni, nombre, fechaNacimiento, telefono, email, contrasenia);
-        this.setMenuStrategy(new CapacidadDeVerMenuAdmin(this));
     }
 
     public void setCreadorStrategy(CapacidadDeCrearStrategy creadorStrategy){
         this.creadorStrategy = creadorStrategy;
     }
 
-    public void setListadorStrategy(CapacidadDeListarStrategy<?> listadorStrategy){
-        this.listadorStrategy = listadorStrategy;
+    public void configurarEstrategias(CasaMatriz casaMatriz) {
+        this.setListadorStrategy(new CapacidadDeListarPersonas());
+        this.setMenuStrategy(new CapacidadDeVerMenuAdmin(this, casaMatriz));
     }
 
     public void crear() {

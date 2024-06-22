@@ -1,16 +1,21 @@
 package Interfaces.CapazDeVerMenu;
+import CasaMatriz.CasaMatriz;
 import EntradaSalida.EntradaSalida;
 import Interfaces.CapazDeCrear.CapacidadDeCrearAdmin;
 import Interfaces.CapazDeCrear.CapacidadDeCrearCliente;
 import Interfaces.CapazDeCrear.CapacidadDeCrearVendedor;
+import Interfaces.CapazDeListar.CapacidadDeListarStrategy;
 import Personas.Admin;
+import Personas.Persona;
 
 public class CapacidadDeVerMenuAdmin implements CapacidadDeVerMenu {
     
     private Admin admin;
+    private CasaMatriz casaMatriz;
 
-    public CapacidadDeVerMenuAdmin(Admin admin) {
+    public CapacidadDeVerMenuAdmin(Admin admin, CasaMatriz casaMatriz) {
         this.admin = admin;
+        this.casaMatriz = casaMatriz;
     }
     
     @Override
@@ -56,8 +61,7 @@ public class CapacidadDeVerMenuAdmin implements CapacidadDeVerMenu {
             EntradaSalida.mostrarString("NO IMPLEMENTADO");
             break;
             case 7:
-            EntradaSalida.mostrarString("Mostrar todo");
-            EntradaSalida.mostrarString("NO IMPLEMENTADO");
+            casaMatriz.mostrarListadoPersonas(admin.getListarStrategy());
             break;
             case 8:
             EntradaSalida.mostrarString("Salir");

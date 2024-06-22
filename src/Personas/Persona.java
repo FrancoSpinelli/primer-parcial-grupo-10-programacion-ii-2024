@@ -38,18 +38,22 @@ public class Persona {
         this.listadorStrategy = listadorStrategy;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public String getEmail() {
-        return email;
+    public CapacidadDeListarStrategy<?>  getListarStrategy(){
+        return listadorStrategy;
     }
 
     @Override
     public String toString(){
         return "ID: " + id + "DNI: " + dni + "Nombre: " + nombre + "Fecha de nacimiento: " + fechaNacimiento + 
         "Teléfono: " + telefono + "Correo Electrónico: " + email;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public boolean coincideDni(Persona persona, int dni){
