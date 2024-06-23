@@ -2,6 +2,8 @@ package Auto;
 
 import java.util.Date;
 
+import EntradaSalida.EntradaSalida;
+import Oficina.Oficina;
 import enums.Color;
 import enums.Marca;
 
@@ -11,7 +13,8 @@ public class Auto {
     private String modelo;
     private boolean disponibilidad;
     private float precioPorDia;
-    private String oficinaActual;
+    private Oficina oficinaOriginal;
+    private Oficina oficinaActual;
     private Gasolina gasolina;
     private Color color;
     private Marca marca;
@@ -30,6 +33,7 @@ public class Auto {
         this.precioPorDia = precioPorDia;
         this.color = color;
         this.marca = marca;
+        this.gasolina = gasolina;
     }
 
     public boolean validarDisponibilidad(Date fechaInicio, Date fechaFin) {
@@ -52,6 +56,23 @@ public class Auto {
 
     public float getPrecioPorDia() {
         return precioPorDia;
+    }
+
+    public void setOficinaActual(Oficina oficina) {
+
+        if (oficina == null) {
+            EntradaSalida.mostrarString("Oficina inválida");
+            return;
+        }
+
+        if (oficina == oficinaActual) {
+            EntradaSalida.mostrarString("El auto ya está en la oficina " + oficina.toString());
+            return;
+        }
+
+        this.oficinaActual = oficina;
+        EntradaSalida
+                .mostrarString("El auto " + this.toString() + " fue trasladado a la oficina " + oficina.toString());
     }
 
     public void verListadoAutos() {
@@ -79,7 +100,17 @@ public class Auto {
     }
 
     private void transportarAOficinaOriginal() {
+        if (oficinaActual == oficinaOriginal) {
+            EntradaSalida.mostrarString("El auto ya está en la oficina original");
+            return;
+        }
+        this.oficinaActual = oficinaOriginal;
+    }
 
+    public void setOficinaOriginal(Oficina oficina) {
+        this.oficinaOriginal = oficina;
+        this.oficinaActual = oficina;
+        EntradaSalida.mostrarString("El auto " + this.toString() + " fue asignado a la oficina " + oficina.toString());
     }
 
 }

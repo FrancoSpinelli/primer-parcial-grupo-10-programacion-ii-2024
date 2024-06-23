@@ -16,7 +16,7 @@ public class Oficina {
     private String teléfono;
     private Vendedor vendedor;
     private ArrayList<Auto> autos;
-    private ArrayList<Reserva> reservas;
+    private static ArrayList<Reserva> reservas;
 
     @Override
     public String toString() {
@@ -44,7 +44,7 @@ public class Oficina {
             EntradaSalida.mostrarString("No se puede agregar auto a oficina sin vendedor");
             return;
         }
-
+        auto.setOficinaOriginal(this);
         this.autos.add(auto);
         EntradaSalida.mostrarString(this.toString());
         EntradaSalida.mostrarString("Se agregó el auto " + auto.verAuto() + ", a la oficina " + this.toString(), true,
@@ -64,18 +64,12 @@ public class Oficina {
     }
 
     public void verListadoReservas() {
-        if (this.reservas.isEmpty()) {
-            EntradaSalida.mostrarString("No hay reservas en la " + this.toString(), false, true);
-            return;
-        }
-
-        EntradaSalida.mostrarString("Listado de reservas en la " + this.toString(), true, true);
-        for (Reserva reserva : this.reservas) {
-            EntradaSalida.mostrarString(reserva.toString(), false, true);
-        }
+        verListadoReservasPorEstado(null);
     }
 
     public void verListadoReservasPendientes() {
+        if (!hayReservasPendientes())
+            return;
         verListadoReservasPorEstado(EstadoReserva.PENDIENTE);
     }
 
@@ -85,14 +79,14 @@ public class Oficina {
 
     private void verListadoReservasPorEstado(EstadoReserva estado) {
         if (this.reservas.isEmpty()) {
-            EntradaSalida.mostrarString("No hay reservas " + estado + " en la " + this.toString(), false, true);
+            EntradaSalida.mostrarString("No hay reservas " + estado + " en la oficina " + this.toString(), false, true);
             return;
         }
 
         EntradaSalida.mostrarString("Listado de reservas en la " + this.toString(), true, true);
         for (Reserva reserva : this.reservas) {
             if (reserva.getEstado() == estado) {
-                EntradaSalida.mostrarString(reserva.toString(), false, true);
+                EntradaSalida.mostrarString("\t" + reserva.toString(), false, true);
             }
         }
     }
@@ -143,6 +137,48 @@ public class Oficina {
 
     public int getId() {
         return this.id;
+    }
+
+    public void recibirAutos(ArrayList<Auto> autos) {
+        for (Auto auto : autos) {
+            auto.setOficinaActual(this);
+            this.autos.add(auto);
+        }
+    }
+
+    public Reserva seleccionarReserva(EstadoReserva estado) {
+        if (this.reservas.isEmpty()) {
+            EntradaSalida.mostrarString("No hay reservas en la oficina " + this.toString(), false, true);
+            return null;
+        }
+
+        EntradaSalida.mostrarString("Seleccione una reserva");
+        for (Reserva reserva : this.reservas) {
+            if (estado != null) {
+                EntradaSalida.mostrarString("\t" + reserva.toString(), true, true);
+            } else if (reserva.getEstado() == estado) {
+                EntradaSalida.mostrarString("\t" + reserva.toString(), true, true);
+            }
+        }
+
+        int id = EntradaSalida.leerEntero("Ingrese el ID de la reserva: ");
+        for (Reserva reserva : this.reservas) {
+            if (reserva.getId() == id) {
+                return reserva;
+            }
+        }
+        EntradaSalida.mostrarString("\nReserva no encontrada", true, true);
+        return null;
+    }
+
+    public static boolean hayReservasPendientes() {
+        for (Reserva r : reservas) {
+            if (r.getEstado() == EstadoReserva.PENDIENTE) {
+                return true;
+            }
+        }
+        EntradaSalida.mostrarString("No hay reservas pendientes en esta oficina", true, true);
+        return false;
     }
 
 }

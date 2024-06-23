@@ -23,30 +23,43 @@ public class Vendedor extends Persona {
         this.setMenuStrategy(new CapacidadDeVerMenuVendedor(this));
     }
 
+    public void listarReservas() {
+        oficina.verListadoReservas();
+    }
     public void listarReservasPendientes() {
         oficina.verListadoReservasPendientes();
     }
 
-    public void aceptarReserva(Reserva r) {
+    public void aceptarReserva() {
+
+        if (!Oficina.hayReservasPendientes())
+            return;
+
+        Reserva r = oficina.seleccionarReserva(EstadoReserva.PENDIENTE);
         if (r == null) {
-            EntradaSalida.mostrarString("No se puede aceptar una reserva sin autos");
+            EntradaSalida.mostrarString("No se puede rechazar una reserva sin autos");
             return;
         }
-
-        if (r.getEstado() != EstadoReserva.PENDIENTE) {
-            EntradaSalida.mostrarString("No se puede aceptar una reserva que no esté pendiente");
-            return;
-        }
-
         r.aceptarReserva();
     }
 
-    public void rechazarReserva(Reserva r) {
+    public void rechazarReserva() {
 
+        if (!Oficina.hayReservasPendientes())
+            return;
+
+        Reserva r = oficina.seleccionarReserva(EstadoReserva.PENDIENTE);
+
+        if (r == null) {
+            EntradaSalida.mostrarString("No se puede rechazar una reserva sin autos");
+            return;
+        }
+
+        r.rechazarReserva();
     }
 
     public void entregarAutos(Reserva r) {
-        r.entregarAutos();
+        r.entregarAutos(r.getAutos());
     }
 
     public Boolean validoParaEntregarAutos(Reserva r) {
