@@ -57,12 +57,16 @@ public class CasaMatriz {
     }
 
     public void login() {
+
+        EntradaSalida.mostrarString("\nBienvenido a RentACar!");
+        EntradaSalida.mostrarString("Por favor, ingrese inicie sesión\n");
+
         boolean autenticado = false;
         while (!autenticado) {
-            String usuario = EntradaSalida.leerString("Usuario: ");
+            String usuario = EntradaSalida.leerString("Correo: ");
             String contrasenia = EntradaSalida.leerPassword("Contraseña: ");
             for (Persona persona : personas) {
-                if (persona.coincideUsuario(persona, usuario) && persona.coincideContrasenia(persona, contrasenia)) {
+                if (persona.coincideUsuarioYContrasenia(usuario, contrasenia)) {
                     autenticado = true;
                     CapacidadDeVerMenu menu = persona.getMenuStrategy();
                     int seleccion = -1;
@@ -70,8 +74,9 @@ public class CasaMatriz {
                         menu.verMenu();
                         seleccion = menu.seleccionar();
                     } while (seleccion != 0);
-                    this.logout();
-                    break;
+                    this.logout(persona);
+                    autenticado = false;
+                    login();
                 }
             }
             if (!autenticado) {
@@ -80,8 +85,8 @@ public class CasaMatriz {
         }
     }
 
-    public void logout() {
-        EntradaSalida.mostrarString("Adiós");
+    public void logout(Persona persona) {
+        EntradaSalida.mostrarString("Adiós " + persona.getNombre(), true, true);
     }
 
     // AGREGAR
@@ -93,7 +98,7 @@ public class CasaMatriz {
     public static Persona buscarPersona(int dni) {
         Persona personaEncontrada = null;
         for (Persona persona : personas) {
-            if (persona.coincideDni(persona, dni))
+            if (persona.coincideDni(dni))
                 personaEncontrada = persona;
         }
         return personaEncontrada;
@@ -151,19 +156,20 @@ public class CasaMatriz {
     }
 
     static public void verListadoDeAutosPorOficina() {
-        EntradaSalida.mostrarString("\nListado de autos por oficina\n");
+        EntradaSalida.mostrarString("Listado de autos por oficina\n");
         for (Oficina oficina : oficinas) {
             oficina.verListadoAutos();
         }
-        EntradaSalida.mostrarString("");
+        EntradaSalida.saltoDeLinea();;
     }
 
     static public Oficina seleccionarOficina() {
         EntradaSalida.mostrarString("Seleccione una oficina: \n");
         for (Oficina oficina : oficinas) {
-            EntradaSalida.mostrarString(oficina.toString() + "\n");
+            EntradaSalida.mostrarString("\t" + oficina.toString() + "\n");
         }
         int seleccion = EntradaSalida.leerEnteroConLimites("Ingrese su elección: ", 1, cantidadDeOficinas());
+        EntradaSalida.saltoDeLinea();;
         return seleccionarOficina(seleccion);
     }
 

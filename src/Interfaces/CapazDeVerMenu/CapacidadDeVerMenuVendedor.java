@@ -13,34 +13,37 @@ public class CapacidadDeVerMenuVendedor implements CapacidadDeVerMenu {
     
     @Override
     public void verMenu(){
-        EntradaSalida.mostrarString("Menú de Cliente");
-        EntradaSalida.mostrarString("1. Listar reservas pendientes");
-        EntradaSalida.mostrarString("2. Aceptar reserva");
-        EntradaSalida.mostrarString("3. Rechazar reserva");
-        EntradaSalida.mostrarString("4. Entregar auto");
-        EntradaSalida.mostrarString("0. Salir");   
+        EntradaSalida.saltoDeLinea();
+        EntradaSalida.mostrarString("\nMenú de Vendedor\n", true, true);
+        EntradaSalida.mostrarString("\t 1. Listar reservas");
+        EntradaSalida.mostrarString("\t 2. Listar reservas pendientes");
+        EntradaSalida.mostrarString("\t 3. Aceptar reserva");
+        EntradaSalida.mostrarString("\t 4. Rechazar reserva");
+        // EntradaSalida.mostrarString("\t 4. Entregar auto");
+        EntradaSalida.mostrarString("\t 0. Salir", false, true);
+        EntradaSalida.saltoDeLinea();   
 }
 
 public int seleccionar(){
         int seleccion = EntradaSalida.leerEnteroConLimites("Ingrese su elección: ", 0, 4);
-        
+        EntradaSalida.saltoDeLinea();
         switch(seleccion){
             case 1:
-            EntradaSalida.mostrarString("1. Listar reservas pendientes");
-            EntradaSalida.mostrarString("NO IMPLEMENTADO");
+            vendedor.listarReservas();
             break;
             case 2:
-            EntradaSalida.mostrarString("2. Aceptar reserva");
-            EntradaSalida.mostrarString("NO IMPLEMENTADO");
+            vendedor.listarReservasPendientes();
             break;
             case 3:
-            EntradaSalida.mostrarString("3. Rechazar reserva");
-            EntradaSalida.mostrarString("NO IMPLEMENTADO");
+            vendedor.aceptarReserva();
             break;
             case 4:
+            vendedor.rechazarReserva();
+            break;
+/*             case 5:
             EntradaSalida.mostrarString("4. Entregar auto");
             EntradaSalida.mostrarString("NO IMPLEMENTADO");
-            break;
+            break; */
         }
         return seleccion;
     }

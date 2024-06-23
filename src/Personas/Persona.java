@@ -56,13 +56,17 @@ public class Persona {
         return email;
     }
 
-    public boolean coincideDni(Persona persona, int dni){
+    public boolean coincideDni(int dni){
         return this.dni == dni;
     }
-    public boolean coincideContrasenia(Persona persona, String contrasenia){
+    public boolean coincideContrasenia(String contrasenia){
         return this.contrasenia.equals(contrasenia);
     }
-    public boolean coincideUsuario(Persona persona, String correo){
+    public boolean coincideUsuario(String correo){
         return this.email.equals(correo);
+    }
+
+    public boolean coincideUsuarioYContrasenia(String correo, String contrasenia){
+        return coincideUsuario(correo) && coincideContrasenia(contrasenia);
     }
 }

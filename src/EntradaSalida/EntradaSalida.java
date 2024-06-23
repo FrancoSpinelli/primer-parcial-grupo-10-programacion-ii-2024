@@ -21,14 +21,14 @@ public class EntradaSalida {
     }
 
     public static boolean leerBoolean(String texto, String textoTrue, String textoFalse) {
-        mostrarString(texto + " (1: " + textoTrue + " | 0: " + textoFalse + ")");
+        mostrarStringSinSalto(texto + " (1: " + textoTrue + " | 0: " + textoFalse + "): ");
         char c = leerChar();
 
         if (c != '1' && c != '0') {
             mostrarString("Error. Por favor, ingrese una opción válida. \n");
             return leerBoolean(texto, textoTrue, textoFalse);
         }
-
+        saltoDeLinea();
         return c == '1';
 
     }
@@ -111,14 +111,18 @@ public class EntradaSalida {
 
         if (sA)
             System.out
-                    .println("---------------------------------------------------------------------------------------");
+                    .println("-----------------------------------------------------------------------------------------------");
         System.out.println(s);
         if (sB)
             System.out
-                    .println("---------------------------------------------------------------------------------------");
+                    .println("-----------------------------------------------------------------------------------------------");
     }
 
     public static String leerPassword(String texto) {
         return leerString(texto);
+    }
+
+    public static void saltoDeLinea() {
+        EntradaSalida.mostrarString("");
     }
 }

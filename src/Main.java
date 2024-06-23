@@ -25,11 +25,11 @@ public class Main {
     ArrayList<Auto> autos = new ArrayList<Auto>();
     ArrayList<Oficina> oficinas = new ArrayList<Oficina>();
 
-    Admin admin1 = new Admin(1, 1234, "admin", LocalDate.now(), "1234", "admin@admin.com", "1234");
+    Admin admin1 = new Admin(1, 1234, "admin", LocalDate.now(), "1234", "a", "1234");
     personas.add(admin1);
-    Vendedor vendedor1 = new Vendedor(2, 1234, "vendedor1", LocalDate.now(), "1234", "vendedor1@vendedor.com", "1234");
+    Vendedor vendedor1 = new Vendedor(2, 1234, "vendedor1", LocalDate.now(), "1234", "v", "1234");
     personas.add(vendedor1);
-    Cliente cliente1 = new Cliente(3, 1234, "cliente1", LocalDate.now(), "1234", "cliente1@cliente.com", "1234");
+    Cliente cliente1 = new Cliente(3, 1234, "cliente1", LocalDate.now(), "1234", "c", "1234");
     personas.add(cliente1);
     Vendedor vendedor2 = new Vendedor(4, 1234, "vendedor2", LocalDate.now(), "1234", "vendedor2@vendedor.com", "1234");
     personas.add(vendedor2);
@@ -54,8 +54,8 @@ public class Main {
 
 
     casaMatriz.login();
-/* 
-    cliente1.crear();
+
+/*     cliente1.crear();
     cliente1.verReservas();
 
     System.out.println("Soy vendedor 1");

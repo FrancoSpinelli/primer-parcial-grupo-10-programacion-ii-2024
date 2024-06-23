@@ -47,6 +47,7 @@ public class Cliente extends Persona implements CapacidadDeSerEliminado {
         do {
             autoElegido = EntradaSalida.leerEntero(
                     "\nIngrese el ID del auto que desea alquilar (0 para salir):");
+            EntradaSalida.saltoDeLinea();
             if (autoElegido != 0) {
                 Auto auto = oficina.getAuto(autoElegido);
                 if (auto == null)
@@ -63,11 +64,10 @@ public class Cliente extends Persona implements CapacidadDeSerEliminado {
             return;
         }
 
-        Fecha fecha = new Fecha(EntradaSalida.leerFecha("\nIngrese la fecha de inicio del alquiler"),
+        Fecha fecha = new Fecha(EntradaSalida.leerFecha("\nIngrese la fecha de inicio del alquiler\n"),
                 EntradaSalida.leerEnteroConLimites("Ingrese la cantidad de días que desea alquilar el auto: ", 1, 30));
 
-        EntradaSalida.mostrarString("\nEstás por realizar la siguiente reserva: \n\n" + fecha.toString() + "",
-                true, true);
+        EntradaSalida.mostrarString("\nEstás por realizar la siguiente reserva: \n\n" + fecha.toString() + "\n");
 
         for (Auto auto : autosSeleccionados) {
             EntradaSalida.mostrarString(auto.verAuto(), true, true);
@@ -85,7 +85,10 @@ public class Cliente extends Persona implements CapacidadDeSerEliminado {
     }
 
     public void cancelarReserva() {
-        verReservas();
+        verListadoReservasPorEstado(EstadoReserva.PENDIENTE);
+        verListadoReservasPorEstado(EstadoReserva.PENDIENTE_DE_PAGO);
+        verListadoReservasPorEstado(EstadoReserva.RESERVADO);
+
         int id = EntradaSalida.leerEntero("Ingrese el ID de la reserva que desea cancelar: ");
         Reserva r = getReserva(id, this);
         if (r == null) {
@@ -96,16 +99,7 @@ public class Cliente extends Persona implements CapacidadDeSerEliminado {
     }
 
     public void verReservas() {
-
-        if (reservas.size() == 0) {
-            EntradaSalida.mostrarString("No tenés reservas.", true, true);
-            return;
-        }
-
-        EntradaSalida.mostrarString("\nListado de reservas: ");
-        for (Reserva r : reservas) {
-            EntradaSalida.mostrarString(r.toString(), true, true);
-        }
+        verListadoReservasPorEstado(null);
     }
 
     public void verReservasEntregado() {
@@ -135,7 +129,8 @@ public class Cliente extends Persona implements CapacidadDeSerEliminado {
     }
 
     public void devolverAutos() {
-
+        if (!tieneReservasEnEntregado())
+            return;
         verReservasEntregado();
         int id = EntradaSalida.leerEntero("Ingrese el ID de la reserva que desea devolver: ");
         Reserva r = getReserva(id, this);
@@ -149,7 +144,23 @@ public class Cliente extends Persona implements CapacidadDeSerEliminado {
         r.devolverAutos(oficina);
     }
 
-    public void pagarReserva(Reserva r) {
+    private boolean tieneReservasEnEntregado() {
+        for (Reserva r : reservas) {
+            if (r.getEstado() == EstadoReserva.ENTREGADO) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void pagarReserva() {
+        if (!tieneReservasPendienteDePago())
+            return;
+        verListadoReservasPorEstado(EstadoReserva.PENDIENTE_DE_PAGO);
+
+        int id = EntradaSalida.leerEntero("Ingrese el ID de la reserva que desea pagar: ");
+        Reserva r = getReserva(id, this);
+
         if (r == null) {
             EntradaSalida.mostrarString("No  puedes pagar una reserva que no existe.", true, true);
             return;
@@ -160,6 +171,20 @@ public class Cliente extends Persona implements CapacidadDeSerEliminado {
             return;
         }
         r.pagarReserva();
+    }
+
+    private void verReservasPendienteDePago() {
+        if (reservas.size() == 0) {
+            EntradaSalida.mostrarString("No tenés reservas.", true, true);
+            return;
+        }
+
+        EntradaSalida.mostrarString("\nListado de reservas pendientes de pago: ");
+        for (Reserva r : reservas) {
+            if (r.getEstado() == EstadoReserva.PENDIENTE_DE_PAGO) {
+                EntradaSalida.mostrarString(r.toString(), true, true);
+            }
+        }
     }
 
     public Reserva getReserva(int id, Cliente c) {
@@ -175,6 +200,30 @@ public class Cliente extends Persona implements CapacidadDeSerEliminado {
         for (Auto a : autos) {
             if (a.equals(auto)) {
                 EntradaSalida.mostrarString("El auto ya fue seleccionado.", true, true);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void verListadoReservasPorEstado(EstadoReserva estado) {
+        if (reservas.isEmpty()) {
+            EntradaSalida.mostrarString("No tenés reservas.", true, true);
+            return;
+        }
+
+        for (Reserva reserva : this.reservas) {
+            if (estado == null) {
+                EntradaSalida.mostrarString(reserva.toString(), true, true);
+            } else if (reserva.getEstado() == estado) {
+                EntradaSalida.mostrarString(reserva.toString(), true, true);
+            }
+        }
+    }
+
+    public boolean tieneReservasPendienteDePago() {
+        for (Reserva r : reservas) {
+            if (r.getEstado() == EstadoReserva.PENDIENTE_DE_PAGO) {
                 return true;
             }
         }

@@ -46,10 +46,6 @@ public class Reserva {
         this.estado = EstadoReserva.RESERVADO;
     }
 
-    public void rechazarReserva() {
-        this.estado = EstadoReserva.RECHAZADO;
-    }
-
     public void entregarAutos(ArrayList<Auto> autos) {
         if (this.estado != EstadoReserva.RESERVADO) {
             EntradaSalida.mostrarString("No se puede entregar autos de esta reserva. Estado: " + this.estado);
@@ -66,7 +62,7 @@ public class Reserva {
         for (Auto auto : autos) {
             auto.consumirGasolina(this.fechas.getCantDias());
             EntradaSalida
-                    .mostrarString("Se entregaron los siguientes autos de la oficina " + this.oficina.toString() + ":");
+                    .mostrarString("\nSe entregaron los siguientes autos de la oficina " + this.oficina.toString() + ":");
             EntradaSalida.mostrarString(auto.verAuto(), true, true);
         }
 
@@ -80,9 +76,11 @@ public class Reserva {
         }
 
         if (validoParaDevolver()) {
-            EntradaSalida.mostrarString("Se devolvieron los autos de la reserva #" + this.id);
+            EntradaSalida.mostrarString("\nSe devolvieron los autos de la reserva #" + this.id);
             this.estado = EstadoReserva.DEVUELTO;
         }
+
+        oficina.recibirAutos(this.autos);
     }
 
     private boolean validoParaDevolver() {
@@ -165,9 +163,15 @@ public class Reserva {
 
     public void aceptarReserva() {
         this.estado = EstadoReserva.PENDIENTE_DE_PAGO;
-
+        EntradaSalida.saltoDeLinea();
         EntradaSalida.mostrarString("Reserva #" + this.id + " aceptada. Precio final: $" + this.precioFinal
-                + " Estado de la reserva: " + this.estado);
+                + " Estado de la reserva: " + this.estado, true, true);
+    }
+
+    public void rechazarReserva() {
+        this.estado = EstadoReserva.RECHAZADO;
+        EntradaSalida.saltoDeLinea();
+        EntradaSalida.mostrarString("Reserva #" + this.id + " rechazada.", true, true);
     }
 
     public Cliente getCliente() {
@@ -180,6 +184,10 @@ public class Reserva {
 
     public void retiarAutos() {
         oficina.getVendedor().entregarAutos(this);
+    }
+
+    public ArrayList<Auto> getAutos() {
+        return this.autos;
     }
 
 }

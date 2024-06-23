@@ -16,22 +16,25 @@ public class CapacidadDeVerMenuCliente implements CapacidadDeVerMenu {
 
     @Override
     public void verMenu() {
-        EntradaSalida.mostrarString("\nMenú de Cliente\n");
+        EntradaSalida.saltoDeLinea();
+        EntradaSalida.mostrarString("Menú de Cliente", true, true);
 
-        EntradaSalida.mostrarString("1. Ver Autos");
-        // EntradaSalida.mostrarString("1. Agregar a favoritos");
-        // EntradaSalida.mostrarString("2. Sacar de favoritos");
-        EntradaSalida.mostrarString("2. Ver Reservas");
-        EntradaSalida.mostrarString("3. Crear reserva");
-        EntradaSalida.mostrarString("4. Cancelar reserva");
-        EntradaSalida.mostrarString("5. Retirar autos");
-        EntradaSalida.mostrarString("6. Devolver autos");
-        EntradaSalida.mostrarString("0. Salir\n ");
+        EntradaSalida.mostrarString("\t 1. Ver Autos");
+        // EntradaSalida.mostrarString("\t 1. Agregar a favoritos");
+        // EntradaSalida.mostrarString("\t 2. Sacar de favoritos");
+        EntradaSalida.mostrarString("\t 2. Ver Reservas");
+        EntradaSalida.mostrarString("\t 3. Crear reserva");
+        EntradaSalida.mostrarString("\t 4. Cancelar reserva");
+        EntradaSalida.mostrarString("\t 5. Abonar reserva");
+        EntradaSalida.mostrarString("\t 6. Retirar autos");
+        EntradaSalida.mostrarString("\t 7. Devolver autos");
+        EntradaSalida.mostrarString("\t 0. Salir ", false, true);
+        EntradaSalida.saltoDeLinea();
     }
 
     public int seleccionar() {
-        int seleccion = EntradaSalida.leerEnteroConLimites("Ingrese su elección: ", 0, 6);
-
+        int seleccion = EntradaSalida.leerEnteroConLimites("Ingrese su elección: ", 0, 7);
+        EntradaSalida.saltoDeLinea();
         switch (seleccion) {
             case 1:
                 CasaMatriz.verListadoDeAutosPorOficina();
@@ -46,15 +49,18 @@ public class CapacidadDeVerMenuCliente implements CapacidadDeVerMenu {
                 cliente.cancelarReserva();
                 break;
             case 5:
-                cliente.retirarAutos();
+                cliente.pagarReserva();
                 break;
             case 6:
-                cliente.devolverAutos();
+                cliente.retirarAutos();
                 break;
             case 7:
+                cliente.devolverAutos();
+                break;
+/*             case 7:
                 EntradaSalida.mostrarString("Salir");
                 EntradaSalida.mostrarString("NO IMPLEMENTADO");
-                break;
+                break; */
         }
         return seleccion;
     }
