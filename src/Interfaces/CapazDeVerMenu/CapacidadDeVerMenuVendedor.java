@@ -23,8 +23,8 @@ public class CapacidadDeVerMenuVendedor implements CapacidadDeVerMenu {
 
         EntradaSalida.saltoDeLinea();
         EntradaSalida.mostrarString(msgMenu, true, true);
-        EntradaSalida.mostrarString("\t 1. Listar reservas");
-        EntradaSalida.mostrarString("\t 2. Listar reservas pendientes");
+        EntradaSalida.mostrarString("\t 1. Ver reservas");
+        EntradaSalida.mostrarString("\t 2. Ver reservas pendientes");
         EntradaSalida.mostrarString("\t 3. Aceptar reserva");
         EntradaSalida.mostrarString("\t 4. Rechazar reserva");
         // EntradaSalida.mostrarString("\t 4. Entregar auto");

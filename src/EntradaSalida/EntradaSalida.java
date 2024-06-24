@@ -50,19 +50,6 @@ public class EntradaSalida {
         return numero;
     }
 
-    /*
-     * public int menu(String texto){
-     * int eleccion;
-     * String[] lineas = texto.split("\n");
-     * 
-     * for(int i=0; i<lineas.length; i++){
-     * mostrarString(lineas[i]);
-     * }
-     * eleccion = leerEnteroConLimites("Ingrese la opcion: ", 1, lineas.length+1);
-     * 
-     * return eleccion;
-     * }
-     */
 
     public static int leerEnteroConLimites(String texto, int limiteInferior, int limiteSuperior) {
         boolean error = false;
@@ -112,7 +99,7 @@ public class EntradaSalida {
         LocalDate fecha = null;
         int dia = leerEnteroConLimites("Ingrese el día (dd): ", 1, 31);
         int mes = leerEnteroConLimites("Ingrese el mes (mm): ", 1, 12);
-        int anio = leerEnteroConLimites("Ingrese el año (aaaa): ", 1900, 2100);
+        int anio = leerEnteroConLimites("Ingrese el año (aaaa): ", 1900, 2030);
 
         try {
             fecha = LocalDate.of(anio, mes, dia);

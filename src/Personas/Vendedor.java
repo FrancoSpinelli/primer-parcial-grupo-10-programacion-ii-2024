@@ -22,7 +22,7 @@ public class Vendedor extends Persona {
     public Vendedor(int dni, String nombre, LocalDate fechaNacimiento, String telefono, String email,
             String contrasenia) {
         super(dni, nombre, fechaNacimiento, telefono, email, contrasenia);
-        this.setMenuStrategy(new CapacidadDeVerMenuVendedor(this));
+        this.setMenu(new CapacidadDeVerMenuVendedor(this));
     }
 
     public void listarReservas() {
@@ -60,7 +60,9 @@ public class Vendedor extends Persona {
             return;
 
         Reserva r = gReservas.seleccionarReserva(EstadoReserva.PENDIENTE, null, oficina);
-        if (r == null || r.getOficina() != this.oficina) {
+        if (r == null)
+            return;
+        if (r.getOficina() != this.oficina) {
             EntradaSalida.mostrarString("No se encontró la reserva", true, true);
             return;
         }
@@ -79,7 +81,9 @@ public class Vendedor extends Persona {
             return;
 
         Reserva r = gReservas.seleccionarReserva(EstadoReserva.PENDIENTE, null, oficina);
-        if (r == null || r.getOficina() != this.oficina) {
+        if (r == null)
+            return;
+        if (r.getOficina() != this.oficina) {
             EntradaSalida.mostrarString("No se encontró la reserva", true, true);
             return;
         }
@@ -103,5 +107,10 @@ public class Vendedor extends Persona {
 
     public Oficina getOficina() {
         return this.oficina;
+    }
+
+    @Override
+    public String getRol() {
+        return "VENDEDOR";
     }
 }
