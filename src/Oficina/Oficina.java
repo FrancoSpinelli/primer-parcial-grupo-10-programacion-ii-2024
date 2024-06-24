@@ -1,11 +1,10 @@
 package Oficina;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import Auto.Auto;
+import CasaMatriz.CasaMatriz;
 import EntradaSalida.EntradaSalida;
-import Personas.Cliente;
 import Personas.Vendedor;
 import Reserva.Reserva;
 import enums.EstadoReserva;
@@ -16,15 +15,15 @@ public class Oficina {
     private String teléfono;
     private Vendedor vendedor;
     private ArrayList<Auto> autos;
-    private static ArrayList<Reserva> reservas;
+    private static ArrayList<Reserva> reservas = new ArrayList<Reserva>();
 
     @Override
     public String toString() {
-        return "#" + id + " (" + dirección + ")";
+        return "#" + id + " - " + dirección + " - Contacto: " + teléfono;
     }
 
-    public Oficina(int id, String dirección, String teléfono) {
-        this.id = id;
+    public Oficina(String dirección, String teléfono) {
+        this.id = CasaMatriz.generarIdOficina();
         this.dirección = dirección;
         this.teléfono = teléfono;
 
@@ -101,7 +100,6 @@ public class Oficina {
                 return auto;
             }
         }
-        EntradaSalida.mostrarString("Auto no encontrado", false, false);
         return null;
     }
 
@@ -142,7 +140,12 @@ public class Oficina {
     public void recibirAutos(ArrayList<Auto> autos) {
         for (Auto auto : autos) {
             auto.setOficinaActual(this);
-            this.autos.add(auto);
+            if (!this.autos.contains(auto)) {
+                this.autos.add(auto);
+                EntradaSalida.mostrarString(
+                        "Se recibió el auto " + auto.verAuto() + " en la oficina " + this.toString(), true,
+                        true);
+            }
         }
     }
 

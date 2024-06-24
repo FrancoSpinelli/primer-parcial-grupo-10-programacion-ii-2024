@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import EntradaSalida.EntradaSalida;
 import Oficina.Oficina;
+import Interfaces.CapazDeGestionarReserva.CapacidadDeGestionarReservas;
 import Interfaces.CapazDeVerMenu.CapacidadDeVerMenuVendedor;
 import Reserva.Reserva;
 import enums.EstadoReserva;
@@ -11,47 +12,75 @@ import enums.EstadoReserva;
 public class Vendedor extends Persona {
 
     private Oficina oficina;
+    private CapacidadDeGestionarReservas gReservas;
 
     @Override
     public String toString() {
         return super.getNombre() + " (" + super.getEmail() + ")";
     }
 
-    public Vendedor(int id, int dni, String nombre, LocalDate fechaNacimiento, String telefono, String email,
+    public Vendedor(int dni, String nombre, LocalDate fechaNacimiento, String telefono, String email,
             String contrasenia) {
-        super(id, dni, nombre, fechaNacimiento, telefono, email, contrasenia);
+        super(dni, nombre, fechaNacimiento, telefono, email, contrasenia);
         this.setMenuStrategy(new CapacidadDeVerMenuVendedor(this));
     }
 
     public void listarReservas() {
-        oficina.verListadoReservas();
+        if (gReservas == null) {
+            EntradaSalida.mostrarString("No se puede listar reservas sin una oficina asignada");
+            return;
+        }
+
+        if (!gReservas.hayReservas(null, oficina))
+            return;
+
+        gReservas.verListadoReservasPorEstado(null, this.oficina);
     }
+
     public void listarReservasPendientes() {
-        oficina.verListadoReservasPendientes();
+        if (gReservas == null) {
+            EntradaSalida.mostrarString("No se puede listar reservas sin una oficina asignada");
+            return;
+        }
+
+        if (!gReservas.hayReservas(EstadoReserva.PENDIENTE, oficina))
+            return;
+
+        gReservas.verListadoReservasPorEstado(EstadoReserva.PENDIENTE, this.oficina);
     }
 
     public void aceptarReserva() {
 
-        if (!Oficina.hayReservasPendientes())
-            return;
-
-        Reserva r = oficina.seleccionarReserva(EstadoReserva.PENDIENTE);
-        if (r == null) {
-            EntradaSalida.mostrarString("No se puede rechazar una reserva sin autos");
+        if (gReservas == null) {
+            EntradaSalida.mostrarString("No se puede aceptar reservas sin una oficina asignada");
             return;
         }
+
+        if (!gReservas.hayReservas(EstadoReserva.PENDIENTE, oficina))
+            return;
+
+        Reserva r = gReservas.seleccionarReserva(EstadoReserva.PENDIENTE, null, oficina);
+        if (r == null || r.getOficina() != this.oficina) {
+            EntradaSalida.mostrarString("No se encontró la reserva", true, true);
+            return;
+        }
+
         r.aceptarReserva();
     }
 
     public void rechazarReserva() {
 
-        if (!Oficina.hayReservasPendientes())
+        if (gReservas == null) {
+            EntradaSalida.mostrarString("No se puede rechazar reservas sin una oficina asignada");
+            return;
+        }
+
+        if (!gReservas.hayReservas(EstadoReserva.PENDIENTE, oficina))
             return;
 
-        Reserva r = oficina.seleccionarReserva(EstadoReserva.PENDIENTE);
-
-        if (r == null) {
-            EntradaSalida.mostrarString("No se puede rechazar una reserva sin autos");
+        Reserva r = gReservas.seleccionarReserva(EstadoReserva.PENDIENTE, null, oficina);
+        if (r == null || r.getOficina() != this.oficina) {
+            EntradaSalida.mostrarString("No se encontró la reserva", true, true);
             return;
         }
 
@@ -69,6 +98,7 @@ public class Vendedor extends Persona {
     public void asignarOficina(Oficina oficina) {
         this.oficina = oficina;
         EntradaSalida.mostrarString("Se asignó la oficina " + oficina.toString() + " al vendedor " + this.toString());
+        this.gReservas = new CapacidadDeGestionarReservas(oficina.getReservas());
     }
 
     public Oficina getOficina() {

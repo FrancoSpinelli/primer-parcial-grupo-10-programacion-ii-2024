@@ -10,13 +10,14 @@ public class Gasolina {
     public Gasolina(float capacidadMaxima) {
         this.capacidadMaxima = capacidadMaxima;
         this.cantidad = capacidadMaxima;
+        this.consumoDiario = capacidadMaxima / 5;
     }
 
     public void consultarGasolina(Auto auto) {
         Float porcentaje = calcularPorcentageDeTanque();
         EntradaSalida.mostrarString(
-                "El auto " + auto.getId() + " tiene " + porcentaje + "% de gasolina.",
-                true, true);
+            "El auto " + auto.getId() + " tiene " + Math.round(porcentaje) + "% de gasolina.",
+            true, true);
     }
 
     public void recargarGasolina() {
