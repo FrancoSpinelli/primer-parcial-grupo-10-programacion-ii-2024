@@ -3,9 +3,8 @@ package Reserva;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import javax.swing.RowFilter.Entry;
-
 import Auto.Auto;
+import CasaMatriz.CasaMatriz;
 import EntradaSalida.EntradaSalida;
 import Fecha.Fecha;
 import Oficina.Oficina;
@@ -25,12 +24,12 @@ public class Reserva {
     @Override
     public String toString() {
         return "Reserva #" + this.id + " - " + this.estado + " - " + this.fechas.toString() + " - Total: $"
-                + ((int) this.precioFinal);
+                + ((int) this.precioFinal) + " - Oficina #" + this.oficina.getId();
     }
 
-    public Reserva(int id, ArrayList<Auto> autos, Cliente cliente, Oficina oficina, LocalDate fechaInicio,
+    public Reserva(ArrayList<Auto> autos, Cliente cliente, Oficina oficina, LocalDate fechaInicio,
             int cantDias) {
-        this.id = id;
+        this.id = CasaMatriz.generarIdReserva();
         this.autos = autos;
         this.fechas = new Fecha(fechaInicio, cantDias);
         this.precioFinal = calcularPrecioFinal();
@@ -48,7 +47,7 @@ public class Reserva {
 
     public void entregarAutos(ArrayList<Auto> autos) {
         if (this.estado != EstadoReserva.RESERVADO) {
-            EntradaSalida.mostrarString("No se puede entregar autos de esta reserva. Estado: " + this.estado);
+            EntradaSalida.error("No se puede entregar autos de esta reserva. Estado: " + this.estado);
             return;
         }
 
@@ -58,11 +57,12 @@ public class Reserva {
         }
 
         this.estado = EstadoReserva.ENTREGADO;
-
+        EntradaSalida
+                .mostrarString(
+                        "\nSe entregaron los siguientes autos de la oficina " + this.oficina.toString() + ":");
+        
         for (Auto auto : autos) {
             auto.consumirGasolina(this.fechas.getCantDias());
-            EntradaSalida
-                    .mostrarString("\nSe entregaron los siguientes autos de la oficina " + this.oficina.toString() + ":");
             EntradaSalida.mostrarString(auto.verAuto(), true, true);
         }
 
@@ -76,11 +76,11 @@ public class Reserva {
         }
 
         if (validoParaDevolver()) {
-            EntradaSalida.mostrarString("\nSe devolvieron los autos de la reserva #" + this.id);
+            EntradaSalida.mostrarString("\nSe devolvieron los autos de la reserva #" + this.id + "\n");
             this.estado = EstadoReserva.DEVUELTO;
+            oficina.recibirAutos(this.autos);
         }
 
-        oficina.recibirAutos(this.autos);
     }
 
     private boolean validoParaDevolver() {
@@ -99,8 +99,8 @@ public class Reserva {
         }
 
         if (!valido) {
-            EntradaSalida.mostrarString(
-                    "No se puede devolver autos de esta reserva. Todos los autos se deben devolver con el tanque lleno.");
+            EntradaSalida.error(
+                    "Todos los autos se deben devolver con el tanque lleno.");
 
             boolean cargar = EntradaSalida.leerBoolean("Deseas cargar los tanques", "Si", "No");
             if (cargar) {
@@ -117,16 +117,16 @@ public class Reserva {
 
     public void cancelarReserva() {
         if (!validoParaCancelar()) {
-            EntradaSalida.mostrarString("No se puede cancelar la reserva ya que su estado es: " + this.estado);
+            EntradaSalida.error("No se puede cancelar la reserva ya que su estado es: " + this.estado);
             return;
         }
         this.estado = EstadoReserva.CANCELADO;
+        EntradaSalida.saltoDeLinea();
         EntradaSalida.mostrarString("Reserva #" + this.id + " cancelada.", true, true);
     }
 
     private Boolean validoParaCancelar() {
-        return this.estado == EstadoReserva.PENDIENTE || this.estado == EstadoReserva.PENDIENTE_DE_PAGO
-                || this.estado == EstadoReserva.RESERVADO;
+        return this.estado == EstadoReserva.PENDIENTE || this.estado == EstadoReserva.PENDIENTE_DE_PAGO;
     }
 
     public Oficina getOficina() {
@@ -142,7 +142,7 @@ public class Reserva {
         this.estado = EstadoReserva.RESERVADO;
         EntradaSalida.mostrarString(
                 "Reserva #" + this.id + ": pagaste $" + (int) this.precioFinal
-                        + ". Ya podes retirar los autos reservados.");
+                        + ". Ya podes retirar los autos reservados.", true, true);
     }
 
     public String verReserva() {

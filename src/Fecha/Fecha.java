@@ -10,7 +10,7 @@ public class Fecha {
 
     @Override
     public String toString() {
-        return "Desde " + inicio + " hasta " + fin + " (" + cantDias + " días)";
+        return "Del " + inicio + " al " + fin + " (" + cantDias + " días)";
     }
 
     public Fecha(LocalDate inicio, int cantDias) {

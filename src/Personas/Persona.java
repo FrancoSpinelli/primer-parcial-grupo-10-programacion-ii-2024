@@ -1,8 +1,9 @@
 package Personas;
 import java.time.LocalDate;
 
+import CasaMatriz.CasaMatriz;
+import Interfaces.CapazDeGestionarReserva.CapazDeGestionarReservas;
 import Interfaces.CapazDeListar.CapacidadDeListarStrategy;
-import Interfaces.CapazDeVerMenu.CapacidadDeVerMenu;
 import Interfaces.CapazDeVerMenu.CapacidadDeVerMenu;
 
 public class Persona {
@@ -16,8 +17,8 @@ public class Persona {
     private CapacidadDeVerMenu menuStrategy;
     private CapacidadDeListarStrategy listadorStrategy;
 
-    public Persona(int id, int dni, String nombre, LocalDate fechaNacimiento, String telefono, String email, String contrasenia) {
-        this.id = id;
+    public Persona(int dni, String nombre, LocalDate fechaNacimiento, String telefono, String email, String contrasenia) {
+        this.id = CasaMatriz.generarIdPersona();
         this.dni = dni;
         this.nombre = nombre;
         this.fechaNacimiento = fechaNacimiento;

@@ -25,7 +25,7 @@ public class EntradaSalida {
         char c = leerChar();
 
         if (c != '1' && c != '0') {
-            mostrarString("Error. Por favor, ingrese una opción válida. \n");
+            error("Selección inválida. Por favor, ingrese 1 o 0.");
             return leerBoolean(texto, textoTrue, textoFalse);
         }
         saltoDeLinea();
@@ -69,13 +69,13 @@ public class EntradaSalida {
         int numero = 0;
         do {
             if (error)
-                mostrarString("Error. El número debe estar entre " + limiteInferior + " y " + limiteSuperior + ".");
+                error("El número debe estar entre " + limiteInferior + " y " + limiteSuperior + ".");
             String input = leerString(texto);
             try {
                 numero = Integer.parseInt(input);
                 error = (numero < limiteInferior || numero > limiteSuperior) ? true : false;
             } catch (NumberFormatException e) {
-                mostrarString("Error. Por favor, ingrese un número entero válido.");
+                error("Selección inválida. Por favor, ingrese un número entero válido.");
                 error = true;
             }
         } while (error);
@@ -83,17 +83,41 @@ public class EntradaSalida {
         return numero;
     }
 
-    public static LocalDate leerFecha(String texto) {
-        LocalDate fecha = null;
+    public static LocalDate leerFechaSinLimites(String texto) {
+        return leerFecha(texto);
+    }
+
+    public static LocalDate leerFechaAnteriorAHoy(String texto) {
+        LocalDate fecha = leerFecha(texto);
+
+        if (fecha.isAfter(LocalDate.now())) {
+            error("La fecha debe ser anterior a hoy.");
+            return leerFechaAnteriorAHoy(texto);
+        }
+
+        return fecha;
+    }
+
+    public static LocalDate leerFechaPosteriorAHoy(String texto) {
+        LocalDate fecha = leerFecha(texto);
+        if (fecha.isBefore(LocalDate.now())) {
+            error("La fecha debe ser posterior a hoy.");
+            return leerFechaPosteriorAHoy(texto);
+        }
+        return fecha;
+    }
+
+    private static LocalDate leerFecha(String texto) {
         mostrarString(texto);
-        int dia = leerEnteroConLimites("Ingrese el día (1 - 31): ", 1, 31);
-        int mes = leerEnteroConLimites("Ingrese el mes (1 - 12): ", 1, 12);
-        int anio = leerEnteroConLimites("Ingrese el año: ", 1900, LocalDate.now().getYear());
+        LocalDate fecha = null;
+        int dia = leerEnteroConLimites("Ingrese el día (dd): ", 1, 31);
+        int mes = leerEnteroConLimites("Ingrese el mes (mm): ", 1, 12);
+        int anio = leerEnteroConLimites("Ingrese el año (aaaa): ", 1900, 2100);
 
         try {
             fecha = LocalDate.of(anio, mes, dia);
         } catch (DateTimeException e) {
-            mostrarString("Error. Fecha no válida. Por favor, ingrese una fecha correcta.");
+            error("Fecha no válida. Por favor, ingrese una fecha correcta.");
         }
 
         return fecha;
@@ -111,11 +135,13 @@ public class EntradaSalida {
 
         if (sA)
             System.out
-                    .println("-----------------------------------------------------------------------------------------------");
+                    .println(
+                            "-----------------------------------------------------------------------------------------------");
         System.out.println(s);
         if (sB)
             System.out
-                    .println("-----------------------------------------------------------------------------------------------");
+                    .println(
+                            "-----------------------------------------------------------------------------------------------");
     }
 
     public static String leerPassword(String texto) {
@@ -124,5 +150,25 @@ public class EntradaSalida {
 
     public static void saltoDeLinea() {
         EntradaSalida.mostrarString("");
+    }
+
+    public static void error(String mensaje) {
+        mostrarString("\nXXXXXXXX Error: " + mensaje + " XXXXXXXX\n");
+    }
+
+    public static void limpiarPantalla() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+
+    }
+
+    public static void advertencia(String mensaje) {
+        mostrarString("\n******** " + mensaje + " ********\n");
+    }
+
+    public static void cualquierTeclaParaContinuar() {
+        mostrarString("Presione cualquier tecla para continuar...");
+        scan.next();
+        limpiarPantalla();
     }
 }

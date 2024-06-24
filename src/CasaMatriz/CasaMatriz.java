@@ -1,27 +1,26 @@
 package CasaMatriz;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import Auto.Auto;
+import Auto.Gasolina;
 import EntradaSalida.EntradaSalida;
-import Interfaces.CapazDeListar.CapacidadDeListarAutos;
-import Interfaces.CapazDeListar.CapacidadDeListarOficinas;
 import Interfaces.CapazDeListar.CapacidadDeListarStrategy;
 import Interfaces.CapazDeVerMenu.CapacidadDeVerMenu;
-import Interfaces.CapazDeListar.CapacidadDeListarPersonas;
 import Oficina.Oficina;
 import Personas.Admin;
+import Personas.Cliente;
 import Personas.Persona;
 import Personas.Vendedor;
-import Personas.Cliente;
+import Reserva.Reserva;
+import enums.Color;
+import enums.Marca;
 
 public class CasaMatriz {
     private static ArrayList<Persona> personas;
     private static ArrayList<Auto> autos;
     private static ArrayList<Oficina> oficinas;
-
-    // CONSTRUCTOR
-    private CapacidadDeListarStrategy<?> listadorStrategy;
 
     // CONSTRUCTOR
     public CasaMatriz(ArrayList<Persona> personas, ArrayList<Auto> autos, ArrayList<Oficina> oficinas) {
@@ -30,21 +29,37 @@ public class CasaMatriz {
         CasaMatriz.autos = autos;
         CasaMatriz.oficinas = oficinas;
 
-        Admin admin = (Admin) this.personas.get(0);
-        Vendedor vendedor1 = (Vendedor) this.personas.get(1);
-        Vendedor vendedor2 = (Vendedor) this.personas.get(3);
-        Oficina oficina1 = oficinas.get(0);
-        Oficina oficina2 = oficinas.get(1);
+        Admin admin1 = new Admin(1234, "admin", LocalDate.now(), "1234", "a", "1234");
+        personas.add(admin1);
+        Vendedor vendedor1 = new Vendedor(1234, "vendedor1", LocalDate.now(), "1234", "v", "1234");
+        personas.add(vendedor1);
+        Cliente cliente1 = new Cliente(1234, "cliente1", LocalDate.now(), "1234", "c", "1234");
+        personas.add(cliente1);
+        Vendedor vendedor2 = new Vendedor(1234, "vendedor2", LocalDate.now(), "1234", "vendedor2@vendedor.com", "1234");
+        personas.add(vendedor2);
 
-        CapacidadDeListarStrategy<?> listadorStrategy;
+        Auto auto1 = new Auto("ABC123", "Corolla", 10000, Color.AZUL, Marca.CHEVROLET,
+                new Gasolina(10000));
+        autos.add(auto1);
+        Auto auto2 = new Auto("DEF456", "Civic", 20000, Color.ROJO, Marca.FORD, new Gasolina(20000));
+        autos.add(auto2);
+        Auto auto3 = new Auto("GHI789", "Coupe", 30000, Color.BLANCO, Marca.BMW, new Gasolina(30000));
+        autos.add(auto3);
+        Auto auto4 = new Auto("JKL012", "Sedan", 40000, Color.NEGRO, Marca.FIAT, new Gasolina(40000));
+        autos.add(auto4);
 
-        admin.asignarVendedorAOficina(vendedor1, oficina1);
-        admin.asignarVendedorAOficina(vendedor2, oficina2);
+        Oficina oficina1 = new Oficina("Av. Siempre Viva 123", "123456789");
+        oficinas.add(oficina1);
+        Oficina oficina2 = new Oficina("Av. Siempre Viva 456", "987654321");
+        oficinas.add(oficina2);
+
+        admin1.asignarVendedorAOficina(vendedor1, oficina1);
+        admin1.asignarVendedorAOficina(vendedor2, oficina2);
         for (Auto auto : autos) {
             if (autos.indexOf(auto) % 2 == 0) {
-                admin.asignarAutoAOficina(auto, oficina1);
+                admin1.asignarAutoAOficina(auto, oficina1);
             } else {
-                admin.asignarAutoAOficina(auto, oficina2);
+                admin1.asignarAutoAOficina(auto, oficina2);
             }
         }
 
@@ -53,7 +68,7 @@ public class CasaMatriz {
          * oficina1.verListadoReservas();
          */
 
-        admin.configurarEstrategias(this);
+        admin1.configurarEstrategias(this);
     }
 
     public void login() {
@@ -87,6 +102,7 @@ public class CasaMatriz {
 
     public void logout(Persona persona) {
         EntradaSalida.mostrarString("Adiós " + persona.getNombre(), true, true);
+        EntradaSalida.cualquierTeclaParaContinuar();
     }
 
     // AGREGAR
@@ -155,26 +171,28 @@ public class CasaMatriz {
         return autos;
     }
 
+    private static int cantidadDeOficinas() {
+        return oficinas.size();
+    }
+
     static public void verListadoDeAutosPorOficina() {
-        EntradaSalida.mostrarString("Listado de autos por oficina\n");
+        EntradaSalida.mostrarString("Listado de autos por oficina:");
         for (Oficina oficina : oficinas) {
+            EntradaSalida.saltoDeLinea();
             oficina.verListadoAutos();
         }
-        EntradaSalida.saltoDeLinea();;
+        EntradaSalida.saltoDeLinea();
     }
 
     static public Oficina seleccionarOficina() {
-        EntradaSalida.mostrarString("Seleccione una oficina: \n");
+        EntradaSalida.mostrarString("\nSeleccione una oficina: \n");
         for (Oficina oficina : oficinas) {
             EntradaSalida.mostrarString("\t" + oficina.toString() + "\n");
         }
         int seleccion = EntradaSalida.leerEnteroConLimites("Ingrese su elección: ", 1, cantidadDeOficinas());
-        EntradaSalida.saltoDeLinea();;
+        EntradaSalida.saltoDeLinea();
+        ;
         return seleccionarOficina(seleccion);
-    }
-
-    private static int cantidadDeOficinas() {
-        return oficinas.size();
     }
 
     private static Oficina seleccionarOficina(int id) {
@@ -185,5 +203,57 @@ public class CasaMatriz {
         }
         EntradaSalida.mostrarString("Oficina no encontrada", false, false);
         return null;
+    }
+
+    public static Auto seleccionarAuto(Oficina oficina) {
+        Auto autoSeleccionado = null;
+        int id = EntradaSalida.leerEntero("\nIngrese el ID del auto que desea seleccionar: ");
+
+        if (id == 0)
+            return null;
+
+        if (oficina != null) {
+            autoSeleccionado = oficina.getAuto(id);
+        } else {
+            for (Auto auto : autos) {
+                if (auto.getId() == id) {
+                    autoSeleccionado = auto;
+                    break;
+                }
+            }
+        }
+        EntradaSalida.saltoDeLinea();
+        if (autoSeleccionado == null) {
+            EntradaSalida.mostrarString("Auto no encontrado", true, true);
+        } else {
+            EntradaSalida.mostrarString(autoSeleccionado.verAuto() + " seleccionado.", true, true);
+        }
+        return autoSeleccionado;
+    }
+
+    public static int generarIdReserva() {
+        int lastId = 0;
+        for (Oficina oficina : oficinas) {
+            ArrayList<Reserva> reservas = oficina.getReservas();
+            if (reservas.isEmpty()) {
+                continue;
+            }
+            if (reservas.getLast().getId() > lastId) {
+                lastId = reservas.getLast().getId();
+            }
+        }
+        return lastId + 1;
+    }
+
+    public static int generarIdAuto() {
+        return autos.size() + 1;
+    }
+
+    public static int generarIdOficina() {
+        return oficinas.size() + 1;
+    }
+
+    public static int generarIdPersona() {
+        return personas.size() + 1;
     }
 }

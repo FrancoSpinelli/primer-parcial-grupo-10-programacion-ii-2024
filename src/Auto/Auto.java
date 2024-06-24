@@ -2,6 +2,7 @@ package Auto;
 
 import java.util.Date;
 
+import CasaMatriz.CasaMatriz;
 import EntradaSalida.EntradaSalida;
 import Oficina.Oficina;
 import enums.Color;
@@ -24,10 +25,14 @@ public class Auto {
         return id + " - " + marca + " " + modelo + " " + color + " [" + patente + "]" + " - $" + ((int) precioPorDia)
                 + " por día";
     }
+    
+    public String toString(boolean precio) {
+        return id + " - " + marca + " " + modelo + " " + color + " [" + patente + "]";
+    }
 
-    public Auto(int id, String patente, String modelo, float precioPorDia, Color color, Marca marca,
+    public Auto(String patente, String modelo, float precioPorDia, Color color, Marca marca,
             Gasolina gasolina) {
-        this.id = id;
+        this.id = CasaMatriz.generarIdAuto();
         this.patente = patente;
         this.modelo = modelo;
         this.precioPorDia = precioPorDia;
@@ -72,7 +77,7 @@ public class Auto {
 
         this.oficinaActual = oficina;
         EntradaSalida
-                .mostrarString("El auto " + this.toString() + " fue trasladado a la oficina " + oficina.toString());
+                .mostrarString("El auto  " + this.toString(false) + " ahora se encuentra en la oficina #" + oficina.getId());
     }
 
     public void verListadoAutos() {
