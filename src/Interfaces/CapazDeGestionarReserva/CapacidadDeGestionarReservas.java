@@ -24,7 +24,12 @@ public class CapacidadDeGestionarReservas implements CapazDeGestionarReservas {
 
         int id = EntradaSalida.leerEntero("\nIngrese el ID de la reserva que desea seleccionar: ");
         EntradaSalida.saltoDeLinea();
-        return getReserva(id, cliente);
+        Reserva r = getReserva(id, cliente);
+        if (r == null || (estado != null && r.getEstado() != estado)) {
+            EntradaSalida.mostrarString("No se encontró la reserva", true, true);
+            return null;
+        }
+        return r;
     }
 
     public Reserva getReserva(int id, Cliente c) {

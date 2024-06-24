@@ -18,8 +18,8 @@ public class CapacidadDeVerMenuCliente implements CapacidadDeVerMenu {
 
         EntradaSalida.saltoDeLinea();
         EntradaSalida.mostrarString(msgMenu, true, true);
-        EntradaSalida.mostrarString("\t 1. Ver Autos");
-        EntradaSalida.mostrarString("\t 2. Ver Reservas");
+        EntradaSalida.mostrarString("\t 1. Ver autos");
+        EntradaSalida.mostrarString("\t 2. Ver reservas");
         EntradaSalida.mostrarString("\t 3. Crear reserva");
         EntradaSalida.mostrarString("\t 4. Cancelar reserva");
         EntradaSalida.mostrarString("\t 5. Abonar reserva");
@@ -45,7 +45,7 @@ public class CapacidadDeVerMenuCliente implements CapacidadDeVerMenu {
                 break;
             case 3:
                 EntradaSalida.limpiarPantalla();
-                cliente.crear();
+                cliente.generarReserva();
                 break;
             case 4:
                 EntradaSalida.limpiarPantalla();

@@ -1,12 +1,13 @@
 package Personas;
+
 import java.time.LocalDate;
 
 import CasaMatriz.CasaMatriz;
-import Interfaces.CapazDeGestionarReserva.CapazDeGestionarReservas;
+import EntradaSalida.EntradaSalida;
 import Interfaces.CapazDeListar.CapacidadDeListarStrategy;
 import Interfaces.CapazDeVerMenu.CapacidadDeVerMenu;
 
-public class Persona {
+public abstract class Persona {
     private int id;
     private int dni;
     private String nombre;
@@ -14,10 +15,18 @@ public class Persona {
     private String telefono;
     private String email;
     private String contrasenia;
-    private CapacidadDeVerMenu menuStrategy;
+    private CapacidadDeVerMenu menu;
     private CapacidadDeListarStrategy listadorStrategy;
 
-    public Persona(int dni, String nombre, LocalDate fechaNacimiento, String telefono, String email, String contrasenia) {
+    @Override
+    public String toString() {
+        return id + " - " + getRol() + " - DNI: " + dni + " Nombre: " + nombre + " Nac.: " + fechaNacimiento + " Tel.: "
+                + telefono
+                + " Email: " + email;
+    }
+
+    public Persona(int dni, String nombre, LocalDate fechaNacimiento, String telefono, String email,
+            String contrasenia) {
         this.id = CasaMatriz.generarIdPersona();
         this.dni = dni;
         this.nombre = nombre;
@@ -27,26 +36,20 @@ public class Persona {
         this.contrasenia = contrasenia;
     }
 
-    public void setMenuStrategy(CapacidadDeVerMenu menuStrategy) {
-        this.menuStrategy = menuStrategy;
+    public void setMenu(CapacidadDeVerMenu menu) {
+        this.menu = menu;
     }
 
-    public CapacidadDeVerMenu getMenuStrategy() {
-        return menuStrategy;
+    public CapacidadDeVerMenu getMenu() {
+        return menu;
     }
 
     public void setListadorStrategy(CapacidadDeListarStrategy<?> listadorStrategy) {
         this.listadorStrategy = listadorStrategy;
     }
 
-    public CapacidadDeListarStrategy<?>  getListarStrategy(){
+    public CapacidadDeListarStrategy<?> getListarStrategy() {
         return listadorStrategy;
-    }
-
-    @Override
-    public String toString(){
-        return "ID: " + id + "DNI: " + dni + "Nombre: " + nombre + "Fecha de nacimiento: " + fechaNacimiento + 
-        "Teléfono: " + telefono + "Correo Electrónico: " + email;
     }
 
     public String getNombre() {
@@ -57,17 +60,31 @@ public class Persona {
         return email;
     }
 
-    public boolean coincideDni(int dni){
+    public boolean coincideDni(int dni) {
         return this.dni == dni;
     }
-    public boolean coincideContrasenia(String contrasenia){
+
+    public boolean coincideContrasenia(String contrasenia) {
         return this.contrasenia.equals(contrasenia);
     }
-    public boolean coincideUsuario(String correo){
+
+    public boolean coincideUsuario(String correo) {
         return this.email.equals(correo);
     }
 
-    public boolean coincideUsuarioYContrasenia(String correo, String contrasenia){
+    public boolean coincideUsuarioYContrasenia(String correo, String contrasenia) {
         return coincideUsuario(correo) && coincideContrasenia(contrasenia);
+    }
+
+    public String verPersona() {
+        String msg = id + " - " + getRol() + " - DNI: " + dni + " Nombre: " + nombre + " Nac.: " + fechaNacimiento
+                + "\n    Tel.: " + telefono + " Email: " + email;
+        return msg;
+    }
+
+    abstract public String getRol();
+
+    public int getId() {
+        return id;
     }
 }

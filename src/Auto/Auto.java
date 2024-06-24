@@ -12,7 +12,6 @@ public class Auto {
     private int id;
     private String patente;
     private String modelo;
-    private boolean disponibilidad;
     private float precioPorDia;
     private Oficina oficinaOriginal;
     private Oficina oficinaActual;
@@ -23,11 +22,15 @@ public class Auto {
     @Override
     public String toString() {
         return id + " - " + marca + " " + modelo + " " + color + " [" + patente + "]" + " - $" + ((int) precioPorDia)
-                + " por día";
+                + " por día - "
+                + (oficinaOriginal != null ? "Oficina #" + String.valueOf(oficinaOriginal.getId())
+                        : "Sin oficina asignada");
     }
-    
+
     public String toString(boolean precio) {
-        return id + " - " + marca + " " + modelo + " " + color + " [" + patente + "]";
+        return id + " - " + marca + " " + modelo + " " + color + " [" + patente + "] -  "
+                + oficinaOriginal != null ? "Oficina #" + String.valueOf(oficinaOriginal.getId())
+                        : "Sin oficina asignada";
     }
 
     public Auto(String patente, String modelo, float precioPorDia, Color color, Marca marca,
@@ -77,7 +80,8 @@ public class Auto {
 
         this.oficinaActual = oficina;
         EntradaSalida
-                .mostrarString("El auto  " + this.toString(false) + " ahora se encuentra en la oficina #" + oficina.getId());
+                .mostrarString(
+                        "El auto  " + verAuto() + " ahora se encuentra en la oficina #" + oficina.getId());
     }
 
     public void verListadoAutos() {
@@ -104,6 +108,10 @@ public class Auto {
         return gasolina.tieneTanqueLleno();
     }
 
+    public boolean estaEnOficinaOriginal() {
+        return oficinaActual == oficinaOriginal;
+    }
+
     private void transportarAOficinaOriginal() {
         if (oficinaActual == oficinaOriginal) {
             EntradaSalida.mostrarString("El auto ya está en la oficina original");
@@ -116,6 +124,10 @@ public class Auto {
         this.oficinaOriginal = oficina;
         this.oficinaActual = oficina;
         EntradaSalida.mostrarString("El auto " + this.toString() + " fue asignado a la oficina " + oficina.toString());
+    }
+
+    public Oficina getOficinaOriginal() {
+        return oficinaOriginal;
     }
 
 }
