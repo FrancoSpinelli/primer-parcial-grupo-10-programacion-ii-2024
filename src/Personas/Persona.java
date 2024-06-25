@@ -7,6 +7,7 @@ import CasaMatriz.CasaMatriz;
 import EntradaSalida.EntradaSalida;
 import Interfaces.CapazDeListar.CapacidadDeListarStrategy;
 import Interfaces.CapazDeVerMenu.CapacidadDeVerMenu;
+import enums.Rol;
 
 public abstract class Persona implements Serializable{
     private int id;
@@ -83,9 +84,13 @@ public abstract class Persona implements Serializable{
         return msg;
     }
 
-    abstract public String getRol();
+    abstract public Rol getRol();
 
     public int getId() {
         return id;
+    }
+
+    public int getDni() {
+       return dni;
     }
 }

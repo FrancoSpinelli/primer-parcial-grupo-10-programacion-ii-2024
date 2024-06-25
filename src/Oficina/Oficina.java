@@ -84,20 +84,6 @@ public class Oficina implements Serializable{
         r.aceptarReserva();
     }
 
-    private void verListadoReservasPorEstado(EstadoReserva estado) {
-        if (reservas.isEmpty()) {
-            EntradaSalida.mostrarString("No hay reservas " + estado + " en la oficina " + this.toString(), false, true);
-            return;
-        }
-
-        EntradaSalida.mostrarString("Listado de reservas en la " + this.toString(), true, true);
-        for (Reserva reserva : reservas) {
-            if (reserva.getEstado() == estado) {
-                EntradaSalida.mostrarString("\t" + reserva.toString(), false, true);
-            }
-        }
-    }
-
     public ArrayList<Auto> getAutos() {
         return this.autos;
     }
@@ -123,10 +109,6 @@ public class Oficina implements Serializable{
         }
         EntradaSalida.mostrarString("Reserva no encontrada", false, false);
         return null;
-    }
-
-    private boolean tieneVendedor() {
-        return this.vendedor != null;
     }
 
     public void agregarReserva(Reserva r) {
@@ -189,4 +171,21 @@ public class Oficina implements Serializable{
         return this.toString();
     }
 
+    private boolean tieneVendedor() {
+        return this.vendedor != null;
+    }
+
+    private void verListadoReservasPorEstado(EstadoReserva estado) {
+        if (reservas.isEmpty()) {
+            EntradaSalida.mostrarString("No hay reservas " + estado + " en la oficina " + this.toString(), false, true);
+            return;
+        }
+
+        EntradaSalida.mostrarString("Listado de reservas en la " + this.toString(), true, true);
+        for (Reserva reserva : reservas) {
+            if (reserva.getEstado() == estado) {
+                EntradaSalida.mostrarString("\t" + reserva.toString(), false, true);
+            }
+        }
+    }
 }

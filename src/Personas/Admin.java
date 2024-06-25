@@ -1,14 +1,15 @@
 package Personas;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.ArrayList;
+
 import Auto.Auto;
 import CasaMatriz.CasaMatriz;
 import EntradaSalida.EntradaSalida;
 import Interfaces.CapazDeVerMenu.CapacidadDeVerMenuAdmin;
 import Oficina.Oficina;
+import enums.Rol;
 
 public class Admin extends Persona implements Serializable {
 
@@ -20,7 +21,8 @@ public class Admin extends Persona implements Serializable {
     public void gestionarPersonas() {
         EntradaSalida.advertencia("Gestión de personas");
         mostarMenuGeneral();
-        int opcion = EntradaSalida.leerEntero("\nIngrese su elección (0 para volver): ");
+        EntradaSalida.mostrarString("\n\t0 Volver");
+        int opcion = EntradaSalida.leerEntero("\nIngrese su elección: ");
         EntradaSalida.saltoDeLinea();
 
         switch (opcion) {
@@ -41,20 +43,13 @@ public class Admin extends Persona implements Serializable {
         }
     }
 
-    private void eliminarPersona() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'eliminarPersona'");
-    }
-
-    private void listarPersonas() {
-        CasaMatriz.listarPersonas();
-    }
 
     public void gestionarAutos() {
-        EntradaSalida.advertencia("Gestion de autos");
+        EntradaSalida.advertencia("Gestión de autos");
         mostarMenuGeneral();
         EntradaSalida.mostrarString("\t4. Asignar auto a oficina");
-        int opcion = EntradaSalida.leerEntero("\nIngrese su elección (0 para volver): ");
+        EntradaSalida.mostrarString("\n\t0 Volver");
+        int opcion = EntradaSalida.leerEntero("\nIngrese su elección: ");
         EntradaSalida.saltoDeLinea();
 
         switch (opcion) {
@@ -65,7 +60,7 @@ public class Admin extends Persona implements Serializable {
                 CasaMatriz.crearAuto();
                 break;
             case 3:
-                CasaMatriz.crearAuto();
+                CasaMatriz.eliminarAuto();
                 break;
             case 4:
                 asignarAutoAOficina();
@@ -81,18 +76,16 @@ public class Admin extends Persona implements Serializable {
         }
     }
 
-    private void trasladarAutosAOficinaDeOrigen() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'trasladarAutosAOficinaDeOrigen'");
-    }
+
 
     public void gestionarOficinas() {
-        EntradaSalida.advertencia("Gestion de oficinas");
+        EntradaSalida.advertencia("Gestión de oficinas");
 
         mostarMenuGeneral();
         EntradaSalida.mostrarString("\t4. Asignar vendedor");
         EntradaSalida.mostrarString("\t5. Trasladar autos a oficina de origen");
-        int opcion = EntradaSalida.leerEntero("\nIngrese su elección (0 para volver): ");
+        EntradaSalida.mostrarString("\n\t0 Volver");
+        int opcion = EntradaSalida.leerEntero("\nIngrese su elección: ");
         EntradaSalida.saltoDeLinea();
 
         switch (opcion) {
@@ -118,9 +111,14 @@ public class Admin extends Persona implements Serializable {
     }
 
     public void gestionarReservas() {
-        EntradaSalida.advertencia("Gestion de reservas");
+        EntradaSalida.advertencia("Gestión de reservas");
 
-        mostarMenuGeneral();
+        EntradaSalida.mostrarString("Qué deseas hacer?\n");
+        EntradaSalida.mostrarString("\t1. Listar");
+        EntradaSalida.mostrarString("\t2. Aceptar");
+        EntradaSalida.mostrarString("\t3. Rechazar");
+        EntradaSalida.mostrarString("\n\t0. Volver\n");
+
         int opcion = EntradaSalida.leerEntero("\nIngrese su elección: ");
         EntradaSalida.saltoDeLinea(
 
@@ -130,15 +128,67 @@ public class Admin extends Persona implements Serializable {
                 CasaMatriz.listarReservas();
                 break;
             case 2:
-                CasaMatriz.crearReserva();
+                CasaMatriz.aceptarReserva();
                 break;
             case 3:
-                CasaMatriz.eliminarReserva();
+                CasaMatriz.rechazarReserva();
+                break;
+            case 0:
                 break;
             default:
                 EntradaSalida.error("Opción inválida. Por favor, seleccione una opción válida.");
                 break;
         }
+    }
+
+
+
+
+    public void asignarAutoAOficina() {
+        // oficina.agregarAuto(auto);
+    }
+
+    public void asignarAutoAOficina(Auto auto, Oficina oficina) {
+        oficina.agregarAuto(auto);
+    }
+
+    @Override
+    public Rol getRol() {
+        return Rol.ADMIN;
+    }
+
+    public void asignarVendedorAOficina(Vendedor vendedor, Oficina oficina) {
+        oficina.asignarVendedor(vendedor);
+        vendedor.asignarOficina(oficina);
+    }
+
+    private void setMenu() {
+        this.setMenu(new CapacidadDeVerMenuAdmin(this));
+    }
+
+    private void listarPersonas() {
+        CasaMatriz.listarPersonas();
+    }
+
+
+    private void crearVendedor() {
+        CasaMatriz.crearVendedor();
+    }
+
+    private void crearCliente() {
+        CasaMatriz.crearCliente();
+    }
+
+    private void crearAdmin() {
+        CasaMatriz.crearAdmin();
+    }
+
+    private void eliminarPersona() {
+        CasaMatriz.eliminarPersona();
+    }
+
+    private void asignarAutoAOficial() {
+
     }
 
     private void mostarMenuGeneral() {
@@ -154,7 +204,7 @@ public class Admin extends Persona implements Serializable {
         EntradaSalida.mostrarString("\t1. Cliente");
         EntradaSalida.mostrarString("\t2. Vendedor");
         EntradaSalida.mostrarString("\t3. Admin");
-        EntradaSalida.mostrarString("\n0. Volver\n");
+        EntradaSalida.mostrarString("\n\t0. Volver\n");
         do {
             opcion = EntradaSalida.leerEntero("Ingrese su elección: ");
             switch (opcion) {
@@ -176,51 +226,21 @@ public class Admin extends Persona implements Serializable {
         } while (opcion != 0);
     }
 
-    private void crearVendedor() {
-
-    }
-
-    private void crearCliente() {
-        String nombre, telefono, email, contrasenia;
-        int dni;
-        LocalDate fechaNacimiento;
-
-        dni = EntradaSalida.leerEnteroConLimites("Ingrese su DNI: ", 100000, 99999999);
-        nombre = EntradaSalida.leerString("Ingrese su nombre: ");
-        telefono = EntradaSalida.leerString("Ingrese su teléfono: ");
-        email = EntradaSalida.leerString("Ingrese su email: ");
-        fechaNacimiento = EntradaSalida.leerFechaAnteriorAHoy("Ingrese su fecha de nacimiento: ");
-        contrasenia = Integer.toString(dni);
-
-        Persona nuevoCliente = new Cliente(dni, nombre, fechaNacimiento, telefono, email,
-        contrasenia);
-
-        CasaMatriz.agregarPersona(nuevoCliente);
-    }
-
-    private void crearAdmin() {
-        
-    }
-
-    private void asignarAutoAOficina() {
-
-    }
-
     private void asignarVendedorAOficina() {
         EntradaSalida.advertencia("Asignar vendedor a oficina");
 
         EntradaSalida.advertencia("Solamente se pueden asignar vendedores sin oficina asignada");
-        
+
         ArrayList<Persona> vendedores = CasaMatriz.getVendedoresSinOficina();
         if (vendedores.isEmpty())
-        return;
-        
+            return;
+
         Persona vendedor = CasaMatriz.seleccionarPersona(vendedores);
-        
+
         if (vendedor == null)
-        return;
-        
-        if (!vendedor.getRol().equals("VENDEDOR")) {
+            return;
+
+        if (!vendedor.getRol().equals(Rol.VENDEDOR)) {
             EntradaSalida.error("La persona seleccionada no es un vendedor");
             return;
         }
@@ -235,24 +255,10 @@ public class Admin extends Persona implements Serializable {
         }
 
         asignarVendedorAOficina((Vendedor) vendedor, oficina);
-
     }
 
-    public void asignarAutoAOficina(Auto auto, Oficina oficina) {
-        oficina.agregarAuto(auto);
-    }
-
-    @Override
-    public String getRol() {
-        return "ADMIN";
-    }
-
-    public void asignarVendedorAOficina(Vendedor vendedor, Oficina oficina) {
-        oficina.asignarVendedor(vendedor);
-        vendedor.asignarOficina(oficina);
-    }
-
-    private void setMenu() {
-        this.setMenu(new CapacidadDeVerMenuAdmin(this));
+    private void trasladarAutosAOficinaDeOrigen() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'trasladarAutosAOficinaDeOrigen'");
     }
 }

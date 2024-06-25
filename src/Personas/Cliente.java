@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import Auto.Auto;
 import CasaMatriz.CasaMatriz;
+import CasaMatriz.Const;
 import EntradaSalida.EntradaSalida;
 import Fecha.Fecha;
 import Interfaces.CapazDeGestionarReserva.CapacidadDeGestionarReservas;
@@ -13,8 +14,9 @@ import Interfaces.CapazDeVerMenu.CapacidadDeVerMenuCliente;
 import Oficina.Oficina;
 import Reserva.Reserva;
 import enums.EstadoReserva;
+import enums.Rol;
 
-public class Cliente extends Persona implements Serializable{
+public class Cliente extends Persona implements Serializable {
     private ArrayList<Reserva> reservas = new ArrayList<Reserva>();
     private CapacidadDeGestionarReservas gReservas;
 
@@ -53,7 +55,7 @@ public class Cliente extends Persona implements Serializable{
 
         Fecha fecha = new Fecha(EntradaSalida.leerFechaPosteriorAHoy("\nIngrese la fecha de inicio del alquiler\n"),
                 EntradaSalida.leerEnteroConLimites("Ingrese la cantidad de días que desea alquilar el auto (1 - 30): ",
-                        1, 30));
+                        Const.LIMITE_INFERIOR_DEFAULT, Const.MAX_CANTIDAD_DIAS));
 
         EntradaSalida.limpiarPantalla();
         EntradaSalida.mostrarString("\nEstás por realizar la siguiente reserva: \n\n" + fecha.toString() + "\n");
@@ -68,7 +70,6 @@ public class Cliente extends Persona implements Serializable{
                     fecha.getCantDias());
             reservas.add(r);
             oficina.agregarReserva(r);
-            EntradaSalida.mostrarString(oficina.getReservas().toString());
             EntradaSalida.mostrarString("\nReserva generada con éxito.");
             EntradaSalida.advertencia("El vendedor debe confirmarla antes de realizar el pago.");
         } else {
@@ -138,6 +139,17 @@ public class Cliente extends Persona implements Serializable{
         r.devolverAutos(oficina);
     }
 
+
+
+    @Override
+    public Rol getRol() {
+        return Rol.CLIENTE;
+    }
+
+    public ArrayList<Reserva> getReservas() {
+        return reservas;
+    }
+
     private boolean validoParaAgregarAlCarrito(ArrayList<Auto> autos, Auto auto, Oficina oficina) {
 
         if (auto == null)
@@ -157,10 +169,5 @@ public class Cliente extends Persona implements Serializable{
         }
         EntradaSalida.mostrarString("Auto agregado al carrito exitosamente.", true, true);
         return true;
-    }
-
-    @Override
-    public String getRol() {
-        return "CLIENTE";
     }
 }
