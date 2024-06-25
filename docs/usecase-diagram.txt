@@ -1,0 +1,70 @@
+@startuml
+
+left to right direction
+
+skinparam actorStyle Hollow
+
+actor "Cliente" as cl  #magenta;line:black;line.bold;text:black
+actor "Vendedor" as ve #cyan;line:black;line.bold;text:black
+actor "Admin" as ad #yellow;line:black;line.bold;text:black
+
+
+rectangle RentACar #grey;text:white{
+  usecase "Login" as Login #black;line:white;line.bold;text:white
+  usecase "Logout" as Logout #black;line:white;line.bold;text:white
+  usecase "Agregar a favorito" as AFavoritos #magenta;line:black;line.bold;text:black
+  usecase "Eliminar de favorito" as EFavoritos #magenta;line:black;line.bold;text:black
+  usecase "Retirar auto" as RetAuto #magenta;line:black;line.bold;text:black
+  usecase "Devolver auto" as DevAuto #magenta;line:black;line.bold;text:black
+  usecase "Listar autos" as ListarAutos #magenta;line:black;line.bold;text:black
+  usecase "Crear reserva" as Reservar #blue;line:black;line.bold;text:black
+  usecase "ListarReservas" as ListarReservas #blue;line:black;line.bold;text:black
+  usecase "Aceptar reserva" as AcepReservar #cyan;line:black;line.bold;text:black
+  usecase "Rechazar reserva" as RecReservar #cyan;line:black;line.bold;text:black
+  usecase "Entregar Auto" as EntregarAuto #cyan;line:black;line.bold;text:black
+  usecase "Crear auto" as CrearAuto #yellow;line:black;line.bold;text:black
+  usecase "Eliminar auto" as EliminarAuto #yellow;line:black;line.bold;text:black
+  usecase "Listar clientes" as ListarClientes #yellow;line:black;line.bold;text:black
+  usecase "Crear cliente" as CrearCliente #yellow;line:black;line.bold;text:black
+  usecase "Eliminar cliente" as EliminarCliente #yellow;line:black;line.bold;text:black
+  usecase "Listar oficinas" as ListarOficina #yellow;line:black;line.bold;text:black
+  usecase "Crear oficina" as CrearOficina #yellow;line:black;line.bold;text:black
+  usecase "Eliminar oficina" as EliminarOficina #yellow;line:black;line.bold;text:black
+  usecase "Asignar auto a oficina" as AsignarAutoAOfi #yellow;line:black;line.bold;text:black
+  usecase "Eliminar Reserva" as EliminarReserva #yellow;line:black;line.bold;text:black
+}
+
+
+cl --> Login #line:magenta;line.bold
+cl --> Logout #line:magenta;line.bold
+cl --> ListarAutos #line:magenta;line.bold
+cl --> Reservar #line:magenta;line.bold
+cl --> AFavoritos #line:magenta;line.bold
+cl --> EFavoritos #line:magenta;line.bold
+cl --> RetAuto #line:magenta;line.bold
+cl --> DevAuto #line:magenta;line.bold
+cl --> ListarReservas #line:magenta;line.bold
+
+ve --> Login #line:cyan;line.bold
+ve --> Logout #line:cyan;line.bold
+ve --> Reservar #line:cyan;line.bold
+ve --> ListarReservas #line:cyan;line.bold
+ve --> AcepReservar #line:cyan;line.bold
+ve --> RecReservar #line:cyan;line.bold
+ve --> EntregarAuto #line:cyan;line.bold
+
+ad --> Login #line:yellow;line.bold
+ad --> Logout #line:yellow;line.bold
+ad --> CrearAuto #line:yellow;line.bold
+ad --> EliminarAuto #line:yellow;line.bold
+ad --> ListarClientes #line:yellow;line.bold
+ad --> CrearCliente #line:yellow;line.bold
+ad --> EliminarCliente #line:yellow;line.bold
+ad --> ListarOficina #line:yellow;line.bold
+ad --> CrearOficina #line:yellow;line.bold
+ad --> EliminarOficina #line:yellow;line.bold
+ad --> AsignarAutoAOfi #line:yellow;line.bold
+ad --> EliminarReserva #line:yellow;line.bold
+
+
+@enduml
