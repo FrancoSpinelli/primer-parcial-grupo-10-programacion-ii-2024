@@ -1,6 +1,5 @@
 package Personas;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 
 import EntradaSalida.EntradaSalida;
@@ -11,7 +10,7 @@ import Reserva.Reserva;
 import enums.EstadoReserva;
 import enums.Rol;
 
-public class Vendedor extends Persona implements Serializable {
+public class Vendedor extends Persona {
 
     private Oficina oficina;
     private CapacidadDeGestionarReservas gReservas;

@@ -70,7 +70,7 @@ public class Validador {
     }
 
     private static boolean dniDisponible(int dni) {
-        for (Persona p : CasaMatriz.getPersonas()) {
+        for (Persona p : CasaMatriz.getPersonasStatic()) {
             if (p.getDni() == dni) {
                 return false;
             }
@@ -79,7 +79,7 @@ public class Validador {
     }
 
     private static boolean correoDisponible(String email) {
-        for (Persona p : CasaMatriz.getPersonas()) {
+        for (Persona p : CasaMatriz.getPersonasStatic()) {
             if (p.getEmail().equals(email)) {
                 return false;
             }

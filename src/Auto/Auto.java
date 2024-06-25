@@ -113,13 +113,13 @@ public class Auto implements Serializable {
         return oficinaActual == oficinaOriginal;
     }
 
-    private void transportarAOficinaOriginal() {
+    /*private void transportarAOficinaOriginal() {
         if (oficinaActual == oficinaOriginal) {
             EntradaSalida.mostrarString("El auto ya está en la oficina original");
             return;
         }
         this.oficinaActual = oficinaOriginal;
-    }
+    }*/
 
     public void setOficinaOriginal(Oficina oficina) {
         this.oficinaOriginal = oficina;

@@ -20,5 +20,4 @@ public class Const {
   static public Integer MAX_TELEFONO = 999999999;
   static public Integer MAX_ENVIROMENT_OPTION = 2;
   static public Integer MAX_CANTIDAD_DIAS = 30;
-
 }

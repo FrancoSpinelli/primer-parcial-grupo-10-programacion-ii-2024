@@ -131,7 +131,11 @@ public class CasaMatriz implements Serializable {
         personas.remove(persona);
     }
 
-    public static ArrayList<Persona> getPersonas() {
+    public ArrayList<Persona> getPersonas() {
+        return personas;
+    }
+
+    public static ArrayList<Persona> getPersonasStatic() {
         return personas;
     }
 
@@ -202,7 +206,7 @@ public class CasaMatriz implements Serializable {
     static public ArrayList<Persona> getVendedores() {
         ArrayList<Persona> vendedores = new ArrayList<>();
 
-        for (Persona p : CasaMatriz.getPersonas()) {
+        for (Persona p : CasaMatriz.getPersonasStatic()) {
             if (p.getRol().equals(Rol.VENDEDOR)) {
                 vendedores.add(p);
             }
@@ -246,9 +250,9 @@ public class CasaMatriz implements Serializable {
         }
     }
 
-    private static int cantidadDeOficinas() {
+    /*private static int cantidadDeOficinas() {
         return oficinas.size();
-    }
+    }*/
 
     static public void verListadoDeAutosPorOficina() {
         EntradaSalida.mostrarString("Listado de autos por oficina:");
@@ -338,8 +342,8 @@ public class CasaMatriz implements Serializable {
             if (reservas.isEmpty()) {
                 continue;
             }
-            if (reservas.getLast().getId() > lastId) {
-                lastId = reservas.getLast().getId();
+            if (reservas.get(reservas.size()-1).getId() > lastId) {
+                lastId = reservas.get(reservas.size()-1).getId();
             }
         }
         return lastId + 1;
@@ -361,7 +365,7 @@ public class CasaMatriz implements Serializable {
 
     static public void listarPersonas() {
         EntradaSalida.mostrarString("\nListado de personas:\n");
-        for (Persona p : getPersonas()) {
+        for (Persona p : getPersonasStatic()) {
             EntradaSalida.mostrarString(p.verPersona(), true, true);
         }
         EntradaSalida.saltoDeLinea();

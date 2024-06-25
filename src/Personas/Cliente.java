@@ -1,6 +1,5 @@
 package Personas;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -16,7 +15,7 @@ import Reserva.Reserva;
 import enums.EstadoReserva;
 import enums.Rol;
 
-public class Cliente extends Persona implements Serializable {
+public class Cliente extends Persona {
     private ArrayList<Reserva> reservas = new ArrayList<Reserva>();
     private CapacidadDeGestionarReservas gReservas;
 

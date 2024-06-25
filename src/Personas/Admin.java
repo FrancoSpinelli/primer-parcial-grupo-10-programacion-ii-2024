@@ -1,6 +1,5 @@
 package Personas;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -11,7 +10,7 @@ import Interfaces.CapazDeVerMenu.CapacidadDeVerMenuAdmin;
 import Oficina.Oficina;
 import enums.Rol;
 
-public class Admin extends Persona implements Serializable {
+public class Admin extends Persona {
 
     public Admin(int dni, String nombre, LocalDate fechaNacimiento, String telefono, String email, String contrasenia) {
         super(dni, nombre, fechaNacimiento, telefono, email, contrasenia);
@@ -187,9 +186,9 @@ public class Admin extends Persona implements Serializable {
         CasaMatriz.eliminarPersona();
     }
 
-    private void asignarAutoAOficial() {
+    /*private void asignarAutoAOficial() {
 
-    }
+    }*/
 
     private void mostarMenuGeneral() {
         EntradaSalida.mostrarString("Qué deseas hacer?\n");

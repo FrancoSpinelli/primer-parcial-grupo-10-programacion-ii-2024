@@ -44,20 +44,20 @@ public class Control {
         if (email.equals("")) {
           throw new NullPointerException("ERROR: El usuario no puede ser nulo.");
         }
-
-        LocalDate fechaNacimiento = EntradaSalida.leerFechaAnteriorAHoy("Ingrese su fecha de nacimiento: ");
-
+        
         String contrasenia = EntradaSalida.leerPassword("Ingrese su password: ");
         if (contrasenia.equals("")) {
           throw new NullPointerException("ERROR: La password no puede ser nula.");
         }
+
+        LocalDate fechaNacimiento = EntradaSalida.leerFechaAnteriorAHoy("Ingrese su fecha de nacimiento: ");
 
         String telefono = EntradaSalida.leerString("Ingrese su número de teléfono: ");
         if (telefono.equals("")) {
           throw new NullPointerException("ERROR: El teléfono debe existir.");
         }
 
-        CasaMatriz.getPersonas().add(new Admin(dni, nombre, fechaNacimiento,
+        casaMatriz.getPersonas().add(new Admin(dni, nombre, fechaNacimiento,
             telefono, email, contrasenia));
 
         try {

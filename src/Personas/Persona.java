@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 import CasaMatriz.CasaMatriz;
-import EntradaSalida.EntradaSalida;
-import Interfaces.CapazDeListar.CapacidadDeListarStrategy;
 import Interfaces.CapazDeVerMenu.CapacidadDeVerMenu;
 import enums.Rol;
 
@@ -18,7 +16,6 @@ public abstract class Persona implements Serializable{
     private String email;
     private String contrasenia;
     private CapacidadDeVerMenu menu;
-    private CapacidadDeListarStrategy listadorStrategy;
 
     @Override
     public String toString() {
@@ -27,8 +24,7 @@ public abstract class Persona implements Serializable{
                 + " Email: " + email;
     }
 
-    public Persona(int dni, String nombre, LocalDate fechaNacimiento, String telefono, String email,
-            String contrasenia) {
+    public Persona(int dni, String nombre, LocalDate fechaNacimiento, String telefono, String email, String contrasenia) {
         this.id = CasaMatriz.generarIdPersona();
         this.dni = dni;
         this.nombre = nombre;
@@ -44,14 +40,6 @@ public abstract class Persona implements Serializable{
 
     public CapacidadDeVerMenu getMenu() {
         return menu;
-    }
-
-    public void setListadorStrategy(CapacidadDeListarStrategy<?> listadorStrategy) {
-        this.listadorStrategy = listadorStrategy;
-    }
-
-    public CapacidadDeListarStrategy<?> getListarStrategy() {
-        return listadorStrategy;
     }
 
     public String getNombre() {
