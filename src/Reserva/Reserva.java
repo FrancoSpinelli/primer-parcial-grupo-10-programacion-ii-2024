@@ -1,5 +1,6 @@
 package Reserva;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -11,7 +12,7 @@ import Oficina.Oficina;
 import Personas.Cliente;
 import enums.EstadoReserva;
 
-public class Reserva {
+public class Reserva implements Serializable{
     private int id;
     private float precioFinal;
     private Fecha fechas;

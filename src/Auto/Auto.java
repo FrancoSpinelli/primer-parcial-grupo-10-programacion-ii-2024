@@ -1,5 +1,6 @@
 package Auto;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import CasaMatriz.CasaMatriz;
@@ -8,7 +9,7 @@ import Oficina.Oficina;
 import enums.Color;
 import enums.Marca;
 
-public class Auto {
+public class Auto implements Serializable{
     private int id;
     private String patente;
     private String modelo;

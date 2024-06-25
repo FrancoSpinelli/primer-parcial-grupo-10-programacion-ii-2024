@@ -1,5 +1,11 @@
 package CasaMatriz;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -16,12 +22,18 @@ import Reserva.Reserva;
 import enums.Color;
 import enums.Marca;
 
-public class CasaMatriz {
+public class CasaMatriz implements Serializable{
     private static ArrayList<Persona> personas = new ArrayList<Persona>();
     private static ArrayList<Auto> autos = new ArrayList<Auto>();
     private static ArrayList<Oficina> oficinas = new ArrayList<Oficina>();
 
     // CONSTRUCTOR
+    public CasaMatriz(){
+        personas = new ArrayList<Persona>();
+        autos = new ArrayList<Auto>();
+        oficinas = new ArrayList<Oficina>();
+    }
+
     public CasaMatriz(ArrayList<Persona> personas, ArrayList<Auto> autos, ArrayList<Oficina> oficinas) {
         EntradaSalida.mostrarString("Bienvenido a la Casa Matriz");
         CasaMatriz.personas = personas;
@@ -104,6 +116,23 @@ public class CasaMatriz {
         EntradaSalida.cualquierTeclaParaContinuar();
     }
 
+    public CasaMatriz deserializar(String archivo) throws IOException, ClassNotFoundException {
+        FileInputStream f = new FileInputStream(archivo);
+        ObjectInputStream o = new ObjectInputStream(f);
+        CasaMatriz s = (CasaMatriz) o.readObject();
+        o.close();
+        f.close();
+        return s;
+    }
+
+    public void serializar(String archivo) throws IOException {
+        FileOutputStream f = new FileOutputStream(archivo);
+        ObjectOutputStream o = new ObjectOutputStream(f);
+        o.writeObject(this);
+        o.close();
+        f.close();
+    }
+
     // AGREGAR
     public static void agregarPersona(Persona persona) {
         personas.add(persona);
@@ -124,7 +153,7 @@ public class CasaMatriz {
         personas.remove(persona);
     }
 
-    static public ArrayList<Persona> getPersonas() {
+    public static ArrayList<Persona> getPersonas() {
         return personas;
     }
 

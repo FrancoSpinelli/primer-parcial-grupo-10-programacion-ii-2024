@@ -1,5 +1,6 @@
 package Personas;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import CasaMatriz.CasaMatriz;
@@ -7,7 +8,7 @@ import EntradaSalida.EntradaSalida;
 import Interfaces.CapazDeListar.CapacidadDeListarStrategy;
 import Interfaces.CapazDeVerMenu.CapacidadDeVerMenu;
 
-public abstract class Persona {
+public abstract class Persona implements Serializable{
     private int id;
     private int dni;
     private String nombre;
