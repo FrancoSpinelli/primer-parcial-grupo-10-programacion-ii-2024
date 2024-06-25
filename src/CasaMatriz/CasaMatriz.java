@@ -86,21 +86,21 @@ public class CasaMatriz implements Serializable {
         EntradaSalida.cualquierTeclaParaContinuar();
     }
 
-    public CasaMatriz deserializar(String archivo) throws IOException, ClassNotFoundException {
-        FileInputStream f = new FileInputStream(archivo);
-        ObjectInputStream o = new ObjectInputStream(f);
-        CasaMatriz s = (CasaMatriz) o.readObject();
-        o.close();
-        f.close();
-        return s;
+    public CasaMatriz deserializar(String ruta) throws IOException, ClassNotFoundException {
+        FileInputStream archivo = new FileInputStream(ruta);
+        ObjectInputStream objeto = new ObjectInputStream(archivo);
+        CasaMatriz casaMatriz = (CasaMatriz) objeto.readObject();
+        objeto.close();
+        archivo.close();
+        return casaMatriz;
     }
 
-    public void serializar(String archivo) throws IOException {
-        FileOutputStream f = new FileOutputStream(archivo);
-        ObjectOutputStream o = new ObjectOutputStream(f);
-        o.writeObject(this);
-        o.close();
-        f.close();
+    public void serializar(String ruta) throws IOException {
+        FileOutputStream archivo = new FileOutputStream(ruta);
+        ObjectOutputStream objeto = new ObjectOutputStream(archivo);
+        objeto.writeObject(this);
+        objeto.close();
+        archivo.close();
     }
 
     // AGREGAR

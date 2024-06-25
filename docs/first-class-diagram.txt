@@ -1,0 +1,232 @@
+@startuml
+!theme reddress-darkorange
+
+class Main{
+  +Main(): void
+}
+
+class CasaMatriz {
+  +CasaMatriz(Persona, Auto, Oficina)
+  
+  +login(): Persona
+  +logout(): void
+}
+
+
+class Oficina {
+  -id: int
+  -dirección: String
+  -teléfono: String
+  
+  +Oficina(Vendedor, String, String)
+
+  +asignarVendedor(Vendedor): void
+  +agregarAuto(Auto): void
+}
+
+class Persona{
+  -dni: int
+  -nombre: String
+  -fechaNacimiento: Date
+  -teléfono: String
+  -email: String
+  -contrasenia: String
+
+  +Persona(int, String, Date, int, String, String)
+}
+
+
+class Admin{
+  +Admin(Persona)
+  
+  +listar(): void
+  +crear(): void
+  +eliminar(): void
+  +asignarAutoAOficina() void
+  +asignarVendedorAOficina(): void
+}
+
+
+class Cliente{
+  -favoritos: Auto
+  
+  +Cliente(Persona)
+  
+  +agregarFavoritos(Auto): void
+  +sacarFavoritos(Auto): void
+  +crear(): void
+  +retirarAutos(Reserva): void
+  +devolverAuto(Reserva, Oficina): void
+}
+
+
+class Vendedor{
+  +Vendedor(Persona)
+  
+  +listarReservasPendientes():void
+  +aceptarReserva(Reserva): void
+  +rechazarReserva(Reserva): void
+  +entregarAuto(Reserva): void
+}
+
+
+
+class Reserva {
+  -id: int
+  -precioFinal: float
+  -estadoPago: bool
+
+  +Reserva(Auto, Cliente, Date, Date)  
+  
+  +crearReserva(): void
+  +rechazarReserva(): void
+  +entregarAutos(): void
+  +devolverAutos(): void
+  +finalizarReserva(): void
+  +pagarReserva(): void
+
+  -calcularPrecioFinal(): void
+}
+
+class Fecha {
+  -inicio: Date
+  -fin: Date
+  
+  +Fecha(Date, Date)
+  
+  +estaEnRango(Date): bool
+  +calcularDias(): int
+}
+
+class Auto{
+  -patente: String
+  -modelo: String
+  -disponibilidad: bool
+  -precioPorDia: float
+  -oficinaActual: String
+
+  +Auto(String, String, String, String, float, float, String)  
+  
+  +validarDisponibilidad(Date, Date): bool
+  +calcularPrecioTotal(int): float
+  +verListadoAutos(): void
+  +entregarAuto(): void
+  
+  -validadorTanqueLleno(): void
+  -transportarAOficinaOriginal(): void
+}
+
+class Gasolina {
+  -capacidadMaxima: float
+  -cantidad: float
+  -consumoDiario: float
+  
+  +Gasolina(float)
+
+  +tieneTanqueLleno(): bool
+  +consultarGasolina(): void
+  +recargarGasolina(): void
+  +consumirGasolina(int): void
+}
+
+
+'INTERFACES
+
+interface Listador {
+  +listar(): void
+}
+
+interface Creador {
+  +crear(): void
+}
+interface Eliminador {
+  +eliminar(): void
+}
+
+interface Menu {
+  +verMenu(): void
+  +seleccionar(): void
+}
+
+'ENUMS
+
+enum EstadoReserva {
+  CREADO
+  RESERVADO
+  PENDIENTE
+  ENTREGADO
+  DEVUELTO
+  FINALIZADO
+}
+
+enum Marca {
+  FORD
+  FIAT
+  CHVROLET
+  BMW
+  FERRARI
+}
+
+enum Color {
+  BLANCO
+  ROJO
+  NEGRO
+  AZUL
+  GRIS
+}
+
+'RELACIONES
+
+Main .down..> Oficina
+Main ..right..> Admin
+Main .down..> Auto
+
+Main -down-- CasaMatriz
+
+CasaMatriz "1"*-up->"*"Admin: admins
+CasaMatriz "1"*-down->"*" Auto: autos
+CasaMatriz "1"*-up->"*" Oficina: oficinas
+CasaMatriz -up->"*" Cliente: clientes
+
+Persona <|---left- Admin
+Persona <|---down- Cliente
+Persona <|---down---- Vendedor
+
+Persona *-up---> Listador
+Persona *-up---> Creador
+Persona *-up---> Eliminador
+Persona *-right-> Menu
+
+MenuAdmin  .down.|> Menu
+MenuVendedor .right.|> Menu
+MenuCliente .left.|> Menu
+
+ListadorAutos .down.|> Listador
+ListadorClientes .right.|> Listador
+ListadorOficinas .down.|> Listador
+ListadorReservas .left.|> Listador
+
+CreadorAutos .down.|> Creador
+CreadorClientes .right.|> Creador
+CreadorOficinas .down.|> Creador
+CreadorReservas .left.|> Creador
+
+EliminadorAutos .down.|> Eliminador
+EliminadorClientes .right.|> Eliminador
+EliminadorOficinas .down.|> Eliminador
+EliminadorReservas .left.|> Eliminador
+
+Oficina --->"*" Reserva: reservas
+Oficina o-right--> Vendedor
+Oficina o-->"*" Auto: autos
+
+Cliente ---->"*" Reserva: reservas
+
+Reserva -->"*" Auto: autos
+Reserva -->"1" EstadoReserva
+Reserva *-->"1" Fecha: fecha
+
+Auto *-down-->"1" Gasolina: gasolina
+Auto -down-->"1" Marca: marca
+Auto -down-->"1" Color: color
+@enduml
