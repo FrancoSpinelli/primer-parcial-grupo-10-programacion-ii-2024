@@ -1,22 +1,25 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.io.File;
 
 import Auto.Auto;
 import CasaMatriz.CasaMatriz;
+import Control.Control;
 import Oficina.Oficina;
+import Personas.Cliente;
 import Personas.Persona;
 
 public class Main {
   public static void main(String[] args) throws Exception {
 
-    ArrayList<Persona> personas = new ArrayList<Persona>();
-    ArrayList<Auto> autos = new ArrayList<Auto>();
-    ArrayList<Oficina> oficinas = new ArrayList<Oficina>();
-    
+    Control control = new Control();
+     
+    control.ejecutar();
 
-    CasaMatriz casaMatriz = new CasaMatriz(personas, autos, oficinas);
-    casaMatriz.login();
+  }
+}
 
-/*     cliente1.crear();
+    /*     cliente1.crear();
     cliente1.verReservas();
 
     System.out.println("Soy vendedor 1");
@@ -36,6 +39,3 @@ public class Main {
 
     cliente1.pagarReserva(cliente1.getReserva(1, cliente1));
     cliente1.pagarReserva(cliente1.getReserva(1, cliente1)); */
-
-  }
-}

@@ -1,16 +1,16 @@
 package Personas;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.ArrayList;
-
 import Auto.Auto;
 import CasaMatriz.CasaMatriz;
 import EntradaSalida.EntradaSalida;
 import Interfaces.CapazDeVerMenu.CapacidadDeVerMenuAdmin;
 import Oficina.Oficina;
 
-public class Admin extends Persona {
+public class Admin extends Persona implements Serializable {
 
     public Admin(int dni, String nombre, LocalDate fechaNacimiento, String telefono, String email, String contrasenia) {
         super(dni, nombre, fechaNacimiento, telefono, email, contrasenia);
@@ -181,11 +181,25 @@ public class Admin extends Persona {
     }
 
     private void crearCliente() {
+        String nombre, telefono, email, contrasenia;
+        int dni;
+        LocalDate fechaNacimiento;
 
+        dni = EntradaSalida.leerEnteroConLimites("Ingrese su DNI: ", 100000, 99999999);
+        nombre = EntradaSalida.leerString("Ingrese su nombre: ");
+        telefono = EntradaSalida.leerString("Ingrese su teléfono: ");
+        email = EntradaSalida.leerString("Ingrese su email: ");
+        fechaNacimiento = EntradaSalida.leerFechaAnteriorAHoy("Ingrese su fecha de nacimiento: ");
+        contrasenia = Integer.toString(dni);
+
+        Persona nuevoCliente = new Cliente(dni, nombre, fechaNacimiento, telefono, email,
+        contrasenia);
+
+        CasaMatriz.agregarPersona(nuevoCliente);
     }
 
     private void crearAdmin() {
-
+        
     }
 
     private void asignarAutoAOficina() {

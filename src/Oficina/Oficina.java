@@ -1,5 +1,6 @@
 package Oficina;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import Auto.Auto;
@@ -9,7 +10,7 @@ import Personas.Vendedor;
 import Reserva.Reserva;
 import enums.EstadoReserva;
 
-public class Oficina {
+public class Oficina implements Serializable{
     private int id;
     private String dirección;
     private String teléfono;

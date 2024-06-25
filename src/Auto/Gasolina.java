@@ -1,8 +1,9 @@
 package Auto;
 
 import EntradaSalida.EntradaSalida;
+import java.io.Serializable;
 
-public class Gasolina {
+public class Gasolina implements Serializable{
     private float capacidadMaxima;
     private float cantidad;
     private float consumoDiario;

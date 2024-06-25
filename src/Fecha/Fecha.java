@@ -1,8 +1,9 @@
 package Fecha;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Fecha {
+public class Fecha implements Serializable{
 
     private LocalDate inicio;
     private LocalDate fin;
