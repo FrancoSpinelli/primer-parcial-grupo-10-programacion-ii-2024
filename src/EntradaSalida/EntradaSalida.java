@@ -3,6 +3,7 @@ package EntradaSalida;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.Scanner;
+import CasaMatriz.Const;
 
 public class EntradaSalida {
 
@@ -15,21 +16,21 @@ public class EntradaSalida {
 
     public static String leerString(String texto) {
         mostrarStringSinSalto(texto + " ");
-        String st = scan.next();
+        String st = scan.nextLine();
 
         return (st == null ? "" : st);
     }
 
     public static boolean leerBoolean(String texto, String textoTrue, String textoFalse) {
         mostrarStringSinSalto(texto + " (1: " + textoTrue + " | 0: " + textoFalse + "): ");
-        char c = leerChar();
 
-        if (c != '1' && c != '0') {
+        char c = scan.nextLine().charAt(0);
+
+        if (c != Const.CARACTER_FALSE && c != Const.CARACTER_TRUE) {
             error("Selección inválida. Por favor, ingrese 1 o 0.");
             return leerBoolean(texto, textoTrue, textoFalse);
         }
-        saltoDeLinea();
-        return c == '1';
+        return c == Const.CARACTER_TRUE;
 
     }
 
@@ -49,7 +50,6 @@ public class EntradaSalida {
 
         return numero;
     }
-
 
     public static int leerEnteroConLimites(String texto, int limiteInferior, int limiteSuperior) {
         boolean error = false;
@@ -91,22 +91,6 @@ public class EntradaSalida {
             error("La fecha debe ser posterior a hoy.");
             return leerFechaPosteriorAHoy(texto);
         }
-        return fecha;
-    }
-
-    private static LocalDate leerFecha(String texto) {
-        mostrarString(texto);
-        LocalDate fecha = null;
-        int dia = leerEnteroConLimites("Ingrese el día (dd): ", 1, 31);
-        int mes = leerEnteroConLimites("Ingrese el mes (mm): ", 1, 12);
-        int anio = leerEnteroConLimites("Ingrese el año (aaaa): ", 1900, 2030);
-
-        try {
-            fecha = LocalDate.of(anio, mes, dia);
-        } catch (DateTimeException e) {
-            error("Fecha no válida. Por favor, ingrese una fecha correcta.");
-        }
-
         return fecha;
     }
 
@@ -157,5 +141,24 @@ public class EntradaSalida {
         mostrarString("Presione cualquier tecla para continuar...");
         scan.next();
         limpiarPantalla();
+    }
+
+    private static LocalDate leerFecha(String texto) {
+        mostrarString(texto);
+        LocalDate fecha = null;
+        int dia = leerEnteroConLimites("Ingrese el día (dd): ", Const.LIMITE_INFERIOR_DEFAULT,
+                Const.LIMITE_SUPERIOR_DIA);
+        int mes = leerEnteroConLimites("Ingrese el mes (mm): ", Const.LIMITE_INFERIOR_DEFAULT,
+                Const.LIMITE_SUPERIOR_MES);
+        int anio = leerEnteroConLimites("Ingrese el año (aaaa): ", Const.LIMITE_INFERIOR_ANIO,
+                Const.LIMITE_SUPERIOR_ANIO);
+
+        try {
+            fecha = LocalDate.of(anio, mes, dia);
+        } catch (DateTimeException e) {
+            error("Fecha no válida. Por favor, ingrese una fecha correcta.");
+        }
+
+        return fecha;
     }
 }

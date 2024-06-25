@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import Auto.Auto;
 import Auto.Gasolina;
 import EntradaSalida.EntradaSalida;
+import Formulario.Formulario;
 import Interfaces.CapazDeVerMenu.CapacidadDeVerMenu;
 import Oficina.Oficina;
 import Personas.Admin;
@@ -19,64 +20,33 @@ import Personas.Cliente;
 import Personas.Persona;
 import Personas.Vendedor;
 import Reserva.Reserva;
+import Validador.Validador;
 import enums.Color;
+import enums.Enviroment;
 import enums.Marca;
+import enums.Rol;
 
-public class CasaMatriz implements Serializable{
+public class CasaMatriz implements Serializable {
+    private Enviroment enviroment;
     private static ArrayList<Persona> personas = new ArrayList<Persona>();
     private static ArrayList<Auto> autos = new ArrayList<Auto>();
     private static ArrayList<Oficina> oficinas = new ArrayList<Oficina>();
 
     // CONSTRUCTOR
-    public CasaMatriz(){
+
+    public CasaMatriz() {
         personas = new ArrayList<Persona>();
         autos = new ArrayList<Auto>();
         oficinas = new ArrayList<Oficina>();
+
     }
 
-    public CasaMatriz(ArrayList<Persona> personas, ArrayList<Auto> autos, ArrayList<Oficina> oficinas) {
-        EntradaSalida.mostrarString("Bienvenido a la Casa Matriz");
-        CasaMatriz.personas = personas;
-        CasaMatriz.autos = autos;
-        CasaMatriz.oficinas = oficinas;
+    public void setEnviroment(Enviroment e) {
+        this.enviroment = e;
 
-        Admin admin1 = new Admin(1234, "admin", LocalDate.now(), "1234", "a", "1234");
-        personas.add(admin1);
-        Vendedor vendedor1 = new Vendedor(1234, "vendedor1", LocalDate.now(), "1234", "v", "1234");
-        personas.add(vendedor1);
-        Cliente cliente1 = new Cliente(1234, "cliente1", LocalDate.now(), "1234", "c", "1234");
-        personas.add(cliente1);
-        Vendedor vendedor2 = new Vendedor(1234, "vendedor2", LocalDate.now(), "1234", "vendedor2@vendedor.com", "1234");
-        personas.add(vendedor2);
-
-        Auto auto1 = new Auto("ABC123", "Corolla", 10000, Color.AZUL, Marca.CHEVROLET,
-                new Gasolina(10000));
-        autos.add(auto1);
-        Auto auto2 = new Auto("DEF456", "Civic", 20000, Color.ROJO, Marca.FORD, new Gasolina(20000));
-        autos.add(auto2);
-        Auto auto3 = new Auto("GHI789", "Coupe", 30000, Color.BLANCO, Marca.BMW, new Gasolina(30000));
-        autos.add(auto3);
-        Auto auto4 = new Auto("JKL012", "Sedan", 40000, Color.NEGRO, Marca.FIAT, new Gasolina(40000));
-        autos.add(auto4);
-
-        Oficina oficina1 = new Oficina("Av. Siempre Viva 123", "123456789");
-        oficinas.add(oficina1);
-        Oficina oficina2 = new Oficina("Av. Siempre Viva 456", "987654321");
-        oficinas.add(oficina2);
-
-        admin1.asignarVendedorAOficina(vendedor1, oficina1);
-        // admin1.asignarVendedorAOficina(vendedor2, oficina2);
-        for (Auto auto : autos) {
-            if (autos.indexOf(auto) % 2 == 0) {
-                admin1.asignarAutoAOficina(auto, oficina1);
-            }
-            /*
-             * else {
-             * admin1.asignarAutoAOficina(auto, oficina2);
-             * }
-             */
+        if (enviroment.equals(Enviroment.DEVELOPMENT)) {
+            preCargarDatos();
         }
-
     }
 
     public void login() {
@@ -106,7 +76,7 @@ public class CasaMatriz implements Serializable{
                 }
             }
             if (!autenticado) {
-                EntradaSalida.mostrarString("Error. Usuario o contraseña errónea.");
+                EntradaSalida.error("Usuario o contraseña errónea.");
             }
         }
     }
@@ -136,6 +106,14 @@ public class CasaMatriz implements Serializable{
     // AGREGAR
     public static void agregarPersona(Persona persona) {
         personas.add(persona);
+    }
+
+    public static void agregarAuto(Auto auto) {
+        autos.add(auto);
+    }
+
+    public static void agregarOficina(Oficina oficina) {
+        oficinas.add(oficina);
     }
 
     // ENCONTRAR
@@ -187,7 +165,7 @@ public class CasaMatriz implements Serializable{
             EntradaSalida.mostrarString(p.verPersona(), true, true);
         }
 
-        int id = EntradaSalida.leerEnteroConLimites("\nIngrese el ID de la persona: ", 1, CasaMatriz.personas.size());
+        int id = EntradaSalida.leerEnteroConLimites("\nIngrese el ID de la persona: ", Const.LIMITE_INFERIOR_DEFAULT, CasaMatriz.personas.size());
         EntradaSalida.saltoDeLinea();
 
         Persona p = seleccionarPersona(id);
@@ -225,7 +203,7 @@ public class CasaMatriz implements Serializable{
         ArrayList<Persona> vendedores = new ArrayList<>();
 
         for (Persona p : CasaMatriz.getPersonas()) {
-            if (p.getRol().equals("VENDEDOR")) {
+            if (p.getRol().equals(Rol.VENDEDOR)) {
                 vendedores.add(p);
             }
         }
@@ -328,6 +306,7 @@ public class CasaMatriz implements Serializable{
 
     public static Auto seleccionarAuto(Oficina oficina) {
         Auto autoSeleccionado = null;
+
         int id = EntradaSalida.leerEntero("\nIngrese el ID del auto que desea seleccionar: ");
 
         if (id == 0)
@@ -390,6 +369,12 @@ public class CasaMatriz implements Serializable{
 
     // AUTOS
     public static void listarAutos() {
+
+        if (autos.isEmpty()) {
+            EntradaSalida.mostrarString("No hay autos", true, true);
+            return;
+        }
+
         EntradaSalida.mostrarString("\nListado de autos:\n");
         for (Auto auto : getAutos()) {
             EntradaSalida.mostrarString(auto.verAuto(), true, true);
@@ -398,7 +383,6 @@ public class CasaMatriz implements Serializable{
     }
 
     // OFICINAS
-
     public static void listarOficinas() {
         EntradaSalida.mostrarString("\nListado de oficinas:\n");
         for (Oficina oficina : getOficinas()) {
@@ -414,7 +398,6 @@ public class CasaMatriz implements Serializable{
     }
 
     // RESERVAS
-
     public static void listarReservas() {
         ArrayList<Reserva> reservas = getReservas();
 
@@ -431,18 +414,114 @@ public class CasaMatriz implements Serializable{
     }
 
     public static void crearAuto() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'crearAuto'");
+        EntradaSalida.mostrarString("Ingrese las caracteristicas del auto\n");
+        Auto auto = Formulario.crearAuto();
+
+        agregarAuto(auto);
+
+        EntradaSalida.advertencia("Auto creado con éxito");
+    }
+
+    static public void crearCliente() {
+
+        EntradaSalida.mostrarString("Ingrese los datos del cliente\n");
+
+        Persona nuevoCliente = Formulario.crearPersona();
+        agregarPersona(nuevoCliente);
+
+        EntradaSalida.advertencia("Cliente creado con éxito");
+    }
+
+    static public void crearAdmin() {
+
+        EntradaSalida.mostrarString("Ingrese los datos del administrador\n");
+
+        Persona nuevoAdmin = Formulario.crearPersona();
+        agregarPersona(nuevoAdmin);
+
+        EntradaSalida.advertencia("Administrador creado con éxito");
+    }
+
+    static public void crearVendedor() {
+        EntradaSalida.mostrarString("Ingrese los datos del vendedor\n");
+
+        Persona nuevoVendedor = Formulario.crearPersona();
+        agregarPersona(nuevoVendedor);
+
+        EntradaSalida.advertencia("Vendedor creado con éxito");
     }
 
     public static void crearOficina() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'crearOficina'");
+        EntradaSalida.mostrarString("Ingrese los datos de la oficina\n");
+
+        Oficina oficina = Formulario.crearOficina();
+        agregarOficina(oficina);
+
+        EntradaSalida.advertencia("Oficina creada con éxito");
     }
 
     public static void eliminarOficina() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'eliminarOficina'");
+
+        EntradaSalida.mostrarString("Seleccione la oficina a eliminar\n");
+
+        Oficina oficina = seleccionarOficina();
+        if (oficina == null) {
+            EntradaSalida.error("Oficina no encontrada");
+            return;
+        }
+
+        if (oficina.getAutos().size() > 0) {
+            EntradaSalida.error("No se puede eliminar la oficina porque tiene autos asignados");
+            return;
+        }
+
+        if (!Validador.validarReservasParaEliminar(oficina.getReservas())) {
+            return;
+        }
+
+        oficinas.remove(oficina);
+        EntradaSalida.advertencia("Oficina eliminada con éxito");
+    }
+
+    public static void eliminarAuto() {
+        EntradaSalida.mostrarString("Seleccione el auto a eliminar\n");
+        listarAutos();
+        Auto auto = seleccionarAuto(null);
+
+        if (auto == null) {
+            EntradaSalida.error("Auto no encontrado");
+            return;
+        }
+
+        if (Validador.validarReservasParaEliminar(auto.getOficinaOriginal().getReservas())) {
+            return;
+        }
+
+        autos.remove(auto);
+
+        EntradaSalida.advertencia("Auto eliminado con éxito");
+    }
+
+    public static void eliminarPersona() {
+
+        EntradaSalida.mostrarString("Seleccione la persona a eliminar\n");
+
+        Persona persona = seleccionarPersona(personas);
+
+        if (persona == null) {
+            EntradaSalida.error("Persona no encontrada");
+            return;
+        }
+
+        if (persona.getRol().equals(Rol.CLIENTE)) {
+            if (!Validador.validarReservasParaEliminar(((Cliente) persona).getReservas())) {
+                return;
+            }
+        }
+
+        personas.remove(persona);
+
+        EntradaSalida.advertencia("Persona eliminada con éxito");
     }
 
     public static void crearReserva() {
@@ -453,5 +532,56 @@ public class CasaMatriz implements Serializable{
     public static void eliminarReserva() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'eliminarReserva'");
+    }
+
+    private void preCargarDatos() {
+
+        Admin admin1 = new Admin(1234, "admin", LocalDate.now(), "1234", "a", "1234");
+        personas.add(admin1);
+        Vendedor vendedor1 = new Vendedor(1234, "vendedor1", LocalDate.now(), "1234", "v", "1234");
+        personas.add(vendedor1);
+        Cliente cliente1 = new Cliente(1234, "cliente1", LocalDate.now(), "1234", "c", "1234");
+        personas.add(cliente1);
+        Vendedor vendedor2 = new Vendedor(1234, "vendedor2", LocalDate.now(), "1234", "vendedor2@vendedor.com", "1234");
+        personas.add(vendedor2);
+
+        Auto auto1 = new Auto("ABC123", "Corolla", 10000, Color.AZUL, Marca.CHEVROLET,
+                new Gasolina(10000));
+        autos.add(auto1);
+        Auto auto2 = new Auto("DEF456", "Civic", 20000, Color.ROJO, Marca.FORD, new Gasolina(20));
+        autos.add(auto2);
+        Auto auto3 = new Auto("GHI789", "Coupe", 30000, Color.BLANCO, Marca.BMW, new Gasolina(30));
+        autos.add(auto3);
+        Auto auto4 = new Auto("JKL012", "Sedan", 40000, Color.NEGRO, Marca.FIAT, new Gasolina(40));
+        autos.add(auto4);
+
+        Oficina oficina1 = new Oficina("Av. Siempre Viva 123", "123456789");
+        oficinas.add(oficina1);
+        Oficina oficina2 = new Oficina("Av. Siempre Viva 456", "987654321");
+        oficinas.add(oficina2);
+
+        admin1.asignarVendedorAOficina(vendedor1, oficina1);
+        // admin1.asignarVendedorAOficina(vendedor2, oficina2);
+        for (Auto auto : autos) {
+            if (autos.indexOf(auto) % 2 == 0) {
+                admin1.asignarAutoAOficina(auto, oficina1);
+            }
+            /*
+             * else {
+             * admin1.asignarAutoAOficina(auto, oficina2);
+             * }
+             */
+        }
+
+    }
+
+    public static void aceptarReserva() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'aceptarReserva'");
+    }
+
+    public static void rechazarReserva() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'rechazarReserva'");
     }
 }

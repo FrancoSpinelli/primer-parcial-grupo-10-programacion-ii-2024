@@ -12,7 +12,7 @@ import Oficina.Oficina;
 import Personas.Cliente;
 import enums.EstadoReserva;
 
-public class Reserva implements Serializable{
+public class Reserva implements Serializable {
     private int id;
     private float precioFinal;
     private Fecha fechas;
@@ -76,6 +76,71 @@ public class Reserva implements Serializable{
 
     }
 
+    public void cancelarReserva() {
+        if (!validoParaCancelar()) {
+            EntradaSalida.error("No se puede cancelar la reserva ya que su estado es: " + this.estado);
+            return;
+        }
+        this.estado = EstadoReserva.CANCELADO;
+        EntradaSalida.saltoDeLinea();
+        EntradaSalida.mostrarString("Reserva #" + this.id + " cancelada.", true, true);
+    }
+
+
+    public Oficina getOficina() {
+        return this.oficina;
+    }
+
+    public void finalizarReserva() {
+        this.estado = EstadoReserva.FINALIZADO;
+    }
+
+    public void pagarReserva() {
+        this.pagado = true;
+        this.estado = EstadoReserva.RESERVADO;
+        EntradaSalida.mostrarString(
+                "Reserva #" + this.id + ": pagaste $" + (int) this.precioFinal
+                        + ". Ya podes retirar los autos reservados.",
+                true, true);
+    }
+
+    public String verReserva() {
+        return "Reserva #" + this.id + " - " + this.estado + " - " + this.fechas.toString();
+    }
+
+    public EstadoReserva getEstado() {
+        return this.estado;
+    }
+
+    public void aceptarReserva() {
+        this.estado = EstadoReserva.PENDIENTE_DE_PAGO;
+        EntradaSalida.saltoDeLinea();
+        EntradaSalida.mostrarString("Reserva #" + this.id + " aceptada. Precio final: $" + ((int) this.precioFinal)
+                + " Estado de la reserva: " + this.estado, true, true);
+    }
+
+    public void rechazarReserva() {
+        this.estado = EstadoReserva.RECHAZADO;
+        EntradaSalida.saltoDeLinea();
+        EntradaSalida.mostrarString("Reserva #" + this.id + " rechazada.", true, true);
+    }
+
+    public Cliente getCliente() {
+        return this.cliente;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public void retiarAutos() {
+        oficina.getVendedor().entregarAutos(this);
+    }
+
+    public ArrayList<Auto> getAutos() {
+        return this.autos;
+    }
+
     private boolean validoParaDevolver() {
 
         boolean valido = true;
@@ -131,43 +196,8 @@ public class Reserva implements Serializable{
         return true;
     }
 
-    public void cancelarReserva() {
-        if (!validoParaCancelar()) {
-            EntradaSalida.error("No se puede cancelar la reserva ya que su estado es: " + this.estado);
-            return;
-        }
-        this.estado = EstadoReserva.CANCELADO;
-        EntradaSalida.saltoDeLinea();
-        EntradaSalida.mostrarString("Reserva #" + this.id + " cancelada.", true, true);
-    }
-
     private Boolean validoParaCancelar() {
         return this.estado == EstadoReserva.PENDIENTE || this.estado == EstadoReserva.PENDIENTE_DE_PAGO;
-    }
-
-    public Oficina getOficina() {
-        return this.oficina;
-    }
-
-    public void finalizarReserva() {
-        this.estado = EstadoReserva.FINALIZADO;
-    }
-
-    public void pagarReserva() {
-        this.pagado = true;
-        this.estado = EstadoReserva.RESERVADO;
-        EntradaSalida.mostrarString(
-                "Reserva #" + this.id + ": pagaste $" + (int) this.precioFinal
-                        + ". Ya podes retirar los autos reservados.",
-                true, true);
-    }
-
-    public String verReserva() {
-        return "Reserva #" + this.id + " - " + this.estado + " - " + this.fechas.toString();
-    }
-
-    public EstadoReserva getEstado() {
-        return this.estado;
     }
 
     private float calcularPrecioFinal() {
@@ -177,34 +207,4 @@ public class Reserva implements Serializable{
         }
         return precioFinal;
     }
-
-    public void aceptarReserva() {
-        this.estado = EstadoReserva.PENDIENTE_DE_PAGO;
-        EntradaSalida.saltoDeLinea();
-        EntradaSalida.mostrarString("Reserva #" + this.id + " aceptada. Precio final: $" + ((int) this.precioFinal)
-                + " Estado de la reserva: " + this.estado, true, true);
-    }
-
-    public void rechazarReserva() {
-        this.estado = EstadoReserva.RECHAZADO;
-        EntradaSalida.saltoDeLinea();
-        EntradaSalida.mostrarString("Reserva #" + this.id + " rechazada.", true, true);
-    }
-
-    public Cliente getCliente() {
-        return this.cliente;
-    }
-
-    public int getId() {
-        return this.id;
-    }
-
-    public void retiarAutos() {
-        oficina.getVendedor().entregarAutos(this);
-    }
-
-    public ArrayList<Auto> getAutos() {
-        return this.autos;
-    }
-
 }

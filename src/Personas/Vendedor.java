@@ -9,6 +9,7 @@ import Interfaces.CapazDeGestionarReserva.CapacidadDeGestionarReservas;
 import Interfaces.CapazDeVerMenu.CapacidadDeVerMenuVendedor;
 import Reserva.Reserva;
 import enums.EstadoReserva;
+import enums.Rol;
 
 public class Vendedor extends Persona implements Serializable {
 
@@ -111,7 +112,7 @@ public class Vendedor extends Persona implements Serializable {
     }
 
     @Override
-    public String getRol() {
-        return "VENDEDOR";
+    public Rol getRol() {
+        return Rol.VENDEDOR;
     }
 }

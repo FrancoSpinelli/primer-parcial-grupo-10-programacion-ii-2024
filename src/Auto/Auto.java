@@ -9,7 +9,7 @@ import Oficina.Oficina;
 import enums.Color;
 import enums.Marca;
 
-public class Auto implements Serializable{
+public class Auto implements Serializable {
     private int id;
     private String patente;
     private String modelo;
@@ -129,6 +129,10 @@ public class Auto implements Serializable{
 
     public Oficina getOficinaOriginal() {
         return oficinaOriginal;
+    }
+
+    public String getPatente() {
+        return patente;
     }
 
 }
