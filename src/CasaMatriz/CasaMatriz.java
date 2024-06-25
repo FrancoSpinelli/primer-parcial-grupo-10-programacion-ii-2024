@@ -57,7 +57,10 @@ public class CasaMatriz implements Serializable {
 
         boolean autenticado = false;
         while (!autenticado) {
-            String usuario = EntradaSalida.leerString("Correo: ");
+            String usuario = EntradaSalida.leerString("Correo (0 para salir): ");
+            if (usuario.equals("0")) {
+                break;
+            }
             String contrasenia = EntradaSalida.leerPassword("Contraseña: ");
             for (Persona p : personas) {
                 if (p.coincideUsuarioYContrasenia(usuario, contrasenia)) {
@@ -79,6 +82,8 @@ public class CasaMatriz implements Serializable {
                 EntradaSalida.error("Credenciales inválidas.");
             }
         }
+
+        EntradaSalida.mostrarString("Gracias por usar nuesta plataforma");
     }
 
     public void logout(Persona persona) {
@@ -616,17 +621,21 @@ public class CasaMatriz implements Serializable {
 
     private void preCargarDatos() {
 
-        Admin admin1 = new Admin(1234, "admin", LocalDate.now(), Const.CONTRASNIA_DEFAULT, "a",
+        Admin admin1 = new Admin(4200323, "admin", LocalDate.now(), Const.CONTRASNIA_DEFAULT, "a",
                 Const.CONTRASNIA_DEFAULT);
         personas.add(admin1);
-        Vendedor vendedor1 = new Vendedor(1234, "vendedor1", LocalDate.now(), Const.CONTRASNIA_DEFAULT, "v",
+        Vendedor vendedor1 = new Vendedor(1231923, "vendedor1", LocalDate.now(), Const.CONTRASNIA_DEFAULT, "v",
                 Const.CONTRASNIA_DEFAULT);
         personas.add(vendedor1);
-        Cliente cliente1 = new Cliente(1234, "cliente1", LocalDate.now(), Const.CONTRASNIA_DEFAULT, "c",
+        Cliente cliente1 = new Cliente(6472923, "cliente1", LocalDate.now(), Const.CONTRASNIA_DEFAULT, "c",
                 Const.CONTRASNIA_DEFAULT);
         personas.add(cliente1);
-        Vendedor vendedor2 = new Vendedor(1234, "vendedor2", LocalDate.now(), Const.CONTRASNIA_DEFAULT,
-                "vendedor2@vendedor.com", Const.CONTRASNIA_DEFAULT);
+        Cliente cliente2 = new Cliente(127128, "Matías", LocalDate.now(), Const.CONTRASNIA_DEFAULT,
+                "matias.avalos@inspt.utn.edu.ar",
+                Const.CONTRASNIA_DEFAULT);
+        personas.add(cliente2);
+        Vendedor vendedor2 = new Vendedor(123124, "vendedor2", LocalDate.now(), Const.CONTRASNIA_DEFAULT,
+                "dcorsi@vendedor.com", Const.CONTRASNIA_DEFAULT);
         personas.add(vendedor2);
 
         Auto auto1 = new Auto("ABC123", "Corolla", 10000, Color.AZUL, Marca.CHEVROLET,
@@ -636,7 +645,7 @@ public class CasaMatriz implements Serializable {
         autos.add(auto2);
         Auto auto3 = new Auto("GHI789", "Coupe", 30000, Color.BLANCO, Marca.BMW, new Gasolina(30));
         autos.add(auto3);
-        Auto auto4 = new Auto("JKL012", "Sedan", 40000, Color.NEGRO, Marca.FIAT, new Gasolina(40));
+        Auto auto4 = new Auto("JKL012", "Uno", 40000, Color.NEGRO, Marca.FIAT, new Gasolina(40));
         autos.add(auto4);
 
         Oficina oficina1 = new Oficina("Av. Siempre Viva 123", "123456789");
@@ -651,6 +660,8 @@ public class CasaMatriz implements Serializable {
                 admin1.asignarAutoAOficina(auto, oficina1);
             }
         }
+
+        EntradaSalida.limpiarPantalla();
 
     }
 
