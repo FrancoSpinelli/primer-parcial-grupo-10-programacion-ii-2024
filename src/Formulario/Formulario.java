@@ -36,16 +36,16 @@ public class Formulario {
 
         dni = EntradaSalida.leerEnteroConLimites("Ingrese su DNI: ", Const.MIN_DNI, Const.MAX_DNI);
         nombre = EntradaSalida.leerString("Ingrese su nombre: ");
-        telefono = EntradaSalida.leerString("Ingrese su teléfono: ");
         email = EntradaSalida.leerString("Ingrese su email: ");
-        fechaNacimiento = EntradaSalida.leerFechaAnteriorAHoy("Ingrese su fecha de nacimiento: ");
+        telefono = EntradaSalida.leerString("Ingrese su teléfono: ");
+        fechaNacimiento = EntradaSalida.leerFechaAnteriorAHoy("Ingrese su fecha de nacimiento: \n");
         contrasenia = Integer.toString(dni);
 
         if (!Validador.validoParaCrearPersona(dni, email)) {
             EntradaSalida.error("El DNI o el email ya están en uso.");
             return null;
         }
-
+        
         return new Cliente(dni, nombre, fechaNacimiento, telefono, email, contrasenia);
     }
 

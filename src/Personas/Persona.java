@@ -93,4 +93,12 @@ public abstract class Persona implements Serializable{
     public int getDni() {
        return dni;
     }
+
+    public  LocalDate getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
 }

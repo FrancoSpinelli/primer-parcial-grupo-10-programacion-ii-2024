@@ -113,7 +113,11 @@ public class Auto implements Serializable {
         return oficinaActual == oficinaOriginal;
     }
 
-    private void transportarAOficinaOriginal() {
+    public void transportarAOficinaOriginal() {
+        if (oficinaOriginal == null) {
+            EntradaSalida.mostrarString("No se asignó una oficina original a este auto");
+            return;
+        }
         if (oficinaActual == oficinaOriginal) {
             EntradaSalida.mostrarString("El auto ya está en la oficina original");
             return;
@@ -124,11 +128,16 @@ public class Auto implements Serializable {
     public void setOficinaOriginal(Oficina oficina) {
         this.oficinaOriginal = oficina;
         this.oficinaActual = oficina;
-        EntradaSalida.mostrarString("El auto " + this.toString() + " fue asignado a la oficina " + oficina.toString());
+        EntradaSalida.mostrarString("El auto " + this.toString() + " fue asignado a la oficina " + oficina.toString(),
+                true, true);
     }
 
     public Oficina getOficinaOriginal() {
         return oficinaOriginal;
+    }
+
+    public Oficina getOficinaActual() {
+        return oficinaActual;
     }
 
     public String getPatente() {

@@ -11,7 +11,7 @@ public class Const {
   static public Integer LIMITE_INFERIOR_ANIO = 1900;
   static public Integer LIMITE_SUPERIOR_ANIO = 2030;
   static public Integer MIN_PRECIO_AUTO = 5000;
-  static public Integer MAX_PRECIO_AUTO = 10000;
+  static public Integer MAX_PRECIO_AUTO = 100000;
   static public Integer MIN_LITROS_AUTO = 20;
   static public Integer MAX_LITROS_AUTO = 200;
   static public Integer MIN_DNI = 100000;
@@ -21,4 +21,5 @@ public class Const {
   static public Integer MAX_ENVIROMENT_OPTION = 2;
   static public Integer MAX_CANTIDAD_DIAS = 30;
 
+  static public String CONTRASNIA_DEFAULT = "1234";
 }

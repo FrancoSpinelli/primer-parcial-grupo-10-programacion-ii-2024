@@ -10,7 +10,7 @@ import Personas.Vendedor;
 import Reserva.Reserva;
 import enums.EstadoReserva;
 
-public class Oficina implements Serializable{
+public class Oficina implements Serializable {
     private int id;
     private String dirección;
     private String teléfono;
@@ -45,9 +45,14 @@ public class Oficina implements Serializable{
         }
         auto.setOficinaOriginal(this);
         this.autos.add(auto);
-        EntradaSalida.mostrarString(this.toString());
-        EntradaSalida.mostrarString("Se agregó el auto " + auto.verAuto() + ", a la oficina " + this.toString(), true,
-                true);
+    }
+
+    public void eliminarAuto(Auto auto) {
+        if (!this.autos.contains(auto)) {
+            EntradaSalida.mostrarString("El auto no pertenece a la oficina", true, true);
+            return;
+        }
+        this.autos.remove(auto);
     }
 
     public boolean tieneAutos() {

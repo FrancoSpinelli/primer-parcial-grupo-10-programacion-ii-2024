@@ -38,7 +38,7 @@ public class Cliente extends Persona implements Serializable {
         Oficina oficina = CasaMatriz.seleccionarOficina();
         oficina.verListadoAutos();
 
-        if (!oficina.tieneAutos())
+        if (!oficina.tieneAutos() || oficina.getVendedor() == null)
             return;
         do {
             autoSeleccionado = CasaMatriz.seleccionarAuto(oficina);
@@ -49,6 +49,7 @@ public class Cliente extends Persona implements Serializable {
         } while (EntradaSalida.leerBoolean("\n¿Desea seleccionar otro auto?", "Si", "No"));
 
         if (autosSeleccionados.isEmpty()) {
+            EntradaSalida.saltoDeLinea();
             EntradaSalida.mostrarString("No se seleccionaron autos.", true, true);
             return;
         }
@@ -138,8 +139,6 @@ public class Cliente extends Persona implements Serializable {
 
         r.devolverAutos(oficina);
     }
-
-
 
     @Override
     public Rol getRol() {

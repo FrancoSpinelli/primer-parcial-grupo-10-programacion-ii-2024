@@ -43,7 +43,7 @@ public class EntradaSalida {
                 numero = Integer.parseInt(input);
                 error = false;
             } catch (NumberFormatException e) {
-                mostrarString("Error. Por favor, ingrese un número entero válido.");
+                error("Por favor, ingrese un número entero válido.");
                 error = true;
             }
         } while (error);
@@ -139,7 +139,7 @@ public class EntradaSalida {
 
     public static void cualquierTeclaParaContinuar() {
         mostrarString("Presione cualquier tecla para continuar...");
-        scan.next();
+        scan.nextLine();
         limpiarPantalla();
     }
 
