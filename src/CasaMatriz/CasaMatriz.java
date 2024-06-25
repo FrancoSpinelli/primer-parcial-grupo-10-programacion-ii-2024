@@ -94,15 +94,20 @@ public class CasaMatriz implements Serializable {
 
         EntradaSalida.mostrarString("\nDeserializando...\n");
 
-        FileInputStream archivo = new FileInputStream(ruta);
-        ObjectInputStream objeto = new ObjectInputStream(archivo);
-        CasaMatriz casaMatriz = (CasaMatriz) objeto.readObject();
-        objeto.close();
-        archivo.close();
-        return casaMatriz;
+        try {
+            FileInputStream archivo = new FileInputStream(ruta);
+            ObjectInputStream objeto = new ObjectInputStream(archivo);
+            CasaMatriz casaMatriz = (CasaMatriz) objeto.readObject();
+            objeto.close();
+            archivo.close();
+            return casaMatriz;
+        } catch (Exception e) {
+            System.err.println("Error al deserializar" + e);
+            return null;
+        }
     }
 
-    public void serializar(String ruta) throws IOException {
+    public void serializar(String ruta, CasaMatriz cm) throws IOException {
 
         if (CasaMatriz.getEnviroment() != Enviroment.PRODUCTION) {
             return;
@@ -110,11 +115,16 @@ public class CasaMatriz implements Serializable {
 
         EntradaSalida.mostrarString("\nSerializando...\n");
 
-        FileOutputStream archivo = new FileOutputStream(ruta);
-        ObjectOutputStream objeto = new ObjectOutputStream(archivo);
-        objeto.writeObject(this);
-        objeto.close();
-        archivo.close();
+        try {
+            FileOutputStream archivo = new FileOutputStream(ruta);
+            ObjectOutputStream objeto = new ObjectOutputStream(archivo);
+            objeto.writeObject(cm);
+            objeto.close();
+            archivo.close();
+        } catch (Exception e) {
+            System.err.println("Error al serializar" + e);
+        }
+        EntradaSalida.mostrarString("Serialización exitosa\n");
     }
 
     private static Enviroment getEnviroment() {
@@ -150,6 +160,10 @@ public class CasaMatriz implements Serializable {
     }
 
     public static ArrayList<Persona> getPersonas() {
+        return personas;
+    }
+
+    public ArrayList<Persona> getPersonas2() {
         return personas;
     }
 
@@ -484,17 +498,10 @@ public class CasaMatriz implements Serializable {
 
         EntradaSalida.mostrarString("Ingrese los datos del cliente\n");
 
-        /*
-         * Persona nuevoCliente = Formulario.crearPersona();
-         * agregarPersona(nuevoCliente);
-         * 
-         * EntradaSalida.advertencia("Cliente creado con éxito");
-         */
-
         Persona p = Formulario.crearPersona();
 
         Cliente cliente = new Cliente(p.getDni(), p.getNombre(), p.getFechaNacimiento(), p.getTelefono(), p.getEmail(),
-                "1234");
+                Const.CONTRASNIA_DEFAULT);
         agregarPersona(cliente);
 
         EntradaSalida.advertencia("Cliente creado con éxito");
@@ -507,7 +514,7 @@ public class CasaMatriz implements Serializable {
         Persona p = Formulario.crearPersona();
 
         Admin admin = new Admin(p.getDni(), p.getNombre(), p.getFechaNacimiento(), p.getTelefono(), p.getEmail(),
-                "1234");
+                Const.CONTRASNIA_DEFAULT);
         agregarPersona(admin);
 
         EntradaSalida.advertencia("Administrador creado con éxito");
@@ -518,7 +525,7 @@ public class CasaMatriz implements Serializable {
 
         Persona p = Formulario.crearPersona();
         Vendedor vendedor = new Vendedor(p.getDni(), p.getNombre(), p.getFechaNacimiento(), p.getTelefono(),
-                p.getEmail(), "1234");
+                p.getEmail(), Const.CONTRASNIA_DEFAULT);
         agregarPersona(vendedor);
 
         EntradaSalida.advertencia("Vendedor creado con éxito");
@@ -609,13 +616,17 @@ public class CasaMatriz implements Serializable {
 
     private void preCargarDatos() {
 
-        Admin admin1 = new Admin(1234, "admin", LocalDate.now(), "1234", "a", "1234");
+        Admin admin1 = new Admin(1234, "admin", LocalDate.now(), Const.CONTRASNIA_DEFAULT, "a",
+                Const.CONTRASNIA_DEFAULT);
         personas.add(admin1);
-        Vendedor vendedor1 = new Vendedor(1234, "vendedor1", LocalDate.now(), "1234", "v", "1234");
+        Vendedor vendedor1 = new Vendedor(1234, "vendedor1", LocalDate.now(), Const.CONTRASNIA_DEFAULT, "v",
+                Const.CONTRASNIA_DEFAULT);
         personas.add(vendedor1);
-        Cliente cliente1 = new Cliente(1234, "cliente1", LocalDate.now(), "1234", "c", "1234");
+        Cliente cliente1 = new Cliente(1234, "cliente1", LocalDate.now(), Const.CONTRASNIA_DEFAULT, "c",
+                Const.CONTRASNIA_DEFAULT);
         personas.add(cliente1);
-        Vendedor vendedor2 = new Vendedor(1234, "vendedor2", LocalDate.now(), "1234", "vendedor2@vendedor.com", "1234");
+        Vendedor vendedor2 = new Vendedor(1234, "vendedor2", LocalDate.now(), Const.CONTRASNIA_DEFAULT,
+                "vendedor2@vendedor.com", Const.CONTRASNIA_DEFAULT);
         personas.add(vendedor2);
 
         Auto auto1 = new Auto("ABC123", "Corolla", 10000, Color.AZUL, Marca.CHEVROLET,
@@ -639,11 +650,6 @@ public class CasaMatriz implements Serializable {
             if (autos.indexOf(auto) % 2 == 0) {
                 admin1.asignarAutoAOficina(auto, oficina1);
             }
-            /*
-             * else {
-             * admin1.asignarAutoAOficina(auto, oficina2);
-             * }
-             */
         }
 
     }

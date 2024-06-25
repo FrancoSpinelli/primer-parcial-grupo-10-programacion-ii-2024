@@ -21,4 +21,5 @@ public class Const {
   static public Integer MAX_ENVIROMENT_OPTION = 2;
   static public Integer MAX_CANTIDAD_DIAS = 30;
 
+  static public String CONTRASNIA_DEFAULT = "1234";
 }
