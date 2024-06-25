@@ -1,4 +1,6 @@
 package Interfaces.CapazDeVerMenu;
+
+import CasaMatriz.CasaMatriz;
 import EntradaSalida.EntradaSalida;
 import Personas.Cliente;
 
@@ -11,48 +13,66 @@ public class CapacidadDeVerMenuCliente implements CapacidadDeVerMenu {
     }
 
     @Override
-    public void verMenu(){
-        EntradaSalida.mostrarString("Menú de Cliente");
-        EntradaSalida.mostrarString("1. Agregar a favoritos");
-        EntradaSalida.mostrarString("2. Sacar de favoritos");
-        EntradaSalida.mostrarString("3. Crear reserva");
-        EntradaSalida.mostrarString("4. Cancelar reserva");
-        EntradaSalida.mostrarString("5. Retirar autos de la oficina");
-        EntradaSalida.mostrarString("6. devolver autos");
-        EntradaSalida.mostrarString("0. Salir");
+    public void verMenu() {
+        String msgMenu = "Menú de " + cliente.getNombre() + " (Cliente)";
+
+        EntradaSalida.saltoDeLinea();
+        EntradaSalida.mostrarString(msgMenu, true, true);
+        EntradaSalida.mostrarString("\t 1. Ver autos");
+        EntradaSalida.mostrarString("\t 2. Ver reservas");
+        EntradaSalida.mostrarString("\t 3. Crear reserva");
+        EntradaSalida.mostrarString("\t 4. Cancelar reserva");
+        EntradaSalida.mostrarString("\t 5. Abonar reserva");
+        EntradaSalida.mostrarString("\t 6. Retirar autos");
+        EntradaSalida.mostrarString("\t 7. Devolver autos");
+        EntradaSalida.saltoDeLinea();
+        EntradaSalida.mostrarString("\t 9. Limpiar pantalla");
+        EntradaSalida.mostrarString("\t 0. Salir ", false, true);
+        EntradaSalida.saltoDeLinea();
     }
-    public int seleccionar(){
-        int seleccion = EntradaSalida.leerEnteroConLimites("Ingrese su elección: ", 0, 6);
-        
-        switch(seleccion){
+
+    public int seleccionar() {
+        int seleccion = EntradaSalida.leerEntero("Ingrese su elección: ");
+        EntradaSalida.saltoDeLinea();
+        switch (seleccion) {
             case 1:
-            EntradaSalida.mostrarString("Agregar a favoritos");
-            EntradaSalida.mostrarString("NO IMPLEMENTADO");
-            break;
+                EntradaSalida.limpiarPantalla();
+                CasaMatriz.verListadoDeAutosPorOficina();
+                break;
             case 2:
-            EntradaSalida.mostrarString("Sacar de favoritos");
-            EntradaSalida.mostrarString("NO IMPLEMENTADO");
-            break;
+                EntradaSalida.limpiarPantalla();
+                cliente.verReservas();
+                break;
             case 3:
-            EntradaSalida.mostrarString("Crear reserva");
-            EntradaSalida.mostrarString("NO IMPLEMENTADO");
-            break;
+                EntradaSalida.limpiarPantalla();
+                cliente.generarReserva();
+                break;
             case 4:
-            EntradaSalida.mostrarString("Cancelar reserva");
-            EntradaSalida.mostrarString("NO IMPLEMENTADO");
-            break;
+                EntradaSalida.limpiarPantalla();
+                cliente.cancelarReserva();
+                break;
             case 5:
-            EntradaSalida.mostrarString("Retirar autos de la oficina");
-            EntradaSalida.mostrarString("NO IMPLEMENTADO");
-            break;
+                EntradaSalida.limpiarPantalla();
+                cliente.pagarReserva();
+                break;
             case 6:
-            EntradaSalida.mostrarString("Devolver autos");
-            EntradaSalida.mostrarString("NO IMPLEMENTADO");
-            break;
+                EntradaSalida.limpiarPantalla();
+                cliente.retirarAutos();
+                break;
             case 7:
-            EntradaSalida.mostrarString("Salir");
-            EntradaSalida.mostrarString("NO IMPLEMENTADO");
-            break;
+                EntradaSalida.limpiarPantalla();
+                cliente.devolverAutos();
+                break;
+            case 9:
+                EntradaSalida.limpiarPantalla();
+                EntradaSalida.limpiarPantalla();
+                break;
+            case 0:
+                EntradaSalida.limpiarPantalla();
+                break;
+            default:
+                EntradaSalida.error("Opción inválida. Por favor, seleccione una opción válida.");
+                break;
         }
         return seleccion;
     }

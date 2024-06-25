@@ -1,8 +1,9 @@
 package Fecha;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Fecha {
+public class Fecha implements Serializable{
 
     private LocalDate inicio;
     private LocalDate fin;
@@ -10,7 +11,7 @@ public class Fecha {
 
     @Override
     public String toString() {
-        return "Desde " + inicio + " hasta " + fin + " (" + cantDias + " días)";
+        return "Del " + inicio + " al " + fin + " (" + cantDias + " días)";
     }
 
     public Fecha(LocalDate inicio, int cantDias) {

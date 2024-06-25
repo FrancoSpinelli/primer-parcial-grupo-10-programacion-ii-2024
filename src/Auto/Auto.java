@@ -1,35 +1,48 @@
 package Auto;
 
+import java.io.Serializable;
 import java.util.Date;
 
+import CasaMatriz.CasaMatriz;
+import EntradaSalida.EntradaSalida;
+import Oficina.Oficina;
 import enums.Color;
 import enums.Marca;
 
-public class Auto {
+public class Auto implements Serializable {
     private int id;
     private String patente;
     private String modelo;
-    private boolean disponibilidad;
     private float precioPorDia;
-    private String oficinaActual;
+    private Oficina oficinaOriginal;
+    private Oficina oficinaActual;
     private Gasolina gasolina;
     private Color color;
     private Marca marca;
 
     @Override
     public String toString() {
-        return id + " - " + marca + " " + modelo + " " + color + " [" + patente + "]" + " - $" + ((int)precioPorDia)
-                + " por día";
+        return id + " - " + marca + " " + modelo + " " + color + " [" + patente + "]" + " - $" + ((int) precioPorDia)
+                + " por día - "
+                + (oficinaOriginal != null ? "Oficina #" + String.valueOf(oficinaOriginal.getId())
+                        : "Sin oficina asignada");
     }
 
-    public Auto(int id, String patente, String modelo, float precioPorDia, Color color, Marca marca,
+    public String toString(boolean precio) {
+        return id + " - " + marca + " " + modelo + " " + color + " [" + patente + "] -  "
+                + oficinaOriginal != null ? "Oficina #" + String.valueOf(oficinaOriginal.getId())
+                        : "Sin oficina asignada";
+    }
+
+    public Auto(String patente, String modelo, float precioPorDia, Color color, Marca marca,
             Gasolina gasolina) {
-        this.id = id;
+        this.id = CasaMatriz.generarIdAuto();
         this.patente = patente;
         this.modelo = modelo;
         this.precioPorDia = precioPorDia;
         this.color = color;
         this.marca = marca;
+        this.gasolina = gasolina;
     }
 
     public boolean validarDisponibilidad(Date fechaInicio, Date fechaFin) {
@@ -46,8 +59,30 @@ public class Auto {
         return id;
     }
 
+    public String verAuto() {
+        return this.toString();
+    }
+
     public float getPrecioPorDia() {
         return precioPorDia;
+    }
+
+    public void setOficinaActual(Oficina oficina) {
+
+        if (oficina == null) {
+            EntradaSalida.mostrarString("Oficina inválida");
+            return;
+        }
+
+        if (oficina == oficinaActual) {
+            EntradaSalida.mostrarString("El auto ya está en la oficina " + oficina.toString());
+            return;
+        }
+
+        this.oficinaActual = oficina;
+        EntradaSalida
+                .mostrarString(
+                        "El auto  " + verAuto() + " ahora se encuentra en la oficina #" + oficina.getId());
     }
 
     public void verListadoAutos() {
@@ -58,12 +93,55 @@ public class Auto {
 
     }
 
-    private void validadorTanqueLleno() {
-
+    public void consumirGasolina(int dias) {
+        gasolina.consumirGasolina(dias);
     }
 
-    private void transportarAOficinaOriginal() {
+    public void consultarGasolina() {
+        gasolina.consultarGasolina(this);
+    }
 
+    public void recargarGasolina() {
+        gasolina.recargarGasolina();
+    }
+
+    public boolean tieneTanqueLleno() {
+        return gasolina.tieneTanqueLleno();
+    }
+
+    public boolean estaEnOficinaOriginal() {
+        return oficinaActual == oficinaOriginal;
+    }
+
+    public void transportarAOficinaOriginal() {
+        if (oficinaOriginal == null) {
+            EntradaSalida.mostrarString("No se asignó una oficina original a este auto");
+            return;
+        }
+        if (oficinaActual == oficinaOriginal) {
+            EntradaSalida.mostrarString("El auto ya está en la oficina original");
+            return;
+        }
+        this.oficinaActual = oficinaOriginal;
+    }
+
+    public void setOficinaOriginal(Oficina oficina) {
+        this.oficinaOriginal = oficina;
+        this.oficinaActual = oficina;
+        EntradaSalida.mostrarString("El auto " + this.toString() + " fue asignado a la oficina " + oficina.toString(),
+                true, true);
+    }
+
+    public Oficina getOficinaOriginal() {
+        return oficinaOriginal;
+    }
+
+    public Oficina getOficinaActual() {
+        return oficinaActual;
+    }
+
+    public String getPatente() {
+        return patente;
     }
 
 }

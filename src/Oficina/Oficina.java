@@ -1,41 +1,40 @@
 package Oficina;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 
 import Auto.Auto;
+import CasaMatriz.CasaMatriz;
 import EntradaSalida.EntradaSalida;
-import Personas.Cliente;
 import Personas.Vendedor;
 import Reserva.Reserva;
 import enums.EstadoReserva;
 
-public class Oficina {
+public class Oficina implements Serializable {
     private int id;
     private String dirección;
     private String teléfono;
     private Vendedor vendedor;
     private ArrayList<Auto> autos;
-    private ArrayList<Reserva> reservas;
+    private static ArrayList<Reserva> reservas = new ArrayList<Reserva>();
 
     @Override
     public String toString() {
-        return "#" + id + " (" + dirección + ")";
+        return "#" + id + " - " + dirección + " - Contacto: " + teléfono;
     }
 
-    public Oficina(int id, String dirección, String teléfono) {
-        this.id = id;
+    public Oficina(String dirección, String teléfono) {
+        this.id = CasaMatriz.generarIdOficina();
         this.dirección = dirección;
         this.teléfono = teléfono;
 
         this.autos = new ArrayList<Auto>();
-        this.reservas = new ArrayList<Reserva>();
+        reservas = new ArrayList<Reserva>();
 
     }
 
     public void asignarVendedor(Vendedor vendedor) {
         this.vendedor = vendedor;
-        EntradaSalida.mostrarString("Se asignó el vendedor " + vendedor.toString() + " a la " + this.toString());
     }
 
     public void agregarAuto(Auto auto) {
@@ -44,57 +43,50 @@ public class Oficina {
             EntradaSalida.mostrarString("No se puede agregar auto a oficina sin vendedor");
             return;
         }
-
+        auto.setOficinaOriginal(this);
         this.autos.add(auto);
-        EntradaSalida.mostrarString(this.toString());
-        EntradaSalida.mostrarString("Se agregó el auto " + auto.toString() + ", a la oficina " + this.toString(), true,
-                true);
+    }
+
+    public void eliminarAuto(Auto auto) {
+        if (!this.autos.contains(auto)) {
+            EntradaSalida.mostrarString("El auto no pertenece a la oficina", true, true);
+            return;
+        }
+        this.autos.remove(auto);
+    }
+
+    public boolean tieneAutos() {
+        return !this.autos.isEmpty();
     }
 
     public void verListadoAutos() {
-        if (this.autos.isEmpty()) {
-            EntradaSalida.mostrarString("No hay autos en la " + this.toString(), false, true);
+        if (!tieneAutos()) {
+            EntradaSalida.mostrarString("No hay autos en la oficina " + this.toString(), true, true);
             return;
         }
 
-        EntradaSalida.mostrarString("Listado de autos en la " + this.toString(), true, true);
+        EntradaSalida.mostrarString("Oficina " + this.toString(), true, true);
         for (Auto auto : this.autos) {
-            EntradaSalida.mostrarString(auto.toString(), false, true);
+            String msg = "\t" + auto.verAuto();
+            if (auto.getOficinaOriginal() != this) {
+                msg += " - En tránsito";
+            }
+            EntradaSalida.mostrarString(msg, false, true);
         }
     }
 
     public void verListadoReservas() {
-        if (this.reservas.isEmpty()) {
-            EntradaSalida.mostrarString("No hay reservas en la " + this.toString(), false, true);
-            return;
-        }
-
-        EntradaSalida.mostrarString("Listado de reservas en la " + this.toString(), true, true);
-        for (Reserva reserva : this.reservas) {
-            EntradaSalida.mostrarString(reserva.toString(), false, true);
-        }
+        verListadoReservasPorEstado(null);
     }
 
     public void verListadoReservasPendientes() {
+        if (!hayReservasPendientes())
+            return;
         verListadoReservasPorEstado(EstadoReserva.PENDIENTE);
     }
 
     public void aceptarReserva(Reserva r) {
         r.aceptarReserva();
-    }
-
-    private void verListadoReservasPorEstado(EstadoReserva estado) {
-        if (this.reservas.isEmpty()) {
-            EntradaSalida.mostrarString("No hay reservas " + estado + " en la " + this.toString(), false, true);
-            return;
-        }
-
-        EntradaSalida.mostrarString("Listado de reservas en la " + this.toString(), true, true);
-        for (Reserva reserva : this.reservas) {
-            if (reserva.getEstado() == estado) {
-                EntradaSalida.mostrarString(reserva.toString(), false, true);
-            }
-        }
     }
 
     public ArrayList<Auto> getAutos() {
@@ -107,12 +99,11 @@ public class Oficina {
                 return auto;
             }
         }
-        EntradaSalida.mostrarString("Auto no encontrado", false, false);
         return null;
     }
 
     public ArrayList<Reserva> getReservas() {
-        return this.reservas;
+        return reservas;
     }
 
     public Reserva getReserva(int id) {
@@ -125,16 +116,81 @@ public class Oficina {
         return null;
     }
 
+    public void agregarReserva(Reserva r) {
+        reservas.add(r);
+    }
+
+    public Vendedor getVendedor() {
+        return this.vendedor;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public void recibirAutos(ArrayList<Auto> autos) {
+        for (Auto auto : autos) {
+            auto.setOficinaActual(this);
+            if (!this.autos.contains(auto)) {
+                this.autos.add(auto);
+            }
+        }
+    }
+
+    public Reserva seleccionarReserva(EstadoReserva estado) {
+        if (reservas.isEmpty()) {
+            EntradaSalida.mostrarString("No hay reservas en la oficina " + this.toString(), false, true);
+            return null;
+        }
+
+        EntradaSalida.mostrarString("Seleccione una reserva");
+        for (Reserva reserva : reservas) {
+            if (estado != null) {
+                EntradaSalida.mostrarString("\t" + reserva.toString(), true, true);
+            } else if (reserva.getEstado() == estado) {
+                EntradaSalida.mostrarString("\t" + reserva.toString(), true, true);
+            }
+        }
+
+        int id = EntradaSalida.leerEntero("Ingrese el ID de la reserva: ");
+        for (Reserva reserva : reservas) {
+            if (reserva.getId() == id) {
+                return reserva;
+            }
+        }
+        EntradaSalida.mostrarString("\nReserva no encontrada", true, true);
+        return null;
+    }
+
+    public static boolean hayReservasPendientes() {
+        for (Reserva r : reservas) {
+            if (r.getEstado() == EstadoReserva.PENDIENTE) {
+                return true;
+            }
+        }
+        EntradaSalida.mostrarString("No hay reservas pendientes en esta oficina", true, true);
+        return false;
+    }
+
+    public String verOficina() {
+        return this.toString();
+    }
+
     private boolean tieneVendedor() {
         return this.vendedor != null;
     }
 
-    private String generadorId() {
-        return "RS" + this.id + "-000" + this.reservas.size() + 10;
-    }
+    private void verListadoReservasPorEstado(EstadoReserva estado) {
+        if (reservas.isEmpty()) {
+            EntradaSalida.mostrarString("No hay reservas " + estado + " en la oficina " + this.toString(), false, true);
+            return;
+        }
 
-    public void agregarReserva(Reserva r) {
-        this.reservas.add(r);
+        EntradaSalida.mostrarString("Listado de reservas en la " + this.toString(), true, true);
+        for (Reserva reserva : reservas) {
+            if (reserva.getEstado() == estado) {
+                EntradaSalida.mostrarString("\t" + reserva.toString(), false, true);
+            }
+        }
     }
-
 }
