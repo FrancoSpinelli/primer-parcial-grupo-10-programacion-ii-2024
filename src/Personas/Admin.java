@@ -43,11 +43,11 @@ public class Admin extends Persona implements Serializable {
         }
     }
 
-
     public void gestionarAutos() {
         EntradaSalida.advertencia("Gestión de autos");
         mostarMenuGeneral();
         EntradaSalida.mostrarString("\t4. Asignar auto a oficina");
+        EntradaSalida.mostrarString("\t5. Trasladar autos a oficina de origen");
         EntradaSalida.mostrarString("\n\t0 Volver");
         int opcion = EntradaSalida.leerEntero("\nIngrese su elección: ");
         EntradaSalida.saltoDeLinea();
@@ -76,14 +76,11 @@ public class Admin extends Persona implements Serializable {
         }
     }
 
-
-
     public void gestionarOficinas() {
         EntradaSalida.advertencia("Gestión de oficinas");
 
         mostarMenuGeneral();
         EntradaSalida.mostrarString("\t4. Asignar vendedor");
-        EntradaSalida.mostrarString("\t5. Trasladar autos a oficina de origen");
         EntradaSalida.mostrarString("\n\t0 Volver");
         int opcion = EntradaSalida.leerEntero("\nIngrese su elección: ");
         EntradaSalida.saltoDeLinea();
@@ -141,11 +138,27 @@ public class Admin extends Persona implements Serializable {
         }
     }
 
-
-
-
     public void asignarAutoAOficina() {
-        // oficina.agregarAuto(auto);
+        EntradaSalida.advertencia("Asignar auto a oficina");
+
+        EntradaSalida.advertencia("Solamente se pueden asignar autos sin oficina asignada");
+
+        ArrayList<Auto> autos = CasaMatriz.getAutosSinOficina();
+        if (autos.isEmpty()) {
+            EntradaSalida.error("No hay autos sin oficina asignada");
+            return;
+        }
+
+        Auto auto = CasaMatriz.seleccionarAuto(null, autos);
+
+        if (auto == null)
+            return;
+
+        Oficina oficina = CasaMatriz.seleccionarOficina();
+        if (oficina == null)
+            return;
+
+        asignarAutoAOficina(auto, oficina);
     }
 
     public void asignarAutoAOficina(Auto auto, Oficina oficina) {
@@ -169,7 +182,6 @@ public class Admin extends Persona implements Serializable {
     private void listarPersonas() {
         CasaMatriz.listarPersonas();
     }
-
 
     private void crearVendedor() {
         CasaMatriz.crearVendedor();
@@ -258,7 +270,34 @@ public class Admin extends Persona implements Serializable {
     }
 
     private void trasladarAutosAOficinaDeOrigen() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'trasladarAutosAOficinaDeOrigen'");
+        EntradaSalida.advertencia("Trasladar autos a oficina de origen");
+
+        EntradaSalida.advertencia("Solamente se pueden trasladar autos en tránsito");
+
+        ArrayList<Auto> autosEnTransito = new ArrayList<>();
+
+        EntradaSalida.mostrarString("Autos en tránsito:\n");
+
+        for (Auto auto : CasaMatriz.getAutos()) {
+            if (auto.getOficinaOriginal() != null && auto.getOficinaOriginal() != auto.getOficinaActual()) {
+                EntradaSalida.mostrarString(auto.verAuto(), true, true);
+                autosEnTransito.add(auto);
+            }
+        }
+
+        if (autosEnTransito.isEmpty()) {
+            EntradaSalida.error("No hay autos en tránsito");
+            return;
+        }
+
+        if (EntradaSalida.leerBoolean("\nDeseas trasladar estos autos a su oficina original", "Si", "Cancelar")) {
+            for (Auto auto : autosEnTransito) {
+                auto.getOficinaActual().eliminarAuto(auto);
+                auto.transportarAOficinaOriginal();
+            }
+        }
+
+        EntradaSalida.mostrarString("\nAutos trasladados a sus oficinas originales");
+
     }
 }

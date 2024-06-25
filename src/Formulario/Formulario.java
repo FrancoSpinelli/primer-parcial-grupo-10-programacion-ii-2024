@@ -38,7 +38,7 @@ public class Formulario {
         nombre = EntradaSalida.leerString("Ingrese su nombre: ");
         telefono = EntradaSalida.leerString("Ingrese su teléfono: ");
         email = EntradaSalida.leerString("Ingrese su email: ");
-        fechaNacimiento = EntradaSalida.leerFechaAnteriorAHoy("Ingrese su fecha de nacimiento: ");
+        fechaNacimiento = EntradaSalida.leerFechaAnteriorAHoy("Ingrese su fecha de nacimiento: \n");
         contrasenia = Integer.toString(dni);
 
         if (!Validador.validoParaCrearPersona(dni, email)) {

@@ -27,7 +27,7 @@ import enums.Marca;
 import enums.Rol;
 
 public class CasaMatriz implements Serializable {
-    private Enviroment enviroment;
+    private static Enviroment enviroment;
     private static ArrayList<Persona> personas = new ArrayList<Persona>();
     private static ArrayList<Auto> autos = new ArrayList<Auto>();
     private static ArrayList<Oficina> oficinas = new ArrayList<Oficina>();
@@ -76,7 +76,7 @@ public class CasaMatriz implements Serializable {
                 }
             }
             if (!autenticado) {
-                EntradaSalida.error("Usuario o contraseña errónea.");
+                EntradaSalida.error("Credenciales inválidas.");
             }
         }
     }
@@ -87,6 +87,13 @@ public class CasaMatriz implements Serializable {
     }
 
     public CasaMatriz deserializar(String ruta) throws IOException, ClassNotFoundException {
+
+        if (CasaMatriz.getEnviroment() != Enviroment.PRODUCTION) {
+            return null;
+        }
+
+        EntradaSalida.mostrarString("\nDeserializando...\n");
+
         FileInputStream archivo = new FileInputStream(ruta);
         ObjectInputStream objeto = new ObjectInputStream(archivo);
         CasaMatriz casaMatriz = (CasaMatriz) objeto.readObject();
@@ -96,11 +103,22 @@ public class CasaMatriz implements Serializable {
     }
 
     public void serializar(String ruta) throws IOException {
+
+        if (CasaMatriz.getEnviroment() != Enviroment.PRODUCTION) {
+            return;
+        }
+
+        EntradaSalida.mostrarString("\nSerializando...\n");
+
         FileOutputStream archivo = new FileOutputStream(ruta);
         ObjectOutputStream objeto = new ObjectOutputStream(archivo);
         objeto.writeObject(this);
         objeto.close();
         archivo.close();
+    }
+
+    private static Enviroment getEnviroment() {
+        return enviroment;
     }
 
     // AGREGAR
@@ -165,7 +183,7 @@ public class CasaMatriz implements Serializable {
             EntradaSalida.mostrarString(p.verPersona(), true, true);
         }
 
-        int id = EntradaSalida.leerEnteroConLimites("\nIngrese el ID de la persona: ", Const.LIMITE_INFERIOR_DEFAULT, CasaMatriz.personas.size());
+        int id = EntradaSalida.leerEntero("\nIngrese el ID de la persona: ");
         EntradaSalida.saltoDeLinea();
 
         Persona p = seleccionarPersona(id);
@@ -209,6 +227,18 @@ public class CasaMatriz implements Serializable {
         }
 
         return vendedores;
+    }
+
+    static public ArrayList<Auto> getAutosSinOficina() {
+        ArrayList<Auto> autosSinOficina = new ArrayList<>();
+
+        for (Auto auto : getAutos()) {
+            if (auto.getOficinaOriginal() == null) {
+                autosSinOficina.add(auto);
+            }
+        }
+
+        return autosSinOficina;
     }
 
     static public ArrayList<Persona> getVendedoresSinOficina() {
@@ -331,6 +361,34 @@ public class CasaMatriz implements Serializable {
         return autoSeleccionado;
     }
 
+    public static Auto seleccionarAuto(Oficina oficina, ArrayList<Auto> autos) {
+        Auto autoSeleccionado = null;
+
+        for (Auto auto : autos) {
+            EntradaSalida.mostrarString(auto.verAuto(), true, true);
+        }
+
+        int id = EntradaSalida.leerEntero("\nIngrese el ID del auto que desea seleccionar: ");
+
+        if (id == 0)
+            return null;
+
+        for (Auto auto : autos) {
+            if (auto.getId() == id) {
+                autoSeleccionado = auto;
+                break;
+            }
+        }
+
+        EntradaSalida.saltoDeLinea();
+        if (autoSeleccionado == null) {
+            EntradaSalida.mostrarString("Auto no encontrado", true, true);
+        } else {
+            EntradaSalida.mostrarString(autoSeleccionado.verAuto() + " seleccionado.", true, true);
+        }
+        return autoSeleccionado;
+    }
+
     public static int generarIdReserva() {
         int lastId = 0;
         for (Oficina oficina : oficinas) {
@@ -426,8 +484,18 @@ public class CasaMatriz implements Serializable {
 
         EntradaSalida.mostrarString("Ingrese los datos del cliente\n");
 
-        Persona nuevoCliente = Formulario.crearPersona();
-        agregarPersona(nuevoCliente);
+        /*
+         * Persona nuevoCliente = Formulario.crearPersona();
+         * agregarPersona(nuevoCliente);
+         * 
+         * EntradaSalida.advertencia("Cliente creado con éxito");
+         */
+
+        Persona p = Formulario.crearPersona();
+
+        Cliente cliente = new Cliente(p.getDni(), p.getNombre(), p.getFechaNacimiento(), p.getTelefono(), p.getEmail(),
+                "1234");
+        agregarPersona(cliente);
 
         EntradaSalida.advertencia("Cliente creado con éxito");
     }
@@ -436,8 +504,11 @@ public class CasaMatriz implements Serializable {
 
         EntradaSalida.mostrarString("Ingrese los datos del administrador\n");
 
-        Persona nuevoAdmin = Formulario.crearPersona();
-        agregarPersona(nuevoAdmin);
+        Persona p = Formulario.crearPersona();
+
+        Admin admin = new Admin(p.getDni(), p.getNombre(), p.getFechaNacimiento(), p.getTelefono(), p.getEmail(),
+                "1234");
+        agregarPersona(admin);
 
         EntradaSalida.advertencia("Administrador creado con éxito");
     }
@@ -445,8 +516,10 @@ public class CasaMatriz implements Serializable {
     static public void crearVendedor() {
         EntradaSalida.mostrarString("Ingrese los datos del vendedor\n");
 
-        Persona nuevoVendedor = Formulario.crearPersona();
-        agregarPersona(nuevoVendedor);
+        Persona p = Formulario.crearPersona();
+        Vendedor vendedor = new Vendedor(p.getDni(), p.getNombre(), p.getFechaNacimiento(), p.getTelefono(),
+                p.getEmail(), "1234");
+        agregarPersona(vendedor);
 
         EntradaSalida.advertencia("Vendedor creado con éxito");
     }

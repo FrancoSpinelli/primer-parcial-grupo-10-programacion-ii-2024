@@ -20,8 +20,8 @@ public class CapacidadDeVerMenuAdmin implements CapacidadDeVerMenu {
         EntradaSalida.mostrarString("\t 1. Gestionar personas");
         EntradaSalida.mostrarString("\t 2. Gestionar autos");
         EntradaSalida.mostrarString("\t 3. Gestionar oficinas");
-        EntradaSalida.mostrarString("\t 4. Gestionar reservas");
-        EntradaSalida.saltoDeLinea();
+/*         EntradaSalida.mostrarString("\t 4. Gestionar reservas");
+ */        EntradaSalida.saltoDeLinea();
         EntradaSalida.mostrarString("\t 9. Limpiar pantalla");
         EntradaSalida.mostrarString("\t 0. Salir ", false, true);
         EntradaSalida.saltoDeLinea();
@@ -45,10 +45,10 @@ public class CapacidadDeVerMenuAdmin implements CapacidadDeVerMenu {
                 EntradaSalida.limpiarPantalla();
                 admin.gestionarOficinas();
                 break;
-            case 4:
+/*             case 4:
                 EntradaSalida.limpiarPantalla();
                 admin.gestionarReservas();
-                break;
+                break; */
             case 9:
                 EntradaSalida.limpiarPantalla();
                 break;

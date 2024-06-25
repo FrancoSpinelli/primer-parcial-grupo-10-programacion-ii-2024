@@ -30,9 +30,15 @@ public class Control {
       try {
         casaMatriz = casaMatriz.deserializar("datos.bin");
       } catch (Exception e) {
-        EntradaSalida.mostrarString("Primera ejecución del sistema");
 
-        int dni = EntradaSalida.leerEnteroConLimites("Administrador, ingrese su número de DNI: ",
+        
+        EntradaSalida.mostrarString("Primera ejecución del sistema\n");
+
+        EntradaSalida.mostrarString("Bienvenido al sistema de alquiler de autos\n");
+
+        EntradaSalida.advertencia("Registro de administrador");
+
+        /* int dni = EntradaSalida.leerEnteroConLimites("Administrador, ingrese su número de DNI: ",
             Const.MIN_DNI, Const.MAX_DNI);
 
         String nombre = EntradaSalida.leerString("Ingrese su nombre: ");
@@ -55,10 +61,9 @@ public class Control {
         String telefono = EntradaSalida.leerString("Ingrese su número de teléfono: ");
         if (telefono.equals("")) {
           throw new NullPointerException("ERROR: El teléfono debe existir.");
-        }
+        } */
 
-        CasaMatriz.getPersonas().add(new Admin(dni, nombre, fechaNacimiento,
-            telefono, email, contrasenia));
+        CasaMatriz.crearAdmin(); 
 
         try {
           casaMatriz.serializar("datos.bin");

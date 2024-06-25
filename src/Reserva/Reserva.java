@@ -166,7 +166,7 @@ public class Reserva implements Serializable {
                     auto.recargarGasolina();
                 }
                 valido = true;
-                EntradaSalida.mostrarString("Se cargaron los tanques de los autos.");
+                EntradaSalida.advertencia("Se cargaron los tanques de los autos.");
             } else {
                 EntradaSalida.advertencia("No se devolvieron los autos.");
             }
@@ -189,7 +189,7 @@ public class Reserva implements Serializable {
         for (Auto auto : autos) {
             if (!auto.estaEnOficinaOriginal()) {
                 EntradaSalida
-                        .error("Alguno de los autos no se encuentra en la oficina. Contacta al vendedor.");
+                        .error("Alguno de los autos no se encuentra en la oficina. Contacta al administrador.");
                 return false;
             }
         }

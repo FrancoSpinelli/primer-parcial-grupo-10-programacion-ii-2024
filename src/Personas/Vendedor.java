@@ -36,6 +36,8 @@ public class Vendedor extends Persona implements Serializable {
         if (!gReservas.hayReservas(null, oficina))
             return;
 
+            EntradaSalida.mostrarString("Listado de reservas\n");
+
         gReservas.verListadoReservasPorEstado(null, this.oficina);
     }
 
@@ -48,6 +50,8 @@ public class Vendedor extends Persona implements Serializable {
         if (!gReservas.hayReservas(EstadoReserva.PENDIENTE, oficina))
             return;
 
+        EntradaSalida.mostrarString("Listado de reservas pendientes\n");
+        
         gReservas.verListadoReservasPorEstado(EstadoReserva.PENDIENTE, this.oficina);
     }
 
